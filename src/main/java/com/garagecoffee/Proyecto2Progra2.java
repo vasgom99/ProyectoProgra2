@@ -1,5 +1,5 @@
 
-package com.mycompany.proyecto2progra2;
+package com.garagecoffee;
 
 
 public class Proyecto2Progra2 {
