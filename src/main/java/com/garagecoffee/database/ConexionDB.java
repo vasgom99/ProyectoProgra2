@@ -6,9 +6,10 @@ import java.sql.SQLException;
 
 public class ConexionDB {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/garage_coffee";
-    private static final String USER = "root"; // Cambiar si es necesario
-    private static final String PASSWORD = "root"; // Cambiar si es necesario
+    // Los valores actuales siguen funcionando; las propiedades permiten probar otra base.
+    private static final String URL = System.getProperty("garage.db.url", "jdbc:mysql://localhost:3306/garage_coffee");
+    private static final String USER = System.getProperty("garage.db.user", "root");
+    private static final String PASSWORD = System.getProperty("garage.db.password", "root");
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);

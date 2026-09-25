@@ -8,12 +8,16 @@ public class Repartidor {
     private String vehiculo;
     private boolean activo;
 
+    public Repartidor() {
+        this.activo = true;
+    }
+
     public Repartidor(int id, String nombre, String telefono, String vehiculo) {
+        this();
         this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
         this.vehiculo = vehiculo;
-        this.activo = true;
     }
 
     public void cambiarEstado() {
@@ -38,5 +42,25 @@ public class Repartidor {
 
     public boolean isActivo() {
         return activo;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setVehiculo(String vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

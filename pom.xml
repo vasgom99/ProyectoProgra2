@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <exec.mainClass>com.mycompany.proyecto2progra2.Proyecto2Progra2</exec.mainClass>
+        <exec.mainClass>com.garagecoffee.Proyecto2Progra2</exec.mainClass>
     </properties>
     <dependencies>
 

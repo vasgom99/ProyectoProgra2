@@ -1,8 +1,11 @@
 package com.garagecoffee.model;
 
+import java.math.BigDecimal;
+
 public class PedidoLocal extends Pedido {
 
     private int ordenLlegada;
+    private Mesa mesa;
 
     public PedidoLocal(int id, String observaciones, int ordenLlegada) {
         super(id, TipoEntrega.CONSUMIR_LOCAL, observaciones);
@@ -10,16 +13,31 @@ public class PedidoLocal extends Pedido {
     }
 
     @Override
-    public void calcularTotal() {
-        double subtotalProductos = 0.0;
-        setTotal(subtotalProductos);
+    public BigDecimal calcularTotal() {
+        return super.calcularTotal();
     }
 
-    public void asignarMesa() {
-        // La relación con Mesa se agregará cuando exista ese modelo.
+    public void asignarMesa(Mesa mesa) {
+        if (mesa == null) {
+            throw new IllegalArgumentException("La mesa es obligatoria");
+        }
+        this.mesa = mesa;
+        mesa.ocupar();
     }
 
     public int getOrdenLlegada() {
         return ordenLlegada;
+    }
+
+    public void setOrdenLlegada(int ordenLlegada) {
+        this.ordenLlegada = ordenLlegada;
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
     }
 }
