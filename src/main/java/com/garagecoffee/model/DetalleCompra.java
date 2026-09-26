@@ -1,8 +1,12 @@
 package com.garagecoffee.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class DetalleCompra {
+
+    private int id;
+    private int compraId;
 
     private BigDecimal cantidad;
     private BigDecimal costoUnitario;
@@ -30,7 +34,7 @@ public class DetalleCompra {
         if (cantidad == null || costoUnitario == null) {
             subtotal = BigDecimal.ZERO;
         } else {
-            subtotal = cantidad.multiply(costoUnitario);
+            subtotal = cantidad.multiply(costoUnitario).setScale(2, RoundingMode.HALF_UP);
         }
 
         return subtotal;
@@ -38,6 +42,22 @@ public class DetalleCompra {
 
     public BigDecimal getCantidad() {
         return cantidad;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCompraId() {
+        return compraId;
+    }
+
+    public void setCompraId(int compraId) {
+        this.compraId = compraId;
     }
 
     public void setCantidad(BigDecimal cantidad) {
