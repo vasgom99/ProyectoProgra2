@@ -10,15 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos DireccionCliente en MySQL. */
+/** Guarda y consulta las direcciones asociadas a cada cliente. */
 public class DireccionClienteDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, cliente_id, direccion, referencia FROM direccion_cliente";
 
     public List<DireccionCliente> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -35,8 +35,8 @@ public class DireccionClienteDAO {
 
     // Devuelve null si no existe el registro.
     public DireccionCliente buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -51,8 +51,8 @@ public class DireccionClienteDAO {
     }
 
     public List<DireccionCliente> listarPorCliente(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorCliente(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorCliente(recurso.conexion, id);
         }
     }
 
@@ -74,8 +74,8 @@ public class DireccionClienteDAO {
     public boolean guardar(DireccionCliente direccionCliente) throws SQLException {
         String sql = "INSERT INTO direccion_cliente (cliente_id, direccion, referencia) "
                 + "VALUES (?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, direccionCliente);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -92,8 +92,8 @@ public class DireccionClienteDAO {
 
     public boolean actualizar(DireccionCliente direccionCliente) throws SQLException {
         String sql = "UPDATE direccion_cliente SET cliente_id = ?, direccion = ?, referencia = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, direccionCliente);
             consulta.setInt(4, direccionCliente.getId());
             return consulta.executeUpdate() > 0;
@@ -102,8 +102,8 @@ public class DireccionClienteDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM direccion_cliente WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM direccion_cliente WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

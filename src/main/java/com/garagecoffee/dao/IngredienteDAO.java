@@ -10,15 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Ingrediente en MySQL. */
+/** Guarda los ingredientes, sus existencias, cantidades mínimas y costos. */
 public class IngredienteDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, nombre, unidad_medida, stock_actual, stock_minimo, costo_unitario FROM ingrediente";
 
     public List<Ingrediente> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -35,8 +35,8 @@ public class IngredienteDAO {
 
     // Devuelve null si no existe el registro.
     public Ingrediente buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -54,8 +54,8 @@ public class IngredienteDAO {
     public boolean guardar(Ingrediente ingrediente) throws SQLException {
         String sql = "INSERT INTO ingrediente (nombre, unidad_medida, stock_actual, stock_minimo, costo_unitario) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, ingrediente);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -72,8 +72,8 @@ public class IngredienteDAO {
 
     public boolean actualizar(Ingrediente ingrediente) throws SQLException {
         String sql = "UPDATE ingrediente SET nombre = ?, unidad_medida = ?, stock_actual = ?, stock_minimo = ?, costo_unitario = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, ingrediente);
             consulta.setInt(6, ingrediente.getId());
             return consulta.executeUpdate() > 0;
@@ -82,8 +82,8 @@ public class IngredienteDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM ingrediente WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM ingrediente WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

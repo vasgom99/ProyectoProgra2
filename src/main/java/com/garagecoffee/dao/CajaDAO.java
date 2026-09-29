@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Caja en MySQL. */
+/** Guarda y consulta las aperturas, cierres y montos de caja. */
 public class CajaDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, fecha_apertura, fecha_cierre, monto_inicial, monto_final, estado FROM caja";
 
     public List<Caja> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -37,8 +37,8 @@ public class CajaDAO {
 
     // Devuelve null si no existe el registro.
     public Caja buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -56,8 +56,8 @@ public class CajaDAO {
     public boolean guardar(Caja caja) throws SQLException {
         String sql = "INSERT INTO caja (fecha_apertura, fecha_cierre, monto_inicial, monto_final, estado) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, caja);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -74,8 +74,8 @@ public class CajaDAO {
 
     public boolean actualizar(Caja caja) throws SQLException {
         String sql = "UPDATE caja SET fecha_apertura = ?, fecha_cierre = ?, monto_inicial = ?, monto_final = ?, estado = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, caja);
             consulta.setInt(6, caja.getId());
             return consulta.executeUpdate() > 0;
@@ -84,8 +84,8 @@ public class CajaDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM caja WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM caja WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

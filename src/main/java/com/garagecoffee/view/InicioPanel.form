@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<AuxValues><AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/><AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/><AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/><AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/><AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/><AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/><AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/><AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/></AuxValues>
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ee" green="f4" red="f6" type="rgb"/></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="22"/><Property name="verticalGap" type="int" value="22"/></Layout>
+<SubComponents>
+<Container class="javax.swing.JPanel" name="arriba">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="20"/><Property name="verticalGap" type="int" value="20"/></Layout>
+<SubComponents>
+<Container class="javax.swing.JPanel" name="bienvenida">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="e8" green="ee" red="e7" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="22" left="26" right="26" top="22"/></Border></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="10"/><Property name="verticalGap" type="int" value="10"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="lblHola">
+<Properties>
+<Property name="text" type="java.lang.String" value="Todo listo para un buen servicio."/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="25" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="lblAyuda">
+<Properties>
+<Property name="text" type="java.lang.String" value="Pedidos claros, cocina organizada y cuentas al día."/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="lblFecha">
+<Properties>
+<Property name="text" type="java.lang.String" value="GARAGE COFFEE · TU RESUMEN"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="10" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="40" green="60" red="ae" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="tarjetas">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+<Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor"><Dimension value="[850, 152]"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout"><Property name="rows" type="int" value="1"/><Property name="columns" type="int" value="4"/><Property name="horizontalGap" type="int" value="16"/><Property name="verticalGap" type="int" value="16"/></Layout>
+<SubComponents>
+<Container class="javax.swing.JPanel" name="cardPendientes">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="20" left="22" right="22" top="20"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="10"/><Property name="verticalGap" type="int" value="10"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="cardPendientesTitle">
+<Properties>
+<Property name="text" type="java.lang.String" value="POR PREPARAR"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="pendientes">
+<Properties>
+<Property name="text" type="java.lang.String" value="0"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="36" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="40" green="60" red="ae" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="cardPendientesHelp">
+<Properties>
+<Property name="text" type="java.lang.String" value="Pedidos en espera"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="cardListos">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="20" left="22" right="22" top="20"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="10"/><Property name="verticalGap" type="int" value="10"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="cardListosTitle">
+<Properties>
+<Property name="text" type="java.lang.String" value="LISTOS PARA ENTREGAR"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="listos">
+<Properties>
+<Property name="text" type="java.lang.String" value="0"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="36" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="cardListosHelp">
+<Properties>
+<Property name="text" type="java.lang.String" value="Continúa el servicio"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="cardProductos">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="20" left="22" right="22" top="20"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="10"/><Property name="verticalGap" type="int" value="10"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="cardProductosTitle">
+<Properties>
+<Property name="text" type="java.lang.String" value="EN EL CATÁLOGO"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="productos">
+<Properties>
+<Property name="text" type="java.lang.String" value="0"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="36" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="cardProductosHelp">
+<Properties>
+<Property name="text" type="java.lang.String" value="Productos disponibles"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="cardAlertas">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="20" left="22" right="22" top="20"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="10"/><Property name="verticalGap" type="int" value="10"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="cardAlertasTitle">
+<Properties>
+<Property name="text" type="java.lang.String" value="STOCK BAJO"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="alertas">
+<Properties>
+<Property name="text" type="java.lang.String" value="0"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="36" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="40" green="60" red="ae" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="cardAlertasHelp">
+<Properties>
+<Property name="text" type="java.lang.String" value="Ingredientes por revisar"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+</SubComponents>
+</Container>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="guia">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout"><Property name="rows" type="int" value="1"/><Property name="columns" type="int" value="2"/><Property name="horizontalGap" type="int" value="20"/><Property name="verticalGap" type="int" value="20"/></Layout>
+<SubComponents>
+<Container class="javax.swing.JPanel" name="recorrido">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="24" left="26" right="26" top="24"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="20"/><Property name="verticalGap" type="int" value="20"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="lblFlujo">
+<Properties>
+<Property name="text" type="java.lang.String" value="Tu servicio, en orden."/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="21" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Container class="javax.swing.JPanel" name="pasos">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout"><Property name="rows" type="int" value="4"/><Property name="columns" type="int" value="1"/><Property name="horizontalGap" type="int" value="14"/><Property name="verticalGap" type="int" value="14"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="paso1">
+<Properties>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;01 · Recibe el pedido&lt;/b&gt;&lt;br&gt;Elige productos y el tipo de entrega.&lt;/html&gt;"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+</Component>
+<Component class="javax.swing.JLabel" name="paso2">
+<Properties>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;02 · Prepara en cocina&lt;/b&gt;&lt;br&gt;Verifica ingredientes y marca «Listo».&lt;/html&gt;"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+</Component>
+<Component class="javax.swing.JLabel" name="paso3">
+<Properties>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;03 · Entrega y cobra&lt;/b&gt;&lt;br&gt;Registra el pago y entrega el comprobante.&lt;/html&gt;"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+</Component>
+<Component class="javax.swing.JLabel" name="paso4">
+<Properties>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;04 · Revisa tu operación&lt;/b&gt;&lt;br&gt;Consulta existencias, caja y reportes.&lt;/html&gt;"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+</Component>
+</SubComponents>
+</Container>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="notas">
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="dc" green="e7" red="ee" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="24" left="26" right="26" top="24"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="18"/><Property name="verticalGap" type="int" value="18"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="lblNotaTitulo">
+<Properties>
+<Property name="text" type="java.lang.String" value="Antes de comenzar"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="21" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="lblNota">
+<Properties>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;Tu información se guarda en &lt;b&gt;MySQL&lt;/b&gt;.&lt;br&gt;&lt;br&gt;El acceso depende del rol de cada empleado.&lt;br&gt;&lt;br&gt;Los datos se conservan al cerrar.&lt;br&gt;Usa Actualizar para ver cambios de otra sesión.&lt;br&gt;&lt;br&gt;&lt;b&gt;Los comprobantes no tienen validez fiscal.&lt;/b&gt;&lt;/html&gt;"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="4b" green="5b" red="66" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JLabel" name="lblNotaPie">
+<Properties>
+<Property name="text" type="java.lang.String" value="POO · COMPONENTES SWING"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="10" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="4b" green="5b" red="66" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+</SubComponents>
+</Container>
+</SubComponents>
+</Form>

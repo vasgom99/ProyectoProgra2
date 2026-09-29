@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Cliente en MySQL. */
+/** Guarda los datos de los clientes y consulta sus direcciones. */
 public class ClienteDAO {
 
     // La tabla cliente debe incluir fecha_registro DATETIME NULL.
@@ -20,8 +20,8 @@ public class ClienteDAO {
             "SELECT id, nombre, telefono, email, fecha_registro FROM cliente";
 
     public List<Cliente> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -38,8 +38,8 @@ public class ClienteDAO {
 
     // Devuelve null si no existe el registro.
     public Cliente buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -58,8 +58,8 @@ public class ClienteDAO {
     public boolean guardar(Cliente cliente) throws SQLException {
         String sql = "INSERT INTO cliente (nombre, telefono, email, fecha_registro) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, cliente);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -76,8 +76,8 @@ public class ClienteDAO {
 
     public boolean actualizar(Cliente cliente) throws SQLException {
         String sql = "UPDATE cliente SET nombre = ?, telefono = ?, email = ?, fecha_registro = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, cliente);
             consulta.setInt(5, cliente.getId());
             return consulta.executeUpdate() > 0;
@@ -86,8 +86,8 @@ public class ClienteDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM cliente WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM cliente WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

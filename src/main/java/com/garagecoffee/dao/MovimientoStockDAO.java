@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos MovimientoStock en MySQL. */
+/** Guarda y consulta los registros de entradas, salidas, ajustes y pérdidas de ingredientes. */
 public class MovimientoStockDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, ingrediente_id, tipo, cantidad, costo_total, fecha_hora, motivo FROM movimiento_stock";
 
     public List<MovimientoStock> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -37,8 +37,8 @@ public class MovimientoStockDAO {
 
     // Devuelve null si no existe el registro.
     public MovimientoStock buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -53,8 +53,8 @@ public class MovimientoStockDAO {
     }
 
     public List<MovimientoStock> listarPorIngrediente(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorIngrediente(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorIngrediente(recurso.conexion, id);
         }
     }
 
@@ -76,8 +76,8 @@ public class MovimientoStockDAO {
     public boolean guardar(MovimientoStock movimientoStock) throws SQLException {
         String sql = "INSERT INTO movimiento_stock (ingrediente_id, tipo, cantidad, costo_total, fecha_hora, motivo) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, movimientoStock);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -94,8 +94,8 @@ public class MovimientoStockDAO {
 
     public boolean actualizar(MovimientoStock movimientoStock) throws SQLException {
         String sql = "UPDATE movimiento_stock SET ingrediente_id = ?, tipo = ?, cantidad = ?, costo_total = ?, fecha_hora = ?, motivo = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, movimientoStock);
             consulta.setInt(7, movimientoStock.getId());
             return consulta.executeUpdate() > 0;
@@ -104,8 +104,8 @@ public class MovimientoStockDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM movimiento_stock WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM movimiento_stock WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

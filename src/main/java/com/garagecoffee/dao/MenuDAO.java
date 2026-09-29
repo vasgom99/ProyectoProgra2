@@ -11,15 +11,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Menu en MySQL. */
+/** Guarda y consulta los menús, sus fechas y si están activos. */
 public class MenuDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, nombre, activo, fecha_inicio, fecha_fin FROM menu";
 
     public List<Menu> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class MenuDAO {
 
     // Devuelve null si no existe el registro.
     public Menu buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -55,8 +55,8 @@ public class MenuDAO {
     public boolean guardar(Menu menu) throws SQLException {
         String sql = "INSERT INTO menu (nombre, activo, fecha_inicio, fecha_fin) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, menu);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -73,8 +73,8 @@ public class MenuDAO {
 
     public boolean actualizar(Menu menu) throws SQLException {
         String sql = "UPDATE menu SET nombre = ?, activo = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, menu);
             consulta.setInt(5, menu.getId());
             return consulta.executeUpdate() > 0;
@@ -83,8 +83,8 @@ public class MenuDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM menu WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM menu WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

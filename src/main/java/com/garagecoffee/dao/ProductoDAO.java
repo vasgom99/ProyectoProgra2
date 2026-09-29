@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Producto en MySQL. */
+/** Guarda y consulta los productos, sus precios, categorías y disponibilidad. */
 public class ProductoDAO {
 
     private static final String CONSULTA_BASE =
@@ -24,8 +24,8 @@ public class ProductoDAO {
     public List<Producto> listar() throws SQLException {
         List<Producto> productos = new ArrayList<>();
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " ORDER BY p.id");
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(CONSULTA_BASE + " ORDER BY p.id");
              ResultSet resultado = consulta.executeQuery()) {
             while (resultado.next()) {
                 productos.add(leerProducto(resultado));
@@ -36,8 +36,8 @@ public class ProductoDAO {
 
     // Devuelve null si no existe un producto con ese ID.
     public Producto buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -56,8 +56,8 @@ public class ProductoDAO {
                 + "(categoria_id, nombre, descripcion, imagen_url, precio, disponible) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             consulta.setInt(1, producto.getcategoria().getId());
             consulta.setString(2, producto.getNombre());
             consulta.setString(3, producto.getDescripcion());
@@ -82,8 +82,8 @@ public class ProductoDAO {
         String sql = "UPDATE producto SET categoria_id = ?, nombre = ?, descripcion = ?, "
                 + "imagen_url = ?, precio = ?, disponible = ? WHERE id = ?";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             consulta.setInt(1, producto.getcategoria().getId());
             consulta.setString(2, producto.getNombre());
             consulta.setString(3, producto.getDescripcion());
@@ -99,8 +99,8 @@ public class ProductoDAO {
     public boolean eliminar(int id) throws SQLException {
         String sql = "DELETE FROM producto WHERE id = ?";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

@@ -11,15 +11,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Empleado en MySQL. */
+/** Guarda los datos de los empleados y permite buscarlos por su usuario. */
 public class EmpleadoDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, nombre, apellido, telefono, email, nombre_usuario, password, rol, activo FROM empleado";
 
     public List<Empleado> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class EmpleadoDAO {
 
     // Devuelve null si no existe el registro.
     public Empleado buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -55,8 +55,8 @@ public class EmpleadoDAO {
     public boolean guardar(Empleado empleado) throws SQLException {
         String sql = "INSERT INTO empleado (nombre, apellido, telefono, email, nombre_usuario, password, rol, activo) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, empleado);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -72,19 +72,19 @@ public class EmpleadoDAO {
     }
 
     public Empleado buscarPorNombreUsuario(String nombreUsuario) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " WHERE nombre_usuario = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(CONSULTA_BASE + " WHERE nombre_usuario = ?")) {
             consulta.setString(1, nombreUsuario);
             try (ResultSet resultado = consulta.executeQuery()) {
-                return resultado.next() ? leer(conexion, resultado) : null;
+                return resultado.next() ? leer(recurso.conexion, resultado) : null;
             }
         }
     }
 
     public boolean actualizar(Empleado empleado) throws SQLException {
         String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefono = ?, email = ?, nombre_usuario = ?, password = ?, rol = ?, activo = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, empleado);
             consulta.setInt(9, empleado.getId());
             return consulta.executeUpdate() > 0;
@@ -93,8 +93,8 @@ public class EmpleadoDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM empleado WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM empleado WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

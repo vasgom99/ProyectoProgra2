@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Perdida en MySQL. */
+/** Guarda y consulta las cantidades de ingredientes perdidos y sus motivos. */
 public class PerdidaDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, ingrediente_id, cantidad, motivo, fecha_hora FROM perdida";
 
     public List<Perdida> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class PerdidaDAO {
 
     // Devuelve null si no existe el registro.
     public Perdida buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -52,8 +52,8 @@ public class PerdidaDAO {
     }
 
     public List<Perdida> listarPorIngrediente(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorIngrediente(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorIngrediente(recurso.conexion, id);
         }
     }
 
@@ -75,8 +75,8 @@ public class PerdidaDAO {
     public boolean guardar(Perdida perdida) throws SQLException {
         String sql = "INSERT INTO perdida (ingrediente_id, cantidad, motivo, fecha_hora) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, perdida);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -93,8 +93,8 @@ public class PerdidaDAO {
 
     public boolean actualizar(Perdida perdida) throws SQLException {
         String sql = "UPDATE perdida SET ingrediente_id = ?, cantidad = ?, motivo = ?, fecha_hora = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, perdida);
             consulta.setInt(5, perdida.getId());
             return consulta.executeUpdate() > 0;
@@ -103,8 +103,8 @@ public class PerdidaDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM perdida WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM perdida WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

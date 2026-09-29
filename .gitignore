@@ -1,2 +1,10 @@
 /target/
 /Garage_Coffee_Contexto_Completo.md
+/garage-db.properties
+/.gradle/
+/.idea/
+/local.properties
+/build/
+/app/build/
+/captures/
+*.iml

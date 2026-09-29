@@ -10,15 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Proveedor en MySQL. */
+/** Guarda y consulta los datos de los proveedores del restaurante. */
 public class ProveedorDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, nombre, telefono, email, direccion, activo FROM proveedor";
 
     public List<Proveedor> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -35,8 +35,8 @@ public class ProveedorDAO {
 
     // Devuelve null si no existe el registro.
     public Proveedor buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -54,8 +54,8 @@ public class ProveedorDAO {
     public boolean guardar(Proveedor proveedor) throws SQLException {
         String sql = "INSERT INTO proveedor (nombre, telefono, email, direccion, activo) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, proveedor);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -72,8 +72,8 @@ public class ProveedorDAO {
 
     public boolean actualizar(Proveedor proveedor) throws SQLException {
         String sql = "UPDATE proveedor SET nombre = ?, telefono = ?, email = ?, direccion = ?, activo = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, proveedor);
             consulta.setInt(6, proveedor.getId());
             return consulta.executeUpdate() > 0;
@@ -82,8 +82,8 @@ public class ProveedorDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM proveedor WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM proveedor WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

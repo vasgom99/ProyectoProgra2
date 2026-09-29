@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/** Consulta los detalles; las escrituras se realizan desde CompraDAO. */
+/** Consulta los detalles de las compras; CompraDAO coordina su guardado. */
 public class DetalleCompraDAO {
 
     private static final String CONSULTA_BASE =
@@ -20,29 +20,29 @@ public class DetalleCompraDAO {
 
     public List<DetalleCompra> listar() throws SQLException {
         List<DetalleCompra> detalles = new ArrayList<>();
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " ORDER BY id");
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(CONSULTA_BASE + " ORDER BY id");
              ResultSet resultado = consulta.executeQuery()) {
             while (resultado.next()) {
-                detalles.add(leer(conexion, resultado));
+                detalles.add(leer(recurso.conexion, resultado));
             }
         }
         return detalles;
     }
 
     public DetalleCompra buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(CONSULTA_BASE + " WHERE id = ?")) {
             consulta.setInt(1, id);
             try (ResultSet resultado = consulta.executeQuery()) {
-                return resultado.next() ? leer(conexion, resultado) : null;
+                return resultado.next() ? leer(recurso.conexion, resultado) : null;
             }
         }
     }
 
     public List<DetalleCompra> listarPorCompra(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorCompra(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorCompra(recurso.conexion, id);
         }
     }
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<AuxValues><AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/><AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/><AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/><AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/><AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/><AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/><AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/><AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/></AuxValues>
+<Properties>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="16" left="20" right="20" top="20"/></Border></Property>
+</Properties>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="16"/><Property name="verticalGap" type="int" value="16"/></Layout>
+<SubComponents>
+<Container class="javax.swing.JPanel" name="barra">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="12"/><Property name="verticalGap" type="int" value="12"/></Layout>
+<SubComponents>
+<Container class="javax.swing.JPanel" name="acciones">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"><Property name="alignment" type="int" value="0"/><Property name="horizontalGap" type="int" value="8"/><Property name="verticalGap" type="int" value="6"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JButton" name="accion0">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 1"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion1">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 2"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion2">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 3"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion3">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 4"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion4">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 5"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion5">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 6"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion6">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 7"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+<Component class="javax.swing.JButton" name="accion7">
+<Properties>
+<Property name="text" type="java.lang.String" value="Acción 8"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3a" red="26" type="rgb"/></Property>
+<Property name="focusPainted" type="boolean" value="false"/>
+</Properties>
+</Component>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JPanel" name="busqueda">
+<Properties>
+<Property name="opaque" type="boolean" value="false"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="12"/><Property name="verticalGap" type="int" value="12"/></Layout>
+<SubComponents>
+<Component class="javax.swing.JLabel" name="lblBuscar">
+<Properties>
+<Property name="text" type="java.lang.String" value="BUSCAR EN ESTA LISTA"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="1"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="West"/></Constraint></Constraints>
+</Component>
+<Component class="javax.swing.JTextField" name="buscar">
+<Properties>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+<Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor"><Dimension value="[260, 36]"/></Property>
+<Property name="toolTipText" type="java.lang.String" value="Filtrar por cualquier columna"/>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Container>
+</SubComponents>
+</Container>
+<Container class="javax.swing.JScrollPane" name="scrollTabla">
+<Properties>
+<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="0" left="0" right="0" top="0"/></Border></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+<SubComponents>
+<Component class="javax.swing.JTable" name="tabla">
+<Properties>
+<Property name="rowHeight" type="int" value="38"/>
+<Property name="fillsViewportHeight" type="boolean" value="true"/>
+<Property name="showHorizontalLines" type="boolean" value="true"/>
+<Property name="showVerticalLines" type="boolean" value="false"/>
+<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="ff" green="ff" red="ff" type="rgb"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+<Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="de" green="e8" red="db" type="rgb"/></Property>
+<Property name="selectionForeground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="14" style="0"/></Property>
+</Properties>
+</Component>
+</SubComponents>
+</Container>
+<Component class="javax.swing.JLabel" name="contador">
+<Properties>
+<Property name="text" type="java.lang.String" value="0 registros"/>
+<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="12" style="0"/></Property>
+<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
+</Properties>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
+</Component>
+</SubComponents>
+</Form>

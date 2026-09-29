@@ -199,7 +199,7 @@ btnPedido.addActionListener(e -> {
     }
 
     public static void main(String[] args) {
-        VentanaPrincipal ventana = new VentanaPrincipal();
-        ventana.setVisible(true);
+        // El prototipo se conserva como referencia; la ejecución usa la aplicación integrada.
+        com.garagecoffee.Proyecto2Progra2.main(args);
     }
 }

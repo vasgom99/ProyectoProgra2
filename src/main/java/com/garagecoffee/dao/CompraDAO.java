@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Compra en MySQL. */
+/** Guarda y consulta las compras a proveedores junto con sus detalles. */
 public class CompraDAO {
 
     private static final String CONSULTA_BASE =
@@ -21,34 +21,34 @@ public class CompraDAO {
     private final DetalleCompraDAO detalleDAO = new DetalleCompraDAO();
 
     public List<Compra> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
                 List<Compra> registros = new ArrayList<>();
-                try (PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " ORDER BY id");
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement(CONSULTA_BASE + " ORDER BY id");
                      ResultSet resultado = consulta.executeQuery()) {
                     while (resultado.next()) {
-                        registros.add(leer(conexion, resultado));
+                        registros.add(leer(recurso.conexion, resultado));
                     }
                 }
-                conexion.commit();
+                ConexionDB.confirmar(recurso.conexion);
                 return registros;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
     }
 
     public Compra buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
-                Compra compra = buscarPorId(conexion, id);
-                conexion.commit();
+                Compra compra = buscarPorId(recurso.conexion, id);
+                ConexionDB.confirmar(recurso.conexion);
                 return compra;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -76,11 +76,11 @@ public class CompraDAO {
         compra.calcularTotal();
         String sql = "INSERT INTO compra (proveedor_id, fecha, total, estado) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
                 int nuevoId;
-                try (PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     escribir(consulta, compra);
                     consulta.executeUpdate();
                     try (ResultSet claves = consulta.getGeneratedKeys()) {
@@ -90,13 +90,13 @@ public class CompraDAO {
                         nuevoId = claves.getInt(1);
                     }
                 }
-                int[] ids = detalleDAO.guardarDetalles(conexion, nuevoId, compra.getDetalles());
-                conexion.commit();
+                int[] ids = detalleDAO.guardarDetalles(recurso.conexion, nuevoId, compra.getDetalles());
+                ConexionDB.confirmar(recurso.conexion);
                 compra.setId(nuevoId);
                 asignarIds(compra, ids);
                 return true;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -106,24 +106,24 @@ public class CompraDAO {
     public boolean actualizar(Compra compra) throws SQLException {
         compra.calcularTotal();
         String sql = "UPDATE compra SET proveedor_id = ?, fecha = ?, total = ?, estado = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
-                if (!bloquear(conexion, compra.getId())) {
-                    conexion.rollback();
+                if (!bloquear(recurso.conexion, compra.getId())) {
+                    ConexionDB.revertir(recurso.conexion);
                     return false;
                 }
-                try (PreparedStatement consulta = conexion.prepareStatement(sql)) {
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
                     escribir(consulta, compra);
                     consulta.setInt(5, compra.getId());
                     consulta.executeUpdate();
                 }
-                int[] ids = detalleDAO.guardarDetalles(conexion, compra.getId(), compra.getDetalles());
-                conexion.commit();
+                int[] ids = detalleDAO.guardarDetalles(recurso.conexion, compra.getId(), compra.getDetalles());
+                ConexionDB.confirmar(recurso.conexion);
                 asignarIds(compra, ids);
                 return true;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -131,22 +131,22 @@ public class CompraDAO {
 
     // Borra también sus detalles; las demás claves foráneas siguen protegiendo el registro.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
-                if (!bloquear(conexion, id)) {
-                    conexion.rollback();
+                if (!bloquear(recurso.conexion, id)) {
+                    ConexionDB.revertir(recurso.conexion);
                     return false;
                 }
-                detalleDAO.eliminarPorCompra(conexion, id);
-                try (PreparedStatement consulta = conexion.prepareStatement("DELETE FROM compra WHERE id = ?")) {
+                detalleDAO.eliminarPorCompra(recurso.conexion, id);
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM compra WHERE id = ?")) {
                     consulta.setInt(1, id);
                     consulta.executeUpdate();
                 }
-                conexion.commit();
+                ConexionDB.confirmar(recurso.conexion);
                 return true;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -171,7 +171,7 @@ public class CompraDAO {
 
     private void revertir(Connection conexion, Exception error) {
         try {
-            conexion.rollback();
+            ConexionDB.revertir(conexion);
         } catch (SQLException errorRollback) {
             error.addSuppressed(errorRollback);
         }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Pedido en MySQL. */
+/** Guarda y consulta los pedidos y sus detalles, respetando cada tipo de entrega. */
 public class PedidoDAO {
 
     // La tabla pedido debe incluir direccion_entrega VARCHAR(255) NULL.
@@ -28,34 +28,34 @@ public class PedidoDAO {
     private final DetallePedidoDAO detalleDAO = new DetallePedidoDAO();
 
     public List<Pedido> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
                 List<Pedido> registros = new ArrayList<>();
-                try (PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " ORDER BY id");
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement(CONSULTA_BASE + " ORDER BY id");
                      ResultSet resultado = consulta.executeQuery()) {
                     while (resultado.next()) {
-                        registros.add(leer(conexion, resultado));
+                        registros.add(leer(recurso.conexion, resultado));
                     }
                 }
-                conexion.commit();
+                ConexionDB.confirmar(recurso.conexion);
                 return registros;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
     }
 
     public Pedido buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
-                Pedido pedido = buscarPorId(conexion, id);
-                conexion.commit();
+                Pedido pedido = buscarPorId(recurso.conexion, id);
+                ConexionDB.confirmar(recurso.conexion);
                 return pedido;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -83,11 +83,11 @@ public class PedidoDAO {
         pedido.calcularTotal();
         String sql = "INSERT INTO pedido (cliente_id, mesa_id, repartidor_id, fecha_creacion, fecha_programada, estado, tipo_entrega, total, observaciones, orden_llegada, codigo_retiro, costo_envio, direccion_entrega) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
                 int nuevoId;
-                try (PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     escribir(consulta, pedido);
                     consulta.executeUpdate();
                     try (ResultSet claves = consulta.getGeneratedKeys()) {
@@ -97,13 +97,13 @@ public class PedidoDAO {
                         nuevoId = claves.getInt(1);
                     }
                 }
-                int[] ids = detalleDAO.guardarDetalles(conexion, nuevoId, pedido.getDetalles());
-                conexion.commit();
+                int[] ids = detalleDAO.guardarDetalles(recurso.conexion, nuevoId, pedido.getDetalles());
+                ConexionDB.confirmar(recurso.conexion);
                 pedido.setId(nuevoId);
                 asignarIds(pedido, ids);
                 return true;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -113,24 +113,24 @@ public class PedidoDAO {
     public boolean actualizar(Pedido pedido) throws SQLException {
         pedido.calcularTotal();
         String sql = "UPDATE pedido SET cliente_id = ?, mesa_id = ?, repartidor_id = ?, fecha_creacion = ?, fecha_programada = ?, estado = ?, tipo_entrega = ?, total = ?, observaciones = ?, orden_llegada = ?, codigo_retiro = ?, costo_envio = ?, direccion_entrega = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
-                if (!bloquear(conexion, pedido.getId())) {
-                    conexion.rollback();
+                if (!bloquear(recurso.conexion, pedido.getId())) {
+                    ConexionDB.revertir(recurso.conexion);
                     return false;
                 }
-                try (PreparedStatement consulta = conexion.prepareStatement(sql)) {
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
                     escribir(consulta, pedido);
                     consulta.setInt(14, pedido.getId());
                     consulta.executeUpdate();
                 }
-                int[] ids = detalleDAO.guardarDetalles(conexion, pedido.getId(), pedido.getDetalles());
-                conexion.commit();
+                int[] ids = detalleDAO.guardarDetalles(recurso.conexion, pedido.getId(), pedido.getDetalles());
+                ConexionDB.confirmar(recurso.conexion);
                 asignarIds(pedido, ids);
                 return true;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -138,22 +138,22 @@ public class PedidoDAO {
 
     // Borra también sus detalles; las demás claves foráneas siguen protegiendo el registro.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            conexion.setAutoCommit(false);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            recurso.conexion.setAutoCommit(false);
             try {
-                if (!bloquear(conexion, id)) {
-                    conexion.rollback();
+                if (!bloquear(recurso.conexion, id)) {
+                    ConexionDB.revertir(recurso.conexion);
                     return false;
                 }
-                detalleDAO.eliminarPorPedido(conexion, id);
-                try (PreparedStatement consulta = conexion.prepareStatement("DELETE FROM pedido WHERE id = ?")) {
+                detalleDAO.eliminarPorPedido(recurso.conexion, id);
+                try (PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM pedido WHERE id = ?")) {
                     consulta.setInt(1, id);
                     consulta.executeUpdate();
                 }
-                conexion.commit();
+                ConexionDB.confirmar(recurso.conexion);
                 return true;
             } catch (SQLException | RuntimeException error) {
-                revertir(conexion, error);
+                revertir(recurso.conexion, error);
                 throw error;
             }
         }
@@ -178,7 +178,7 @@ public class PedidoDAO {
 
     private void revertir(Connection conexion, Exception error) {
         try {
-            conexion.rollback();
+            ConexionDB.revertir(conexion);
         } catch (SQLException errorRollback) {
             error.addSuppressed(errorRollback);
         }

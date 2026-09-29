@@ -1,0 +1,9 @@
+# Copiar como garage-db.properties (ignorado por Git).
+garage.db.url=jdbc:mysql://localhost:3306/garage_coffee
+garage.db.user=root
+garage.db.password=CAMBIAR_LOCALMENTE
+# DBeaver y la app deben apuntar al mismo servidor y base.
+# Primero importar el esquema original; ejecutar PrepararBaseDatos una vez.
+# Ejecutar Proyecto2Progra2 desde la raíz del proyecto con JDK 25 o superior.
+# Esta clave es de MySQL, no la clave del empleado para iniciar sesión.
+# No subir garage-db.properties a Git.

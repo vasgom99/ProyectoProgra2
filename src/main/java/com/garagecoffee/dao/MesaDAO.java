@@ -11,15 +11,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Mesa en MySQL. */
+/** Guarda las mesas, su capacidad y su estado. */
 public class MesaDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, numero, capacidad, estado FROM mesa";
 
     public List<Mesa> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class MesaDAO {
 
     // Devuelve null si no existe el registro.
     public Mesa buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -55,8 +55,8 @@ public class MesaDAO {
     public boolean guardar(Mesa mesa) throws SQLException {
         String sql = "INSERT INTO mesa (numero, capacidad, estado) "
                 + "VALUES (?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, mesa);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -73,8 +73,8 @@ public class MesaDAO {
 
     public boolean actualizar(Mesa mesa) throws SQLException {
         String sql = "UPDATE mesa SET numero = ?, capacidad = ?, estado = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, mesa);
             consulta.setInt(4, mesa.getId());
             return consulta.executeUpdate() > 0;
@@ -83,8 +83,8 @@ public class MesaDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM mesa WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM mesa WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }
