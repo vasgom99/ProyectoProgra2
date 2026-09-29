@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Reserva en MySQL. */
+/** Guarda y consulta las reservas, relacionando clientes, mesas y horarios. */
 public class ReservaDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, cliente_id, mesa_id, fecha_hora, numero_personas, estado FROM reserva";
 
     public List<Reserva> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -37,8 +37,8 @@ public class ReservaDAO {
 
     // Devuelve null si no existe el registro.
     public Reserva buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -53,8 +53,8 @@ public class ReservaDAO {
     }
 
     public List<Reserva> listarPorCliente(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorCliente(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorCliente(recurso.conexion, id);
         }
     }
 
@@ -76,8 +76,8 @@ public class ReservaDAO {
     public boolean guardar(Reserva reserva) throws SQLException {
         String sql = "INSERT INTO reserva (cliente_id, mesa_id, fecha_hora, numero_personas, estado) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, reserva);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -94,8 +94,8 @@ public class ReservaDAO {
 
     public boolean actualizar(Reserva reserva) throws SQLException {
         String sql = "UPDATE reserva SET cliente_id = ?, mesa_id = ?, fecha_hora = ?, numero_personas = ?, estado = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, reserva);
             consulta.setInt(6, reserva.getId());
             return consulta.executeUpdate() > 0;
@@ -104,8 +104,8 @@ public class ReservaDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM reserva WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM reserva WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

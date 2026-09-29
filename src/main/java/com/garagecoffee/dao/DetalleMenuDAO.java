@@ -10,15 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos DetalleMenu en MySQL. */
+/** Relaciona los menús con sus productos y guarda sus precios especiales. */
 public class DetalleMenuDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, menu_id, producto_id, precio_especial FROM detalle_menu";
 
     public List<DetalleMenu> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -35,8 +35,8 @@ public class DetalleMenuDAO {
 
     // Devuelve null si no existe el registro.
     public DetalleMenu buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -51,8 +51,8 @@ public class DetalleMenuDAO {
     }
 
     public List<DetalleMenu> listarPorMenu(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorMenu(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorMenu(recurso.conexion, id);
         }
     }
 
@@ -74,8 +74,8 @@ public class DetalleMenuDAO {
     public boolean guardar(DetalleMenu detalleMenu) throws SQLException {
         String sql = "INSERT INTO detalle_menu (menu_id, producto_id, precio_especial) "
                 + "VALUES (?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, detalleMenu);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -92,8 +92,8 @@ public class DetalleMenuDAO {
 
     public boolean actualizar(DetalleMenu detalleMenu) throws SQLException {
         String sql = "UPDATE detalle_menu SET menu_id = ?, producto_id = ?, precio_especial = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, detalleMenu);
             consulta.setInt(4, detalleMenu.getId());
             return consulta.executeUpdate() > 0;
@@ -102,8 +102,8 @@ public class DetalleMenuDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM detalle_menu WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM detalle_menu WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

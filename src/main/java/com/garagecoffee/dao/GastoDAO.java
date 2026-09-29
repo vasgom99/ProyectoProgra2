@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Gasto en MySQL. */
+/** Guarda y consulta los gastos del restaurante. */
 public class GastoDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, categoria, descripcion, monto, fecha_hora FROM gasto";
 
     public List<Gasto> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class GastoDAO {
 
     // Devuelve null si no existe el registro.
     public Gasto buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -55,8 +55,8 @@ public class GastoDAO {
     public boolean guardar(Gasto gasto) throws SQLException {
         String sql = "INSERT INTO gasto (categoria, descripcion, monto, fecha_hora) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, gasto);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -73,8 +73,8 @@ public class GastoDAO {
 
     public boolean actualizar(Gasto gasto) throws SQLException {
         String sql = "UPDATE gasto SET categoria = ?, descripcion = ?, monto = ?, fecha_hora = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, gasto);
             consulta.setInt(5, gasto.getId());
             return consulta.executeUpdate() > 0;
@@ -83,8 +83,8 @@ public class GastoDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM gasto WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM gasto WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

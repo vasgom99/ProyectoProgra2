@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Factura en MySQL. */
+/** Guarda y consulta las facturas asociadas a los pedidos. */
 public class FacturaDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, pedido_id, numero, fecha, subtotal, impuesto, total FROM factura";
 
     public List<Factura> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class FacturaDAO {
 
     // Devuelve null si no existe el registro.
     public Factura buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -52,8 +52,8 @@ public class FacturaDAO {
     }
 
     public List<Factura> listarPorPedido(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorPedido(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorPedido(recurso.conexion, id);
         }
     }
 
@@ -75,8 +75,8 @@ public class FacturaDAO {
     public boolean guardar(Factura factura) throws SQLException {
         String sql = "INSERT INTO factura (pedido_id, numero, fecha, subtotal, impuesto, total) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, factura);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -93,8 +93,8 @@ public class FacturaDAO {
 
     public boolean actualizar(Factura factura) throws SQLException {
         String sql = "UPDATE factura SET pedido_id = ?, numero = ?, fecha = ?, subtotal = ?, impuesto = ?, total = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, factura);
             consulta.setInt(7, factura.getId());
             return consulta.executeUpdate() > 0;
@@ -103,8 +103,8 @@ public class FacturaDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM factura WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM factura WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

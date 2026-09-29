@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Pago en MySQL. */
+/** Guarda y consulta los pagos realizados para cada pedido. */
 public class PagoDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, pedido_id, metodo, monto, cambio, fecha_hora FROM pago";
 
     public List<Pago> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -37,8 +37,8 @@ public class PagoDAO {
 
     // Devuelve null si no existe el registro.
     public Pago buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -53,8 +53,8 @@ public class PagoDAO {
     }
 
     public List<Pago> listarPorPedido(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listarPorPedido(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listarPorPedido(recurso.conexion, id);
         }
     }
 
@@ -76,8 +76,8 @@ public class PagoDAO {
     public boolean guardar(Pago pago) throws SQLException {
         String sql = "INSERT INTO pago (pedido_id, metodo, monto, cambio, fecha_hora) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, pago);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -94,8 +94,8 @@ public class PagoDAO {
 
     public boolean actualizar(Pago pago) throws SQLException {
         String sql = "UPDATE pago SET pedido_id = ?, metodo = ?, monto = ?, cambio = ?, fecha_hora = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, pago);
             consulta.setInt(6, pago.getId());
             return consulta.executeUpdate() > 0;
@@ -104,8 +104,8 @@ public class PagoDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM pago WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM pago WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

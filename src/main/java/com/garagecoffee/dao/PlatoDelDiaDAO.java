@@ -11,15 +11,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos PlatoDelDia en MySQL. */
+/** Guarda los productos ofrecidos como plato del día, su fecha y precio especial. */
 public class PlatoDelDiaDAO {
 
     private static final String CONSULTA_BASE =
             "SELECT id, producto_id, fecha, nota_especial, precio_especial FROM plato_del_dia";
 
     public List<PlatoDelDia> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -36,8 +36,8 @@ public class PlatoDelDiaDAO {
 
     // Devuelve null si no existe el registro.
     public PlatoDelDia buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -55,8 +55,8 @@ public class PlatoDelDiaDAO {
     public boolean guardar(PlatoDelDia platoDelDia) throws SQLException {
         String sql = "INSERT INTO plato_del_dia (producto_id, fecha, nota_especial, precio_especial) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, platoDelDia);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -73,8 +73,8 @@ public class PlatoDelDiaDAO {
 
     public boolean actualizar(PlatoDelDia platoDelDia) throws SQLException {
         String sql = "UPDATE plato_del_dia SET producto_id = ?, fecha = ?, nota_especial = ?, precio_especial = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, platoDelDia);
             consulta.setInt(5, platoDelDia.getId());
             return consulta.executeUpdate() > 0;
@@ -83,8 +83,8 @@ public class PlatoDelDiaDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM plato_del_dia WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM plato_del_dia WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

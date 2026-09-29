@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Repartidor en MySQL. */
+/** Guarda los datos de los repartidores, sus vehículos y si están activos. */
 public class RepartidorDAO {
 
     // La tabla repartidor debe incluir nombre VARCHAR(150) NULL.
@@ -19,8 +19,8 @@ public class RepartidorDAO {
             "SELECT id, nombre, telefono, vehiculo, activo FROM repartidor";
 
     public List<Repartidor> listar() throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return listar(conexion);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return listar(recurso.conexion);
         }
     }
 
@@ -37,8 +37,8 @@ public class RepartidorDAO {
 
     // Devuelve null si no existe el registro.
     public Repartidor buscarPorId(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection()) {
-            return buscarPorId(conexion, id);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
+            return buscarPorId(recurso.conexion, id);
         }
     }
 
@@ -56,8 +56,8 @@ public class RepartidorDAO {
     public boolean guardar(Repartidor repartidor) throws SQLException {
         String sql = "INSERT INTO repartidor (nombre, telefono, vehiculo, activo) "
                 + "VALUES (?, ?, ?, ?)";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             escribir(consulta, repartidor);
             if (consulta.executeUpdate() == 0) {
                 return false;
@@ -74,8 +74,8 @@ public class RepartidorDAO {
 
     public boolean actualizar(Repartidor repartidor) throws SQLException {
         String sql = "UPDATE repartidor SET nombre = ?, telefono = ?, vehiculo = ?, activo = ? WHERE id = ?";
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             escribir(consulta, repartidor);
             consulta.setInt(5, repartidor.getId());
             return consulta.executeUpdate() > 0;
@@ -84,8 +84,8 @@ public class RepartidorDAO {
 
     // Las claves foráneas impiden borrar registros que todavía se utilizan.
     public boolean eliminar(int id) throws SQLException {
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement("DELETE FROM repartidor WHERE id = ?")) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM repartidor WHERE id = ?")) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }
