@@ -121,7 +121,18 @@ public class InventarioService {
         return datos.transaccion(() -> guardarCompraInterno(proveedor, detalles));
     }
     private Compra guardarCompraInterno(Proveedor proveedor, List<DetalleCompra> detalles) {
+        return guardarCompraInterno(proveedor, detalles, false, false, null);
+    }
+
+    // Guarda compra, recepción y pago confirmado como una sola operación.
+    public Compra registrarCompra(Proveedor proveedor, List<DetalleCompra> detalles, boolean recibida,
+                                 boolean pagarEnCaja, FinanzasService finanzas) {
+        return datos.transaccion(() -> guardarCompraInterno(proveedor, detalles, recibida, pagarEnCaja, finanzas));
+    }
+    private Compra guardarCompraInterno(Proveedor proveedor, List<DetalleCompra> detalles, boolean recibida,
+                                       boolean pagarEnCaja, FinanzasService finanzas) {
         sesion.exigir();
+        Validacion.exigir(!pagarEnCaja || recibida, "El pago de esta pantalla corresponde a mercadería recibida.");
         Validacion.exigir(datos.proveedores.contains(proveedor) && proveedor.isActivo(), "Selecciona un proveedor activo.");
         Validacion.exigir(detalles != null && !detalles.isEmpty(), "Agrega al menos un ingrediente.");
         for (DetalleCompra detalle : detalles) {
@@ -135,11 +146,18 @@ public class InventarioService {
         }
         compra.calcularTotal();
         Validacion.dinero(compra.getTotal(), "Total", false);
+        if (pagarEnCaja) {
+            Validacion.exigir(finanzas != null, "No se pudo consultar la caja.");
+            finanzas.validarSalida(compra.getTotal());
+        }
         compra.setId(datos.siguienteId(Compra.class));
         for (DetalleCompra detalle : compra.getDetalles()) {
             detalle.setId(datos.siguienteId(DetalleCompra.class)); detalle.setCompraId(compra.getId());
         }
         datos.guardar(compra); datos.compras.add(compra);
+        if (recibida) recibirCompraInterno(compra);
+        if (pagarEnCaja) finanzas.registrarMovimiento(TipoMovimientoCaja.EGRESO,
+                "Pago compra #" + compra.getId(), compra.getTotal());
         return compra;
     }
 

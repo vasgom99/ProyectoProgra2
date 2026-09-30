@@ -30,6 +30,11 @@ public class AtencionPanel extends PanelModulo {
             mesas.accion("Eliminar", m -> { if (Ui.confirmar(this, "¿Eliminar la mesa?")) servicio.eliminarMesa(m); });
         }
         registrar(mesas);
+        mesas.boton("Tomar pedido", () -> {
+            Mesa elegida = mesas.seleccionado();
+            if (elegida.getEstado() != EstadoMesa.LIBRE) throw new IllegalArgumentException("Selecciona una mesa libre.");
+            new PedidoDialog(javax.swing.SwingUtilities.getWindowAncestor(this), control, null, elegida).setVisible(true);
+        });
         if (control.sesion().permite(RolEmpleado.MESERO)) {
             reservas.configurar(new String[]{"ID", "Cliente", "Mesa", "Fecha / hora", "Personas", "Estado"},
                     servicio::reservas, r -> new Object[]{r.getId(), Ui.nombre(r.getCliente()), r.getMesa().getNumero(), Ui.fecha(r.getFechaHora()), r.getNumeroPersonas(), Ui.nombre(r.getEstado())});
@@ -43,6 +48,10 @@ public class AtencionPanel extends PanelModulo {
                 servicio::repartidores, r -> new Object[]{r.getId(), r.getNombre(), r.getTelefono(), r.getVehiculo(), r.isActivo()});
         if (admin) { repartidores.boton("Nuevo", () -> repartidor(null)); repartidores.accion("Editar", this::repartidor); }
         registrar(repartidores);
+        pestanas.remove(mesas);
+        pestanas.insertTab("Mesas", null, mesas, null, 0);
+        pestanas.setSelectedComponent(mesas);
+        opcionesSecundarias(pestanas, mesas, direcciones, reservas, repartidores);
         
     }
     private void cliente(Cliente c) {

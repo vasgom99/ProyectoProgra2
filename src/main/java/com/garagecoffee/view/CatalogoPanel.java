@@ -57,6 +57,7 @@ public class CatalogoPanel extends PanelModulo {
             recetas.accion("Quitar", r -> { if (Ui.confirmar(this, "¿Quitar el ingrediente de la receta?")) servicio.eliminarReceta(r); });
         }
         registrar(recetas);
+        opcionesSecundarias(pestanas, productos, menus, precios, platos);
         
     }
     private void producto(Producto p) {

@@ -13,13 +13,15 @@ public class CajaPanel extends PanelModulo {
 
     private RestauranteController control;
     private FinanzasService servicio;
+    private boolean mostrarPagadas;
     public CajaPanel(RestauranteController control) {
         this();
         this.control = control; servicio = control.finanzas();
         cuentas.configurar(new String[]{"Pedido", "Cliente", "Entrega", "Estado", "Total Q", "Pendiente Q"},
-                () -> control.pedidos().pedidos().stream().filter(p -> p.getEstado() != EstadoPedido.CANCELADO).toList(),
+                () -> control.pedidos().pedidos().stream().filter(p -> p.getEstado() != EstadoPedido.CANCELADO)
+                        .filter(p -> mostrarPagadas || servicio.pendiente(p).signum() > 0).toList(),
                 p -> new Object[]{p.getId(), Ui.nombre(p.getCliente()), Ui.nombre(p.getTipoEntrega()), Ui.nombre(p.getEstado()), p.getTotal(), servicio.pendiente(p)});
-        cuentas.accion("Cobrar / abonar", this::cobrar);
+        cuentas.accion("Cobrar", this::cobrar);
         cuentas.accion("Cuenta / comprobante", p -> Ui.mostrarTexto(this, "Comprobante académico", servicio.ticket(p)));
         registrar(cuentas);
         cajas.configurar(new String[]{"Caja", "Apertura", "Cierre", "Estado", "Inicial Q", "Esperado Q", "Contado Q", "Diferencia Q"},
@@ -70,6 +72,8 @@ public class CajaPanel extends PanelModulo {
                 servicio::facturas, f -> new Object[]{f.getNumero(), f.getPedido().getId(), Ui.fecha(f.getFecha()), f.getTotal()});
         facturas.accion("Ver / imprimir", f -> Ui.mostrarTexto(this, "Comprobante sin validez fiscal", servicio.ticket(f.getPedido())));
         registrar(facturas);
+        cuentas.alternar("Ver también pagadas", "Solo pendientes", mostrar -> mostrarPagadas = mostrar);
+        opcionesSecundarias(pestanas, cuentas, movimientos, gastos, pagos, facturas);
         
     }
     private void cobrar(Pedido pedido) {
@@ -79,10 +83,39 @@ public class CajaPanel extends PanelModulo {
         f.campo("Pendiente", new JLabel(Ui.dinero(pendiente)));
         var metodo = f.combo("Método", List.of(MetodoPago.values()), MetodoPago.EFECTIVO);
         var monto = f.texto("Monto recibido Q (permite abonos)", pendiente);
+        var abono = f.check("Abono", false);
+        Runnable calcular = () -> {
+            try {
+                java.math.BigDecimal recibido = f.decimal(monto);
+                if (recibido.signum() <= 0 || (!abono.isSelected() && recibido.compareTo(pendiente) < 0)) {
+                    f.etiqueta("Resultado", "Indica el total o marca la opción de abono."); return;
+                }
+                if (f.elegido(metodo) != MetodoPago.EFECTIVO && recibido.compareTo(pendiente) > 0) {
+                    f.etiqueta("Resultado", "Un pago no efectivo no puede superar el saldo."); return;
+                }
+                f.etiqueta("Resultado", "Cambio: " + Ui.dinero(recibido.subtract(pendiente).max(java.math.BigDecimal.ZERO))
+                        + " · Pendiente: " + Ui.dinero(pendiente.subtract(recibido).max(java.math.BigDecimal.ZERO)));
+            } catch (IllegalArgumentException ex) { f.etiqueta("Resultado", "Indica un monto válido."); }
+        };
+        Runnable ajustarMonto = () -> {
+            monto.setEditable(abono.isSelected() || f.elegido(metodo) == MetodoPago.EFECTIVO);
+            if (!abono.isSelected()) monto.setText(pendiente.toPlainString());
+            calcular.run();
+        };
+        metodo.addActionListener(e -> ajustarMonto.run());
+        abono.addActionListener(e -> ajustarMonto.run());
+        monto.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { calcular.run(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { calcular.run(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { calcular.run(); }
+        });
+        ajustarMonto.run();
         f.guardar(this, "Cobro del pedido #" + pedido.getId(), () -> {
+            if (!abono.isSelected() && f.decimal(monto).compareTo(pendiente) < 0)
+                throw new IllegalArgumentException("Para pagar menos del total, marca «Registrar solo un abono».");
             Pago pago = servicio.cobrar(pedido, f.elegido(metodo), f.decimal(monto)); recargar();
-            JOptionPane.showMessageDialog(this, "Aplicado: " + Ui.dinero(pago.getMonto()) + "\nCambio: " + Ui.dinero(pago.getCambio())
-                    + "\nPendiente: " + Ui.dinero(servicio.pendiente(pedido)));
+            resumen.setText("Cobro registrado · Pedido #" + pedido.getId() + " · Cambio: " + Ui.dinero(pago.getCambio())
+                    + " · Pendiente: " + Ui.dinero(servicio.pendiente(pedido)) + " · El comprobante está en la cuenta.");
         });
     }
     @Override public void recargar() {

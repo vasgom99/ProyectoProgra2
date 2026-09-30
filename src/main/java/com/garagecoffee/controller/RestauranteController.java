@@ -32,4 +32,8 @@ public class RestauranteController {
     public PedidoService pedidos() { return pedidos; }
     public FinanzasService finanzas() { return finanzas; }
     public ReporteService reportes() { return reportes; }
+    public com.garagecoffee.model.Compra registrarCompra(com.garagecoffee.model.Proveedor proveedor,
+            java.util.List<com.garagecoffee.model.DetalleCompra> detalles, boolean recibida, boolean pagarEnCaja) {
+        return inventario.registrarCompra(proveedor, detalles, recibida, pagarEnCaja, finanzas);
+    }
 }

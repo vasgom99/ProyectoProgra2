@@ -16,6 +16,24 @@ public class PedidoDatosForm extends Formulario {
         registrar("Observaciones", txtObservaciones);
     }
 
+    // El pedido local solo necesita mesa; los demás datos aparecen cuando aplican.
+    public void mostrarCampos(com.garagecoffee.model.TipoEntrega tipo, boolean opciones) {
+        boolean local = tipo == com.garagecoffee.model.TipoEntrega.CONSUMIR_LOCAL;
+        boolean domicilio = tipo == com.garagecoffee.model.TipoEntrega.DOMICILIO;
+        fila(etiquetaMesaLibre, cmbMesaLibre, local);
+        fila(etiquetaClienteConsumidorFinal, cmbClienteConsumidorFinal,
+                !local || opciones || cmbClienteConsumidorFinal.getSelectedItem() != null);
+        fila(etiquetaDireccionGuardada, cmbDireccionGuardada, domicilio && opciones);
+        fila(etiquetaDireccionDeEntrega, txtDireccionDeEntrega, domicilio);
+        fila(etiquetaCostoDeEnvioQ, txtCostoDeEnvioQ, domicilio);
+        fila(etiquetaProgramadoFechaYHora, txtProgramadoFechaYHora,
+                !local && (opciones || !txtProgramadoFechaYHora.getText().isBlank()));
+        revalidate(); repaint();
+    }
+    private void fila(javax.swing.JLabel etiqueta, javax.swing.JComponent campo, boolean visible) {
+        etiqueta.setVisible(visible); campo.setVisible(visible);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

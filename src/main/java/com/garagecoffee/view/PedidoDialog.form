@@ -52,10 +52,19 @@
 </Component>
 </SubComponents>
 </Container>
+<Container class="javax.swing.JPanel" name="productosPanel">
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
+<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="0"/><Property name="verticalGap" type="int" value="8"/></Layout>
+<SubComponents>
+<Component class="com.garagecoffee.view.LineaPedidoForm" name="selector">
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="North"/></Constraint></Constraints>
+</Component>
 <Component class="com.garagecoffee.view.PanelListado" name="carrito">
 <AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DetallePedido&gt;"/></AuxValues>
 <Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
 </Component>
+</SubComponents>
+</Container>
 </SubComponents>
 </Container>
 <Container class="javax.swing.JPanel" name="pie">

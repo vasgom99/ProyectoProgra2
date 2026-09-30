@@ -19,7 +19,11 @@ public class PedidoDialog extends javax.swing.JDialog {
 
     private final List<DetallePedido> detalles = new ArrayList<>();
     private boolean guardado;
+    private boolean opciones;
     public PedidoDialog(Window padre, RestauranteController control, Pedido anterior) {
+        this(padre, control, anterior, null);
+    }
+    public PedidoDialog(Window padre, RestauranteController control, Pedido anterior, Mesa elegida) {
         super(padre, anterior == null ? "Nuevo pedido" : "Editar pedido #" + anterior.getId(), ModalityType.APPLICATION_MODAL);
         initComponents();
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -29,6 +33,10 @@ public class PedidoDialog extends javax.swing.JDialog {
         Mesa mesaAnterior = anterior instanceof PedidoLocal local ? local.getMesa() : null;
         var mesa = f.combo("Mesa libre", control.atencion().mesas().stream()
                 .filter(m -> m.getEstado() == EstadoMesa.LIBRE || m == mesaAnterior).toList(), mesaAnterior);
+        if (anterior == null && elegida != null) {
+            if (elegida.getEstado() != EstadoMesa.LIBRE) throw new IllegalArgumentException("Selecciona una mesa libre.");
+            mesa.setSelectedItem(elegida);
+        }
         var direcciones = f.<DireccionCliente>combo("Dirección guardada", new ArrayList<>(), null);
         var direccion = f.texto("Dirección de entrega", anterior instanceof PedidoDomicilio d ? d.getDireccionEntrega() : "");
         var envio = f.texto("Costo de envío Q", anterior instanceof PedidoDomicilio d ? d.getCostoEnvio() : "0.00");
@@ -40,6 +48,7 @@ public class PedidoDialog extends javax.swing.JDialog {
             boolean domicilio = f.elegido(tipo) == TipoEntrega.DOMICILIO;
             mesa.setEnabled(local); direccion.setEnabled(domicilio); direcciones.setEnabled(domicilio);
             envio.setEnabled(domicilio); fecha.setEnabled(!local);
+            f.mostrarCampos(f.elegido(tipo), opciones);
         };
         tipo.addActionListener(e -> cambiarTipo.run()); cambiarTipo.run();
         Runnable cargarDirecciones = () -> {
@@ -61,24 +70,25 @@ public class PedidoDialog extends javax.swing.JDialog {
             }
             total.setText("Total estimado: " + Ui.dinero(suma));
         };
-        carrito.boton("Agregar producto", () -> {
-            Formulario linea = new LineaPedidoForm();
-            var producto = linea.combo("Producto", control.catalogo().productos().stream().filter(p -> p.isDisponible() && p.getcategoria().isActivo()).toList(), null);
-            var cantidad = linea.texto("Cantidad", "1");
-            linea.guardar(this, "Agregar producto", () -> {
-                Producto p = linea.elegido(producto);
-                if (p == null) throw new IllegalArgumentException("No hay productos disponibles.");
-                int unidades = linea.entero(cantidad);
-                if (unidades <= 0 || unidades > 9999) throw new IllegalArgumentException("La cantidad debe estar entre 1 y 9999.");
-                DetallePedido existente = detalles.stream().filter(d -> d.getProducto() == p).findFirst().orElse(null);
-                if (existente == null) detalles.add(new DetallePedido(0, unidades, control.catalogo().precioVigente(p), p));
-                else {
-                    if (existente.getCantidad() + unidades > 9999) throw new IllegalArgumentException("La cantidad acumulada no puede superar 9999.");
-                    existente.setCantidad(existente.getCantidad() + unidades);
-                }
-                actualizarTotal.run();
-            });
-        });
+        var producto = selector.combo("Producto", control.catalogo().productos().stream()
+                .filter(p -> p.isDisponible() && p.getcategoria().isActivo()).toList(), null);
+        var cantidadProducto = selector.texto("Cantidad", "1");
+        Runnable agregar = () -> {
+            Producto p = selector.elegido(producto);
+            if (p == null) throw new IllegalArgumentException("No hay productos disponibles.");
+            int unidades = selector.entero(cantidadProducto);
+            if (unidades <= 0 || unidades > 9999) throw new IllegalArgumentException("La cantidad debe estar entre 1 y 9999.");
+            DetallePedido existente = detalles.stream().filter(d -> d.getProducto() == p).findFirst().orElse(null);
+            if (existente == null) detalles.add(new DetallePedido(0, unidades, control.catalogo().precioVigente(p), p));
+            else {
+                if (existente.getCantidad() + unidades > 9999) throw new IllegalArgumentException("La cantidad acumulada no puede superar 9999.");
+                existente.setCantidad(existente.getCantidad() + unidades);
+            }
+            actualizarTotal.run();
+            cantidadProducto.setText("1"); carrito.recargar();
+        };
+        carrito.boton("Agregar producto", agregar);
+        cantidadProducto.addActionListener(e -> Ui.ejecutar(this, agregar));
         carrito.accion("Cantidad", d -> {
             Formulario linea = new CantidadForm();
             var cantidad = linea.texto("Cantidad", d.getCantidad());
@@ -89,6 +99,9 @@ public class PedidoDialog extends javax.swing.JDialog {
             });
         });
         carrito.accion("Quitar", d -> { detalles.remove(d); actualizarTotal.run(); });
+        carrito.alternar("Opciones del pedido", "Ocultar opciones", mostrar -> {
+            opciones = mostrar; cambiarTipo.run();
+        });
         carrito.recargar(); actualizarTotal.run();
         tipo.addActionListener(e -> actualizarTotal.run());
         envio.getDocument().addDocumentListener(new DocumentListener() {
@@ -97,14 +110,15 @@ public class PedidoDialog extends javax.swing.JDialog {
             public void changedUpdate(DocumentEvent e) { actualizarTotal.run(); }
         });
         Ui.primario(btnConfirmar); Ui.secundario(btnCancelar);
+        btnConfirmar.setText(anterior == null ? "Enviar a cocina" : "Guardar cambios");
+        aviso.setText(control.esDemo() ? "Demostración · No se guardará en MySQL" : "El pedido se guarda y aparece en cocina.");
         btnCancelar.addActionListener(e -> cancelar());
         btnConfirmar.addActionListener(e -> Ui.ejecutar(this, () -> {
             TipoEntrega entrega = f.elegido(tipo);
-            Pedido pedido = control.pedidos().guardar(anterior == null ? 0 : anterior.getId(), entrega, f.elegido(cliente), f.elegido(mesa),
+            control.pedidos().guardar(anterior == null ? 0 : anterior.getId(), entrega, f.elegido(cliente), f.elegido(mesa),
                     f.valor(direccion), entrega == TipoEntrega.DOMICILIO ? f.decimal(envio) : BigDecimal.ZERO,
                     entrega == TipoEntrega.CONSUMIR_LOCAL ? null : f.fechaHora(fecha), f.valor(nota), detalles);
             guardado = true; dispose();
-            JOptionPane.showMessageDialog(padre, "Pedido #" + pedido.getId() + " guardado correctamente.");
         }));
         addWindowListener(new java.awt.event.WindowAdapter() { @Override public void windowClosing(java.awt.event.WindowEvent e) { cancelar(); } });
         setSize(1240, 730); setMinimumSize(new Dimension(1100, 650)); setLocationRelativeTo(padre);
@@ -123,6 +137,8 @@ public class PedidoDialog extends javax.swing.JDialog {
         datos = new javax.swing.JScrollPane();
         f = new com.garagecoffee.view.PedidoDatosForm();
         carrito = new com.garagecoffee.view.PanelListado<>();
+        productosPanel = new javax.swing.JPanel();
+        selector = new com.garagecoffee.view.LineaPedidoForm();
         pie = new javax.swing.JPanel();
         totales = new javax.swing.JPanel();
         total = new javax.swing.JLabel();
@@ -151,7 +167,10 @@ public class PedidoDialog extends javax.swing.JDialog {
         datos.setPreferredSize(new java.awt.Dimension(555, 440));
         datos.setViewportView(f);
         centro.add(datos, java.awt.BorderLayout.WEST);
-        centro.add(carrito, java.awt.BorderLayout.CENTER);
+        productosPanel.setLayout(new java.awt.BorderLayout(0, 8));
+        productosPanel.add(selector, java.awt.BorderLayout.NORTH);
+        productosPanel.add(carrito, java.awt.BorderLayout.CENTER);
+        centro.add(productosPanel, java.awt.BorderLayout.CENTER);
         getContentPane().add(centro, java.awt.BorderLayout.CENTER);
         pie.setBackground(new java.awt.Color(255, 255, 255));
         pie.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 24, 16, 24));
@@ -193,6 +212,8 @@ public class PedidoDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane datos;
     private com.garagecoffee.view.PedidoDatosForm f;
     private com.garagecoffee.view.PanelListado<DetallePedido> carrito;
+    private javax.swing.JPanel productosPanel;
+    private com.garagecoffee.view.LineaPedidoForm selector;
     private javax.swing.JPanel pie;
     private javax.swing.JPanel totales;
     private javax.swing.JLabel total;
