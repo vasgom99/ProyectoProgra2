@@ -111,6 +111,12 @@ public class FinanzasService {
     private Caja exigirCaja() {
         Caja caja = abierta(); Validacion.exigir(caja != null, "Abre la caja primero."); return caja;
     }
+    // Valida antes de guardar la compra para no dejar registros incompletos.
+    void validarSalida(BigDecimal monto) {
+        permiso();
+        monto = Validacion.dinero(monto, "Pago al proveedor", true);
+        Validacion.exigir(saldo(exigirCaja()).compareTo(monto) >= 0, "No hay suficiente efectivo en caja.");
+    }
     private void movimiento(Caja caja, TipoMovimientoCaja tipo, String concepto, BigDecimal monto) {
         MovimientoCaja movimiento = new MovimientoCaja(datos.siguienteId(MovimientoCaja.class), caja, tipo, concepto, monto, LocalDateTime.now());
         datos.guardar(movimiento); datos.movimientosCaja.add(movimiento);

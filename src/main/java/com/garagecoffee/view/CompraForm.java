@@ -9,6 +9,8 @@ public class CompraForm extends Formulario {
         registrar("Proveedor activo", cmbProveedorActivo);
         registrar("Ingredientes", tablaIngredientes);
         registrar("Resumen", lblResumen);
+        registrar("Recibida", chkRecibida);
+        registrar("Pago de caja", chkPagoCaja);
     }
 
     @SuppressWarnings("unchecked")
@@ -20,11 +22,21 @@ public class CompraForm extends Formulario {
         tablaIngredientes = new com.garagecoffee.view.PanelListado<>();
         etiquetaResumen = new javax.swing.JLabel();
         lblResumen = new javax.swing.JLabel();
+        etiquetaRecepcion = new javax.swing.JLabel();
+        chkRecibida = new javax.swing.JCheckBox();
+        etiquetaRecepcion.setText("Recepción");
+        chkRecibida.setText("Mercadería recibida: sumar al inventario");
+        chkRecibida.setOpaque(false);
+        etiquetaPagoCaja = new javax.swing.JLabel();
+        chkPagoCaja = new javax.swing.JCheckBox();
+        etiquetaPagoCaja.setText("Pago");
+        chkPagoCaja.setText("Pagué esta compra con efectivo de caja");
+        chkPagoCaja.setOpaque(false);
         this.setBackground(new java.awt.Color(255, 255, 255));
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(20).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaProveedorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaResumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(cmbProveedorActivo, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE).addComponent(tablaIngredientes, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE).addComponent(lblResumen, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)).addGap(20)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(20).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaProveedorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cmbProveedorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(tablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGap(6, 6, Short.MAX_VALUE)));
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(20).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaProveedorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaResumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaRecepcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaPagoCaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(cmbProveedorActivo, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE).addComponent(tablaIngredientes, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE).addComponent(lblResumen, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE).addComponent(chkRecibida, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE).addComponent(chkPagoCaja, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)).addGap(20)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(20).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaProveedorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cmbProveedorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(tablaIngredientes, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaRecepcion, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(chkRecibida, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaPagoCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(chkPagoCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGap(6, 6, Short.MAX_VALUE)));
         etiquetaProveedorActivo.setText("Proveedor activo");
         etiquetaProveedorActivo.setFont(new java.awt.Font("SansSerif", 1, 13));
         etiquetaProveedorActivo.setForeground(new java.awt.Color(36, 59, 50));
@@ -48,5 +60,9 @@ public class CompraForm extends Formulario {
     private com.garagecoffee.view.PanelListado<com.garagecoffee.model.DetalleCompra> tablaIngredientes;
     private javax.swing.JLabel etiquetaResumen;
     private javax.swing.JLabel lblResumen;
+    private javax.swing.JLabel etiquetaRecepcion;
+    private javax.swing.JCheckBox chkRecibida;
+    private javax.swing.JLabel etiquetaPagoCaja;
+    private javax.swing.JCheckBox chkPagoCaja;
     // End of variables declaration//GEN-END:variables
 }

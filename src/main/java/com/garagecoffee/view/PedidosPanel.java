@@ -7,36 +7,45 @@ import javax.swing.SwingUtilities;
 public class PedidosPanel extends PanelModulo {
 
     public PedidosPanel() { initComponents(); }
+    private boolean historial;
 
     public PedidosPanel(RestauranteController control, boolean soloDomicilio) {
         this();
         pedidos.configurar(new String[]{"ID", "Entrega", "Cliente", "Mesa / dirección", "Programado", "Estado", "Total Q", "Pendiente Q"},
-                () -> control.pedidos().pedidos().stream().filter(p -> !soloDomicilio || p instanceof PedidoDomicilio).toList(),
+                () -> control.pedidos().pedidos().stream().filter(p -> !soloDomicilio || p instanceof PedidoDomicilio)
+                        .filter(p -> historial || (p.getEstado() != EstadoPedido.CANCELADO
+                                && (p.getEstado() != EstadoPedido.ENTREGADO || control.finanzas().pendiente(p).signum() > 0))).toList(),
                 p -> new Object[]{p.getId(), Ui.nombre(p.getTipoEntrega()), Ui.nombre(p.getCliente()), destino(p), Ui.fecha(p.getFechaProgramada()),
                         Ui.nombre(p.getEstado()), p.getTotal(), control.finanzas().pendiente(p)});
+        var secundarios = new java.util.ArrayList<javax.swing.JButton>();
         if (control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO)) {
             pedidos.boton("Nuevo", () -> new PedidoDialog(SwingUtilities.getWindowAncestor(this), control, null).setVisible(true));
-            pedidos.accion("Editar", p -> {
+            secundarios.add(pedidos.accion("Editar", p -> {
                 if (p.getEstado() != EstadoPedido.PENDIENTE || control.finanzas().pendiente(p).compareTo(p.getTotal()) != 0)
                     throw new IllegalArgumentException("Solo se puede editar un pedido pendiente sin pagos.");
                 new PedidoDialog(SwingUtilities.getWindowAncestor(this), control, p).setVisible(true);
-            });
-            pedidos.accion("Cancelar", p -> {
+            }));
+            secundarios.add(pedidos.accion("Cancelar", p -> {
                 if (Ui.confirmar(this, "¿Cancelar el pedido #" + p.getId() + "? Solo se permiten pedidos pendientes sin pagos.")) control.pedidos().cancelar(p);
-            });
-            pedidos.accion("Asignar repartidor", p -> {
+            }));
+            secundarios.add(pedidos.accion("Asignar repartidor", p -> {
                 if (!(p instanceof PedidoDomicilio)) throw new IllegalArgumentException("Selecciona un pedido a domicilio.");
                 Formulario f = new AsignarRepartidorForm();
                 var repartidor = f.combo("Repartidor activo", control.atencion().repartidores().stream().filter(Repartidor::isActivo).toList(), null);
                 f.guardar(this, "Asignar reparto", () -> control.pedidos().asignar(p, f.elegido(repartidor)));
-            });
+            }));
         }
         pedidos.accion("Entregar", p -> {
             if (Ui.confirmar(this, "¿Marcar el pedido #" + p.getId() + " como entregado?")) control.pedidos().entregar(p);
         });
         pedidos.accion("Detalle", p -> Ui.mostrarTexto(this, "Detalle del pedido", detalle(p)));
+        secundarios.add(pedidos.boton("Activos / historial", () -> {
+            historial = !historial;
+            pestanas.setTitleAt(0, historial ? "Historial de pedidos" : "Pedidos en curso");
+        }));
+        pedidos.accionesSecundarias(secundarios);
         registrar(pedidos);
-        pestanas.setTitleAt(0, soloDomicilio ? "Pedidos a domicilio" : "Todos los pedidos");
+        pestanas.setTitleAt(0, soloDomicilio ? "Entregas en curso" : "Pedidos en curso");
         
     }
     static String destino(Pedido p) {
@@ -53,7 +62,7 @@ public class PedidosPanel extends PanelModulo {
         for (DetallePedido d : p.getDetalles()) texto.append(d.getCantidad()).append(" x ").append(d.getProducto().getNombre())
                 .append(" = ").append(Ui.dinero(d.getSubtotal())).append("\n");
         if (p instanceof PedidoDomicilio d) texto.append("Envío: ").append(Ui.dinero(d.getCostoEnvio())).append("\n");
-        return texto.append("\nTOTAL: ").append(Ui.dinero(p.getTotal())).append("\nDEMOSTRACIÓN — sin guardado permanente.").toString();
+        return texto.append("\nTOTAL: ").append(Ui.dinero(p.getTotal())).toString();
     }
 
     @SuppressWarnings("unchecked")

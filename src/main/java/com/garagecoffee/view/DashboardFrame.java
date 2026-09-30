@@ -8,6 +8,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     private final java.util.Map<String, PanelModulo> modulos = new java.util.LinkedHashMap<>();
     private final java.util.Map<String, javax.swing.JButton> botones = new java.util.LinkedHashMap<>();
     private PanelModulo actual;
+    private boolean masOpciones;
     public DashboardFrame() {
         initComponents();
         setTitle("Garage Coffee · Restaurante");
@@ -32,7 +33,7 @@ public class DashboardFrame extends javax.swing.JFrame {
         lblUsuario.setText(control.sesion().actual().getNombre() + " · " + Ui.nombre(control.sesion().actual().getRol()));
         enlace(btnNav0, "Inicio", () -> new InicioPanel(control), true);
         enlace(btnNav1, "Pedidos", () -> new PedidosPanel(control, false), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
-        enlace(btnNav2, "Clientes y mesas", () -> new AtencionPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
+        enlace(btnNav2, "Mesas", () -> new AtencionPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
         enlace(btnNav3, "Cocina", () -> new CocinaPanel(control), control.sesion().permite(RolEmpleado.COCINA));
         enlace(btnNav4, "Entregas", () -> new PedidosPanel(control, true), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO, RolEmpleado.REPARTIDOR));
         enlace(btnNav5, "Catálogo y recetas", () -> new CatalogoPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.COCINA, RolEmpleado.CAJERO));
@@ -41,11 +42,43 @@ public class DashboardFrame extends javax.swing.JFrame {
         enlace(btnNav8, "Caja y cobros", () -> new CajaPanel(control), control.sesion().permite(RolEmpleado.CAJERO));
         enlace(btnNav9, "Empleados", () -> new EmpleadosPanel(control), control.sesion().permite());
         enlace(btnNav10, "Reportes", () -> new ReportesPanel(control), control.sesion().permite());
-        mostrar("Inicio", () -> new InicioPanel(control));
+        lblSeccion.setText(Ui.nombre(control.sesion().actual().getRol()));
+        Ui.navegacion(btnMas, false);
+        btnMas.addActionListener(e -> { masOpciones = !masOpciones; organizarMenu(); });
+        organizarMenu();
+        switch (control.sesion().actual().getRol()) {
+            case MESERO -> mostrar("Mesas", () -> new AtencionPanel(control));
+            case COCINA -> mostrar("Cocina", () -> new CocinaPanel(control));
+            case CAJERO -> mostrar("Caja y cobros", () -> new CajaPanel(control));
+            case REPARTIDOR -> mostrar("Entregas", () -> new PedidosPanel(control, true));
+            default -> mostrar("Inicio", () -> new InicioPanel(control));
+        }
+    }
+    private boolean principal(String nombre) {
+        if (nombre.equals("Inicio")) return true;
+        return switch (control.sesion().actual().getRol()) {
+            case ADMINISTRADOR -> java.util.Set.of("Pedidos", "Mesas", "Cocina", "Caja y cobros").contains(nombre);
+            case MESERO -> nombre.equals("Pedidos") || nombre.equals("Mesas");
+            case CAJERO -> nombre.equals("Caja y cobros");
+            case COCINA -> nombre.equals("Cocina");
+            case REPARTIDOR -> nombre.equals("Entregas");
+        };
+    }
+    private void organizarMenu() {
+        navegacion.removeAll();
+        botones.forEach((nombre, boton) -> { if (principal(nombre)) navegacion.add(boton); });
+        if (botones.keySet().stream().anyMatch(nombre -> !principal(nombre))) {
+            btnMas.setText(masOpciones ? "Menos opciones −" : "Más opciones +");
+            navegacion.add(btnMas);
+            if (masOpciones) botones.forEach((nombre, boton) -> { if (!principal(nombre)) navegacion.add(boton); });
+        }
+        navegacion.setPreferredSize(new java.awt.Dimension(184, navegacion.getComponentCount() * 36));
+        navegacion.revalidate(); navegacion.repaint();
     }
     private void enlace(javax.swing.JButton boton, String nombre, java.util.function.Supplier<PanelModulo> crear, boolean permitido) {
         if (!permitido) { navegacion.remove(boton); return; }
         botones.put(nombre, boton); Ui.navegacion(boton, false);
+        boton.setText(nombre);
         boton.addActionListener(e -> Ui.ejecutar(this, () -> mostrar(nombre, crear)));
     }
     private void mostrar(String nombre, java.util.function.Supplier<PanelModulo> crear) {
@@ -78,6 +111,7 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav8 = new javax.swing.JButton();
         btnNav9 = new javax.swing.JButton();
         btnNav10 = new javax.swing.JButton();
+        btnMas = new javax.swing.JButton();
         sesionPanel = new javax.swing.JPanel();
         lblLocal = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
@@ -187,6 +221,8 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav10.setForeground(new java.awt.Color(38, 58, 50));
         btnNav10.setFocusPainted(false);
         navegacion.add(btnNav10);
+        btnMas.setText("Más opciones +");
+        navegacion.add(btnMas);
         marcoNavegacion.add(navegacion, java.awt.BorderLayout.NORTH);
         lateral.add(marcoNavegacion, java.awt.BorderLayout.CENTER);
         sesionPanel.setOpaque(false);
@@ -272,6 +308,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnNav8;
     private javax.swing.JButton btnNav9;
     private javax.swing.JButton btnNav10;
+    private javax.swing.JButton btnMas;
     private javax.swing.JPanel sesionPanel;
     private javax.swing.JLabel lblLocal;
     private javax.swing.JButton btnSalir;

@@ -20,8 +20,8 @@ public class LineaPedidoForm extends Formulario {
         this.setBackground(new java.awt.Color(255, 255, 255));
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(20).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(cmbProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE).addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)).addGap(20)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(20).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cmbProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(etiquetaCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(14).addGap(6, 6, Short.MAX_VALUE)));
+        layout.setHorizontalGroup(layout.createSequentialGroup().addGap(20).addComponent(etiquetaProducto).addGap(8).addComponent(cmbProducto, 0, 220, Short.MAX_VALUE).addGap(12).addComponent(etiquetaCantidad).addGap(8).addComponent(txtCantidad, 50, 50, 50).addGap(20));
+        layout.setVerticalGroup(layout.createSequentialGroup().addGap(16).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER).addComponent(etiquetaProducto).addComponent(cmbProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(etiquetaCantidad).addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(16));
         etiquetaProducto.setText("Producto");
         etiquetaProducto.setFont(new java.awt.Font("SansSerif", 1, 13));
         etiquetaProducto.setForeground(new java.awt.Color(36, 59, 50));
@@ -30,7 +30,7 @@ public class LineaPedidoForm extends Formulario {
         etiquetaCantidad.setFont(new java.awt.Font("SansSerif", 1, 13));
         etiquetaCantidad.setForeground(new java.awt.Color(36, 59, 50));
         txtCantidad.setFont(new java.awt.Font("SansSerif", 0, 14));
-        txtCantidad.setColumns(22);
+        txtCantidad.setColumns(3);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -161,6 +161,9 @@
 <Property name="focusPainted" type="boolean" value="false"/>
 </Properties>
 </Component>
+<Component class="javax.swing.JButton" name="btnMas">
+<Properties><Property name="text" type="java.lang.String" value="Más opciones +"/></Properties>
+</Component>
 </SubComponents>
 </Container>
 </SubComponents>
