@@ -66,7 +66,7 @@ comprobaciones directamente.
 2. Registrar cobros con caja abierta y protección contra duplicados; el efectivo
    se entrega directamente a caja. No habilitar al mesero gastos ni cierre de caja.
 3. Preparar HTTPS y acceso móvil; conectar Android.
-4. Adaptar Swing para consultar el mismo servidor. Actualmente sigue usando JDBC.
+4. Mantener Swing con JDBC directo a MySQL; Spring sirve a la app móvil y no es necesario para abrir Swing.
 
 Mientras Swing y Spring coexistan, no implementar escrituras nuevas ignorando
 control_cambios y las reglas del servicio. El servidor no debe compartir un

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Datos de ejemplo utilizados solamente por las pruebas sin conexión.
+// Datos temporales para revisar la aplicación sin conectar MySQL.
 public class DatosDemo extends DatosRestaurante {
     public DatosDemo() {
         for (RolEmpleado rol : RolEmpleado.values()) {
@@ -38,6 +38,8 @@ public class DatosDemo extends DatosRestaurante {
         repartidores.add(new Repartidor(siguienteId(Repartidor.class), "Repartidor de ejemplo", "5555-0202", "Moto"));
         proveedores.add(new Proveedor(siguienteId(Proveedor.class), "Proveedor de ejemplo", "5555-0303", "", "", true));
     }
+
+
 
     private Ingrediente ingrediente(String nombre, String unidad, String stock, String minimo, String costo) {
         Ingrediente ingrediente = new Ingrediente(siguienteId(Ingrediente.class), nombre, unidad,
