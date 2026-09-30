@@ -8,7 +8,7 @@ obtiene esos datos del servidor Spring; no tiene acceso directo a MySQL.
 
 1. Iniciar MySQL y luego `BackendApplication` en IntelliJ. Spring escucha en
    `127.0.0.1:8080`.
-2. Abrir la carpeta principal del repositorio en Android Studio como proyecto
+2. Abrir la carpeta `android/` del repositorio en Android Studio como proyecto
    Gradle y usar el emulador.
 3. Ejecutar `app` en variante **debug** e ingresar con una cuenta de empleado
    existente en la base. La contraseña de MySQL no sirve como contraseña de
@@ -33,5 +33,6 @@ responsable, caja abierta, validación de precios y protección contra cobros
 duplicados. Entonces se incorporarán los formularios correspondientes a esta
 app. El efectivo recibido por el mesero se entrega inmediatamente a caja.
 
-El proyecto Android está hoy en la carpeta `app/` y sus archivos Gradle están
-en la raíz del mismo repositorio que Swing y Spring. No requiere otro Git.
+El proyecto Android está en `android/app/` y sus archivos Gradle están en
+`android/`. Desde esa carpeta se compila con `./gradlew :app:assembleDebug`.
+Sigue dentro del mismo repositorio que Swing y Spring; no requiere otro Git.
