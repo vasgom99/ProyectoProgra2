@@ -11,6 +11,7 @@ public class PanelListado<T> extends javax.swing.JPanel {
     private int siguienteAccion;
     private javax.swing.JButton[] botones;
     private javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> orden;
+    private String mensajeVacio = "No hay registros todavía.";
     public PanelListado() {
         initComponents();
         botones = new javax.swing.JButton[]{accion0, accion1, accion2, accion3, accion4, accion5, accion6, accion7};
@@ -37,7 +38,7 @@ public class PanelListado<T> extends javax.swing.JPanel {
             private void filtrar() {
                 if (orden == null) return;
                 orden.setRowFilter(javax.swing.RowFilter.regexFilter("(?iu)" + java.util.regex.Pattern.quote(buscar.getText())));
-                contador.setText(tabla.getRowCount() + " registros");
+                actualizarContador();
             }
             public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
             public void removeUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
@@ -125,6 +126,11 @@ public class PanelListado<T> extends javax.swing.JPanel {
         if (fila < 0) throw new IllegalArgumentException("Selecciona primero una fila.");
         return filas.get(tabla.convertRowIndexToModel(fila));
     }
+    public void mensajeVacio(String mensaje) { mensajeVacio = mensaje; actualizarContador(); }
+    private void actualizarContador() {
+        contador.setText(tabla.getRowCount() > 0 ? tabla.getRowCount() + " registros"
+                : buscar.getText().isBlank() ? mensajeVacio : "Sin coincidencias. Borra la búsqueda para ver todos los registros.");
+    }
     public void recargar() {
         if (modelo == null) return;
         T elegido = tabla.getSelectedRow() < 0 ? null : seleccionado();
@@ -133,7 +139,7 @@ public class PanelListado<T> extends javax.swing.JPanel {
         int indice = elegido == null ? -1 : filas.indexOf(elegido);
         int visible = indice < 0 ? -1 : tabla.convertRowIndexToView(indice);
         if (visible >= 0) tabla.setRowSelectionInterval(visible, visible);
-        contador.setText(tabla.getRowCount() + " registros");
+        actualizarContador();
     }
 
     @SuppressWarnings("unchecked")
