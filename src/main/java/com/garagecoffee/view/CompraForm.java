@@ -11,6 +11,18 @@ public class CompraForm extends Formulario {
         registrar("Resumen", lblResumen);
         registrar("Recibida", chkRecibida);
         registrar("Pago de caja", chkPagoCaja);
+        ingredientes(java.util.List.of());
+    }
+
+    // La tabla pertenece a este formulario, no a una pestaña de la ventana principal.
+    public PanelListado<com.garagecoffee.model.DetalleCompra> ingredientes(
+            java.util.List<com.garagecoffee.model.DetalleCompra> detalles) {
+        tablaIngredientes.configurar(new String[]{"Ingrediente", "Cantidad", "Costo unitario Q", "Subtotal Q"},
+                () -> java.util.List.copyOf(detalles), d -> new Object[]{Ui.nombre(d.getIngrediente()),
+                    d.getCantidad(), d.getCostoUnitario(), d.getSubtotal()});
+        tablaIngredientes.mensajeVacio("Agrega ingredientes con el botón «Agregar ingrediente».");
+        tablaIngredientes.recargar();
+        return tablaIngredientes;
     }
 
     @SuppressWarnings("unchecked")

@@ -35,4 +35,6 @@ app. El efectivo recibido por el mesero se entrega inmediatamente a caja.
 
 El proyecto Android está en `android/app/` y sus archivos Gradle están en
 `android/`. Desde esa carpeta se compila con `./gradlew :app:assembleDebug`.
+Para compilar y revisar errores de configuración usa
+`./gradlew :app:assembleDebug :app:lintDebug`.
 Sigue dentro del mismo repositorio que Swing y Spring; no requiere otro Git.

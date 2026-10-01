@@ -55,10 +55,10 @@ Inicia Spring, abre `http://127.0.0.1:8080/api/estado` y confirma que responda
 de un empleado activo. Sin credenciales deben responder 401. Si no hay mesas
 o productos registrados, las rutas respectivas devuelven listas vacías.
 
-En Swing, entra con un empleado y recorre el flujo de pedido, preparación y
-cobro. Comprueba en DBeaver que los registros permanezcan al cerrar y abrir
-de nuevo. Las clases de prueba se retiraron para que el equipo haga estas
-comprobaciones directamente.
+En Swing también puede recorrerse manualmente el flujo de pedido, preparación y
+cobro. Las pruebas automáticas de la raíz comprueban esos recorridos y permiten
+activar una verificación de MySQL que revierte sus datos de auditoría al terminar;
+consulta la sección **Comprobación automática** del README principal.
 
 ## Continuación
 

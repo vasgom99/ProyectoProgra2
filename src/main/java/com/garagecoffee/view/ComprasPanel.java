@@ -32,7 +32,7 @@ public class ComprasPanel extends PanelModulo {
         var proveedores = control.inventario().proveedores().stream().filter(Proveedor::isActivo).toList();
         if (proveedores.isEmpty()) throw new IllegalArgumentException("Registra un proveedor activo en Inventario antes de crear una compra.");
         if (control.inventario().ingredientes().isEmpty()) throw new IllegalArgumentException("Registra los ingredientes en Inventario antes de crear una compra.");
-        Formulario f = new CompraForm();
+        CompraForm f = new CompraForm();
         var proveedor = f.combo("Proveedor activo", proveedores, null);
         var recibida = f.check("Recibida", true);
         var pagoCaja = f.check("Pago de caja", false);
@@ -41,9 +41,7 @@ public class ComprasPanel extends PanelModulo {
             if (!recibida.isSelected()) pagoCaja.setSelected(false);
         });
         List<DetalleCompra> detalles = new ArrayList<>();
-        PanelListado<DetalleCompra> lista = f.listado("Ingredientes");
-        lista.configurar(new String[]{"Ingrediente", "Cantidad", "Costo unitario Q", "Subtotal Q"},
-                () -> List.copyOf(detalles), d -> new Object[]{Ui.nombre(d.getIngrediente()), d.getCantidad(), d.getCostoUnitario(), d.getSubtotal()});
+        PanelListado<DetalleCompra> lista = f.ingredientes(detalles);
         javax.swing.JLabel total = f.etiqueta("Resumen", "Total: Q 0.00");
         Runnable actualizar = () -> total.setText("Total: " + Ui.dinero(detalles.stream().map(DetalleCompra::getSubtotal).reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add)));
         lista.boton("Agregar ingrediente", () -> {

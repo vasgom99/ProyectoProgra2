@@ -72,3 +72,33 @@ Gradle, sin moverlo a otro repositorio.
   promociones en **Catálogo y recetas → Más opciones**. No se eliminaron funciones.
 
 Los diseños siguen siendo formularios Swing `.java` / `.form` editables en NetBeans.
+
+Los campos decimales aceptan `10.50`, `10,50`, `Q 10.50`, `1,250.50`, `1.250,50`
+y miles agrupados con espacios (`1 250,50`). Un solo punto o coma sigue siendo
+decimal: `10.000` significa diez, no diez mil. Para mil usa `1000` o `1,000.00`.
+Se mantienen los controles de cantidades positivas, saldo y precisión de la base.
+
+Si otro equipo sigue viendo «Nueva compra» sin el botón **Agregar ingrediente**
+ni las opciones de recepción/pago, no coincide con el formulario actual
+**Registrar compra**. Cierra la aplicación, actualiza el repositorio y ejecuta
+**Clean and Build**, luego **Run Project**, sobre el `pom.xml` de la raíz.
+No ejecutes un JAR anterior ni el módulo Android para abrir Swing.
+
+## Comprobación automática
+
+Desde la raíz se ejecutan las pruebas de reglas y formularios sin necesitar MySQL:
+
+```sh
+./backend/mvnw -f pom.xml test
+```
+
+La prueba opcional de MySQL carga todas las DAO y recorre compra, inventario,
+pedido, cocina y cobro dentro de una transacción que se revierte al terminar:
+
+```sh
+./backend/mvnw -f pom.xml -Dgarage.test.mysql=true test
+```
+
+Una tabla vacía ahora indica **No hay registros todavía**. No es un fallo de carga:
+en una base nueva primero se crean mesas, categorías, productos, ingredientes,
+recetas y proveedores desde las pantallas administrativas.
