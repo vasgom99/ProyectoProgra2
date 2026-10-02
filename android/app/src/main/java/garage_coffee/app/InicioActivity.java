@@ -25,7 +25,8 @@ public class InicioActivity extends AppCompatActivity {
         progreso = findViewById(R.id.progreso);
         tabMesas = findViewById(R.id.tab_mesas);
         tabCatalogo = findViewById(R.id.tab_catalogo);
-        ((TextView) findViewById(R.id.subtitulo)).setText(sesion.api().usuario() + " · " + sesion.api().rol());
+        ((TextView) findViewById(R.id.subtitulo)).setText(
+                getString(R.string.sesion_resumen, sesion.api().usuario(), sesion.api().rol()));
         boolean puedeVerMesas = !sesion.api().rol().equals("COCINA") && !sesion.api().rol().equals("REPARTIDOR");
         boolean puedeVerCatalogo = !sesion.api().rol().equals("REPARTIDOR");
         tabMesas.setEnabled(puedeVerMesas);
@@ -36,7 +37,7 @@ public class InicioActivity extends AppCompatActivity {
         findViewById(R.id.salir).setOnClickListener(v -> { sesion.api().salir(); volverAlAcceso(); });
         if (puedeVerMesas) mostrar("mesas");
         else if (puedeVerCatalogo) mostrar("catalogo");
-        else mensaje.setText("Tu rol aún no tiene consultas disponibles en la app.");
+        else mensaje.setText(R.string.sin_consultas_rol);
     }
     private void mostrar(String nueva) {
         seccion = nueva;
@@ -64,25 +65,31 @@ public class InicioActivity extends AppCompatActivity {
         };
     }
     private void dibujarMesas(JSONArray datos) {
-        if (datos.length() == 0) { mensaje.setText("Todavía no hay mesas registradas."); return; }
+        if (datos.length() == 0) { mensaje.setText(R.string.sin_mesas); return; }
         for (int i = 0; i < datos.length(); i++) {
             JSONObject mesa = datos.optJSONObject(i);
             if (mesa == null) continue;
             View fila = LayoutInflater.from(this).inflate(R.layout.item_mesa, lista, false);
-            ((TextView) fila.findViewById(R.id.nombre)).setText("Mesa " + mesa.optInt("numero"));
-            ((TextView) fila.findViewById(R.id.detalle)).setText(mesa.optInt("capacidad") + " personas · " + mesa.optString("estado").replace('_', ' '));
+            ((TextView) fila.findViewById(R.id.nombre)).setText(
+                    getString(R.string.mesa_nombre, mesa.optInt("numero")));
+            int capacidad = mesa.optInt("capacidad");
+            ((TextView) fila.findViewById(R.id.detalle)).setText(getResources().getQuantityString(
+                    R.plurals.mesa_detalle, capacidad, capacidad,
+                    mesa.optString("estado").replace('_', ' ')));
             lista.addView(fila);
         }
     }
     private void dibujarCatalogo(JSONArray datos) {
-        if (datos.length() == 0) { mensaje.setText("Todavía no hay productos disponibles."); return; }
+        if (datos.length() == 0) { mensaje.setText(R.string.sin_productos); return; }
         for (int i = 0; i < datos.length(); i++) {
             JSONObject producto = datos.optJSONObject(i);
             if (producto == null) continue;
             View fila = LayoutInflater.from(this).inflate(R.layout.item_producto, lista, false);
             ((TextView) fila.findViewById(R.id.nombre)).setText(producto.optString("nombre"));
-            ((TextView) fila.findViewById(R.id.detalle)).setText(producto.optString("categoria") + " · " + producto.optString("descripcion"));
-            ((TextView) fila.findViewById(R.id.precio)).setText("Q " + producto.optString("precioVigente"));
+            ((TextView) fila.findViewById(R.id.detalle)).setText(getString(R.string.producto_detalle,
+                    producto.optString("categoria"), producto.optString("descripcion")));
+            ((TextView) fila.findViewById(R.id.precio)).setText(
+                    getString(R.string.precio_quetzales, producto.optString("precioVigente")));
             lista.addView(fila);
         }
     }

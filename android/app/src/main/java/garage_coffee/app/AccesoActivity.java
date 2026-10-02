@@ -27,7 +27,7 @@ public class AccesoActivity extends AppCompatActivity {
         String nombre = usuario.getText() == null ? "" : usuario.getText().toString().trim();
         String password = clave.getText() == null ? "" : clave.getText().toString();
         if (nombre.isEmpty() || password.isEmpty()) {
-            mensaje.setText("Escribe tu usuario y contraseña.");
+            mensaje.setText(R.string.datos_acceso_requeridos);
             return;
         }
         entrar.setEnabled(false);
