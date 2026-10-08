@@ -84,21 +84,6 @@ ni las opciones de recepción/pago, no coincide con el formulario actual
 **Clean and Build**, luego **Run Project**, sobre el `pom.xml` de la raíz.
 No ejecutes un JAR anterior ni el módulo Android para abrir Swing.
 
-## Comprobación automática
-
-Desde la raíz se ejecutan las pruebas de reglas y formularios sin necesitar MySQL:
-
-```sh
-./backend/mvnw -f pom.xml test
-```
-
-La prueba opcional de MySQL carga todas las DAO y recorre compra, inventario,
-pedido, cocina y cobro dentro de una transacción que se revierte al terminar:
-
-```sh
-./backend/mvnw -f pom.xml -Dgarage.test.mysql=true test
-```
-
 Una tabla vacía ahora indica **No hay registros todavía**. No es un fallo de carga:
 en una base nueva primero se crean mesas, categorías, productos, ingredientes,
 recetas y proveedores desde las pantallas administrativas.

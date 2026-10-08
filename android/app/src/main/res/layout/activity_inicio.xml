@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@color/garage_cream">
+    android:orientation="vertical">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:background="@color/garage_green" android:orientation="vertical"
         android:padding="22dp">
         <TextView android:id="@+id/titulo" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="Garage Coffee"
+            android:layout_height="wrap_content" android:text="@string/garage_coffee"
             android:textSize="24sp" android:textStyle="bold" android:textColor="@android:color/white" />
         <TextView android:id="@+id/subtitulo" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_marginTop="4dp"
-            android:text="Equipo de servicio" android:textColor="#C7D2C9" />
+            android:text="@string/equipo_servicio" android:textColor="#C7D2C9" />
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal" android:padding="12dp">
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tab_mesas" android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Mesas" />
+            android:layout_weight="1" android:text="@string/mesas" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tab_catalogo" android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Catálogo" />
+            android:layout_weight="1" android:text="@string/catalogo" />
     </LinearLayout>
     <TextView android:id="@+id/mensaje" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:paddingHorizontal="20dp"
@@ -37,9 +37,9 @@
         android:orientation="horizontal" android:padding="8dp">
         <com.google.android.material.button.MaterialButton
             android:id="@+id/actualizar" android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Actualizar" />
+            android:layout_weight="1" android:text="@string/actualizar" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/salir" android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Salir" />
+            android:layout_weight="1" android:text="@string/salir" />
     </LinearLayout>
 </LinearLayout>

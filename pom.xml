@@ -10,7 +10,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>com.garagecoffee.Proyecto2Progra2</exec.mainClass>
-        <junit.version>6.0.3</junit.version>
     </properties>
     <dependencies>
 
@@ -20,14 +19,6 @@
         <artifactId>mysql-connector-j</artifactId>
         <version>9.4.0</version>
     </dependency>
-    <!-- Pruebas repetibles de los recorridos del restaurante. -->
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
-    </dependency>
-
 </dependencies>
     <build>
         <plugins>
@@ -48,16 +39,6 @@
                         <classpath/>
                         <argument>${exec.mainClass}</argument>
                     </arguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <java.awt.headless>true</java.awt.headless>
-                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
