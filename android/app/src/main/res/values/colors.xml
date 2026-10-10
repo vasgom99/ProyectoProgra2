@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="garage_green">#243B32</color>
     <color name="garage_cream">#F6F4EE</color>
-    <color name="garage_light">#E7EEE8</color>
     <color name="garage_accent">#AE6040</color>
-    <color name="garage_muted">#6D7972</color>
 </resources>

@@ -60,7 +60,8 @@ public class ApiCliente {
                 T valor = operacion.ejecutar();
                 pantalla.post(() -> respuesta.correcto(valor));
             } catch (Exception e) {
-                String mensaje = e instanceof SocketTimeoutException ? "El servidor tardó demasiado. Intenta de nuevo."
+                String mensaje = e instanceof SocketTimeoutException
+                        ? "El servidor tardó demasiado. Verifica que Spring y MySQL estén iniciados."
                         : e instanceof ConnectException ? "No se pudo conectar. Abre Spring en este equipo."
                         : e.getMessage() == null ? "No se pudo completar la consulta." : e.getMessage();
                 pantalla.post(() -> respuesta.error(mensaje));
@@ -71,8 +72,9 @@ public class ApiCliente {
         if (credenciales == null) throw new IOException("Inicia sesión para continuar.");
         HttpURLConnection conexion = (HttpURLConnection) new URL(BuildConfig.API_BASE_URL + ruta).openConnection();
         conexion.setRequestMethod("GET");
-        conexion.setConnectTimeout(5000);
-        conexion.setReadTimeout(5000);
+        // El primer acceso puede tardar mientras Spring abre la conexión con MySQL.
+        conexion.setConnectTimeout(10000);
+        conexion.setReadTimeout(15000);
         conexion.setRequestProperty("Authorization", credenciales);
         conexion.setRequestProperty("Accept", "application/json");
         conexion.setUseCaches(false);

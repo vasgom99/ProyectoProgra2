@@ -13,6 +13,4 @@ public class ConfiguracionDatos {
     @Bean EmpleadoDAO empleadoDAO() { return new EmpleadoDAO(); }
     @Bean MesaDAO mesaDAO() { return new MesaDAO(); }
     @Bean ProductoDAO productoDAO() { return new ProductoDAO(); }
-    @Bean DetalleMenuDAO detalleMenuDAO() { return new DetalleMenuDAO(); }
-    @Bean PlatoDelDiaDAO platoDelDiaDAO() { return new PlatoDelDiaDAO(); }
 }

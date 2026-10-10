@@ -61,14 +61,8 @@ public final class Ui {
             case null -> "—";
             case Producto p -> p.getNombre();
             case Categoria c -> c.getNombre();
-            case Cliente c -> c.getNombre() + " (#" + c.getId() + ")";
-            case Ingrediente i -> i.getNombre() + " (" + i.getUnidadMedida() + ")";
-            case Proveedor p -> p.getNombre();
             case Mesa m -> "Mesa " + m.getNumero() + " · " + m.getEstado();
-            case Repartidor r -> r.getNombre();
-            case com.garagecoffee.model.Menu m -> m.getNombre();
-            case DireccionCliente d -> d.getDireccion();
-            case Pedido p -> "#" + p.getId() + " · " + p.getTipoEntrega() + " · Q" + p.getTotal();
+            case Pedido p -> "#" + p.getId() + " · Q" + p.getTotal();
             case Enum<?> e -> e.name().replace('_', ' ');
             default -> valor.toString();
         };

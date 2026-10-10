@@ -1,89 +1,42 @@
 # Garage Coffee
 
-Este repositorio contiene tres partes: Swing (`pom.xml` de la raíz), el servidor
-Spring (`backend/`) y Android (`android/`). Para abrir **Swing no hay que iniciar
-Spring**. La app Android sí consulta Spring.
+Proyecto académico de restaurante con POO. El programa principal es **Java Swing + JDBC + MySQL**. `backend/` (Spring) y `android/` se conservan como ampliaciones de consulta; **Swing no necesita Spring ni Android para iniciar**.
 
-## Revisar Swing sin MySQL
+## Lo que hace el sistema
 
-Abre la carpeta raíz como proyecto Maven en NetBeans y ejecuta
-`com.garagecoffee.Proyecto2Progra2` con JDK 25 o superior. Si MySQL no está
-disponible, elige **Sí** cuando se ofrezca la demostración. Ingresa con usuario
-`admin` y contraseña `demo`. Puedes recorrer las pantallas, pero los datos se
-pierden al cerrar. Para entrar directamente en este modo, usa el argumento
-`--demo`.
+1. Un empleado entra con su usuario y rol.
+2. El administrador registra categorías, productos y mesas.
+3. El mesero toma un pedido para una mesa libre.
+4. Cocina lo prepara y lo marca listo; el mesero lo entrega.
+5. El cajero abre caja y cobra el pedido completo en efectivo. La mesa queda libre cuando el pedido está entregado y pagado.
 
-La configuración Gradle de Android está únicamente en `android/`. Si NetBeans
-todavía muestra las importaciones antiguas `garage_coffee` o
-`Proyecto2Progra2:app`, reinicia NetBeans para que vuelva a reconocer la raíz.
-Abre `Proyecto2Progra2` desde esa carpeta si no se abre automáticamente.
-El proyecto debe mostrar el icono de Maven y su nombre `Proyecto2Progra2`.
-La acción **Run Project / Ejecutar proyecto** está fijada en `nbactions.xml`
-para abrir la clase principal Swing desde la raíz, donde está la configuración
-local de MySQL.
+No hay clientes, reservas, reparto, recetas, inventario, compras, promociones, abonos, gastos ni reportes. Un pedido conserva sus productos y precios para poder revisar después lo cobrado. El comprobante es académico y **no es una factura fiscal**. El modelo POO vigente está en `Garage_Coffee_UML_Academico.drawio`.
 
-También se puede abrir desde una terminal situada en la raíz:
+## Preparar MySQL en cada computadora
+
+1. Instala e inicia MySQL. En DBeaver ejecuta [garage_coffee.sql](garage_coffee.sql) para crear las nueve tablas del flujo y los datos de ejemplo. El script no elimina tablas ni datos existentes.
+2. Copia `garage-db.properties.example` a `garage-db.properties` en la raíz y escribe el usuario y la contraseña MySQL **de esa computadora**. El archivo local está excluido de Git.
+3. Abre **esta carpeta raíz** como proyecto Maven en NetBeans con JDK 25 o superior. Ejecuta `com.garagecoffee.Proyecto2Progra2` o **Run Project**.
+
+DBeaver es solo el cliente de administración: debe apuntar al mismo MySQL que Swing. En esta Mac también existe un MySQL instalado fuera de Docker; por eso el archivo local `garage-db.properties` apunta a `jdbc:mysql://[::1]:3306/garage_coffee`, que llega al contenedor. `localhost:3306` llega al MySQL de macOS. En otras computadoras usa la dirección y contraseña que correspondan a su servidor; no copies el archivo local con credenciales.
+
+Usuarios de ejemplo: `admin.demo`, `mesero.demo`, `cocina.demo`, `cajero.demo`. Contraseña de todos: `demo`. Cámbialas antes de usar datos reales. Si ya existe una base `garage_coffee` de la versión anterior, haz una copia de seguridad antes de migrarla: `CREATE TABLE IF NOT EXISTS` no convierte automáticamente sus tablas antiguas al nuevo esquema.
+
+Si MySQL no está disponible, Swing puede abrirse en **demostración temporal**: acepta la opción al inicio o usa `--demo`. En ese modo se entra con `admin` / `demo` y se pierden los cambios al cerrar.
+
+## Compilar y probar
+
+Desde la raíz del repositorio:
 
 ```sh
+./backend/mvnw -f pom.xml test
 ./backend/mvnw -f pom.xml process-classes exec:exec
 ```
 
-En Windows, el mismo comando comienza con `backend\mvnw.cmd`.
+En Windows cambia `./backend/mvnw` por `backend\mvnw.cmd`. El proyecto de Android se abre **desde `android/`** en Android Studio, no desde la raíz. Spring se abre desde `backend/`; consulta [backend/README.md](backend/README.md). Los archivos `.form` de Swing siguen siendo editables con el diseñador de NetBeans.
 
-## Usar Swing con datos permanentes
+Con MySQL iniciado y el esquema importado, `./backend/mvnw -f pom.xml test -Dgarage.test.mysql=true` añade una prueba JDBC de lectura y otra de pedido/cobro que se revierte al finalizar. El comando normal de pruebas no necesita MySQL.
 
-En cada equipo hay que instalar e iniciar MySQL e importar el esquema de
-Garage Coffee. El script original para crear las tablas no está incluido
-actualmente en Git; el equipo debe compartirlo por separado para usar este
-modo. Copia `garage-db.properties.example` como `garage-db.properties` en la
-raíz y pon la dirección, usuario y contraseña de **ese equipo**. El archivo
-con la contraseña no se sube a Git. Ejecuta una vez
-`com.garagecoffee.database.PrepararBaseDatos` y después inicia Swing
-normalmente, sin `--demo`.
+Los campos monetarios aceptan coma o punto decimal y formatos habituales de miles. Una cantidad como `10.000` se interpreta como diez con tres decimales; para diez mil escribe `10000` o `10,000.00`.
 
-Spring no sustituye esta conexión: por ahora Swing accede a MySQL directamente.
-Para la parte móvil, consulta las instrucciones de `backend/README.md` y
-`android/app/README.md`. En Android Studio se abre `android/` como proyecto
-Gradle, sin moverlo a otro repositorio.
-
-## Uso diario simplificado
-
-- Cada rol entra a su tarea principal: mesas, cocina o caja. El administrador
-  entra al resumen. El menú muestra las tareas diarias; **Más opciones** conserva
-  inventario, compras, catálogo, entregas, empleados y reportes según los permisos.
-- Desde **Mesas → Tomar pedido**, la mesa queda seleccionada. Agrega productos
-  y cantidades en la misma ventana y pulsa **Enviar a cocina**. Para consumo local
-  no hace falta registrar un cliente. Dirección y envío aparecen solo a domicilio;
-  la programación y los datos adicionales están en **Opciones del pedido**.
-- Pedidos muestra los que siguen en curso (incluidos los entregados sin pagar).
-  **Más acciones** permite editar, cancelar, asignar reparto y consultar el historial.
-- Caja muestra cuentas pendientes y apertura/cierre. **Ver también pagadas**
-  recupera las cuentas cobradas para consultar o imprimir su comprobante.
-  El cobro propone el total, calcula el cambio y permite un abono solo si se marca
-  esa opción. Cobrar no marca el pedido como entregado.
-- En una nueva compra, confirma **Mercadería recibida** para guardar y aumentar
-  existencias en una sola operación; desmárcala si aún no llegó. **Pagué esta compra
-  con efectivo de caja** está desmarcada por defecto: al marcarla, registra también
-  el egreso de caja, sin repetirlo como gasto. Requiere caja abierta y saldo suficiente.
-  Las tres operaciones se guardan juntas en MySQL o se revierten juntas si fallan.
-  Para compras pendientes recibidas posteriormente, el pago sigue registrándose
-  por separado en Caja → Más opciones → Movimientos.
-- Reservas, direcciones y repartidores quedan en **Mesas → Más opciones**;
-  promociones en **Catálogo y recetas → Más opciones**. No se eliminaron funciones.
-
-Los diseños siguen siendo formularios Swing `.java` / `.form` editables en NetBeans.
-
-Los campos decimales aceptan `10.50`, `10,50`, `Q 10.50`, `1,250.50`, `1.250,50`
-y miles agrupados con espacios (`1 250,50`). Un solo punto o coma sigue siendo
-decimal: `10.000` significa diez, no diez mil. Para mil usa `1000` o `1,000.00`.
-Se mantienen los controles de cantidades positivas, saldo y precisión de la base.
-
-Si otro equipo sigue viendo «Nueva compra» sin el botón **Agregar ingrediente**
-ni las opciones de recepción/pago, no coincide con el formulario actual
-**Registrar compra**. Cierra la aplicación, actualiza el repositorio y ejecuta
-**Clean and Build**, luego **Run Project**, sobre el `pom.xml` de la raíz.
-No ejecutes un JAR anterior ni el módulo Android para abrir Swing.
-
-Una tabla vacía ahora indica **No hay registros todavía**. No es un fallo de carga:
-en una base nueva primero se crean mesas, categorías, productos, ingredientes,
-recetas y proveedores desde las pantallas administrativas.
+El archivo `Garage_Coffee_Contexto_Completo.md` conserva la historia y el diseño original, pero está excluido de Git y describe funciones retiradas. **Este README y el UML académico representan el alcance actual.**
