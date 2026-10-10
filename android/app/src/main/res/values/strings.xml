@@ -3,13 +3,11 @@
     <string name="marca_abreviada">G / C</string>
     <string name="marca_nombre">GARAGE COFFEE</string>
     <string name="equipo_servicio_mayusculas">EQUIPO DE SERVICIO</string>
-    <string name="equipo_servicio">Equipo de servicio</string>
     <string name="bienvenido">Bienvenido</string>
     <string name="instruccion_acceso">Ingresa con tu cuenta del restaurante para consultar el servicio.</string>
     <string name="usuario">Usuario</string>
     <string name="contrasena">Contraseña</string>
     <string name="entrar">Entrar</string>
-    <string name="iniciar_sesion">Iniciar sesión</string>
     <string name="uso_interno">Uso interno · El servidor debe estar encendido en este equipo.</string>
     <string name="garage_coffee">Garage Coffee</string>
     <string name="mesas">Mesas</string>

@@ -12,7 +12,7 @@ public class InicioPanel extends PanelModulo {
         pendientes.setText(String.valueOf(control.pedidos().pedidos().stream().filter(p -> p.getEstado() == EstadoPedido.PENDIENTE).count()));
         listos.setText(String.valueOf(control.pedidos().pedidos().stream().filter(p -> p.getEstado() == EstadoPedido.LISTO).count()));
         productos.setText(String.valueOf(control.catalogo().productos().stream().filter(p -> p.isDisponible() && p.getcategoria().isActivo()).count()));
-        alertas.setText(String.valueOf(control.inventario().ingredientes().stream().filter(Ingrediente::verificarAlertaStock).count()));
+        alertas.setText(String.valueOf(control.atencion().mesas().stream().filter(m -> m.getEstado() == EstadoMesa.LIBRE).count()));
     }
 
     @SuppressWarnings("unchecked")
@@ -126,7 +126,7 @@ public class InicioPanel extends PanelModulo {
         cardAlertas.setBackground(new java.awt.Color(255, 255, 255));
         cardAlertas.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 22, 20, 22));
         cardAlertas.setLayout(new java.awt.BorderLayout(10, 10));
-        cardAlertasTitle.setText("STOCK BAJO");
+        cardAlertasTitle.setText("MESAS LIBRES");
         cardAlertasTitle.setFont(new java.awt.Font("SansSerif", 1, 11));
         cardAlertasTitle.setForeground(new java.awt.Color(109, 121, 114));
         cardAlertas.add(cardAlertasTitle, java.awt.BorderLayout.NORTH);
@@ -134,7 +134,7 @@ public class InicioPanel extends PanelModulo {
         alertas.setFont(new java.awt.Font("SansSerif", 1, 36));
         alertas.setForeground(new java.awt.Color(174, 96, 64));
         cardAlertas.add(alertas, java.awt.BorderLayout.CENTER);
-        cardAlertasHelp.setText("Ingredientes por revisar");
+        cardAlertasHelp.setText("Disponibles para pedidos");
         cardAlertasHelp.setFont(new java.awt.Font("SansSerif", 0, 11));
         cardAlertasHelp.setForeground(new java.awt.Color(109, 121, 114));
         cardAlertas.add(cardAlertasHelp, java.awt.BorderLayout.SOUTH);
@@ -152,19 +152,19 @@ public class InicioPanel extends PanelModulo {
         recorrido.add(lblFlujo, java.awt.BorderLayout.NORTH);
         pasos.setOpaque(false);
         pasos.setLayout(new java.awt.GridLayout(4, 1, 14, 14));
-        paso1.setText("<html><b>01 · Recibe el pedido</b><br>Elige productos y el tipo de entrega.</html>");
+        paso1.setText("<html><b>01 · Elige una mesa</b><br>Agrega productos y envía el pedido a cocina.</html>");
         paso1.setFont(new java.awt.Font("SansSerif", 0, 15));
         paso1.setForeground(new java.awt.Color(36, 59, 50));
         pasos.add(paso1);
-        paso2.setText("<html><b>02 · Prepara en cocina</b><br>Verifica ingredientes y marca «Listo».</html>");
+        paso2.setText("<html><b>02 · Prepara en cocina</b><br>Inicia la preparación y marca «Listo».</html>");
         paso2.setFont(new java.awt.Font("SansSerif", 0, 15));
         paso2.setForeground(new java.awt.Color(36, 59, 50));
         pasos.add(paso2);
-        paso3.setText("<html><b>03 · Entrega y cobra</b><br>Registra el pago y entrega el comprobante.</html>");
+        paso3.setText("<html><b>03 · Entrega y cobra</b><br>Abre caja, registra el pago y entrega el pedido.</html>");
         paso3.setFont(new java.awt.Font("SansSerif", 0, 15));
         paso3.setForeground(new java.awt.Color(36, 59, 50));
         pasos.add(paso3);
-        paso4.setText("<html><b>04 · Revisa tu operación</b><br>Consulta existencias, caja y reportes.</html>");
+        paso4.setText("<html><b>04 · Comprueba el resultado</b><br>Consulta el pedido; en demo los datos son temporales.</html>");
         paso4.setFont(new java.awt.Font("SansSerif", 0, 15));
         paso4.setForeground(new java.awt.Color(36, 59, 50));
         pasos.add(paso4);

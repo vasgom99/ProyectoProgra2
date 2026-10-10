@@ -163,7 +163,7 @@
 <SubComponents>
 <Component class="javax.swing.JLabel" name="cardAlertasTitle">
 <Properties>
-<Property name="text" type="java.lang.String" value="STOCK BAJO"/>
+<Property name="text" type="java.lang.String" value="MESAS LIBRES"/>
 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="1"/></Property>
 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
 </Properties>
@@ -179,7 +179,7 @@
 </Component>
 <Component class="javax.swing.JLabel" name="cardAlertasHelp">
 <Properties>
-<Property name="text" type="java.lang.String" value="Ingredientes por revisar"/>
+<Property name="text" type="java.lang.String" value="Disponibles para pedidos"/>
 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="11" style="0"/></Property>
 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="72" green="79" red="6d" type="rgb"/></Property>
 </Properties>
@@ -222,28 +222,28 @@
 <SubComponents>
 <Component class="javax.swing.JLabel" name="paso1">
 <Properties>
-<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;01 · Recibe el pedido&lt;/b&gt;&lt;br&gt;Elige productos y el tipo de entrega.&lt;/html&gt;"/>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;01 · Elige una mesa&lt;/b&gt;&lt;br&gt;Agrega productos y envía el pedido a cocina.&lt;/html&gt;"/>
 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
 </Properties>
 </Component>
 <Component class="javax.swing.JLabel" name="paso2">
 <Properties>
-<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;02 · Prepara en cocina&lt;/b&gt;&lt;br&gt;Verifica ingredientes y marca «Listo».&lt;/html&gt;"/>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;02 · Prepara en cocina&lt;/b&gt;&lt;br&gt;Inicia la preparación y marca «Listo».&lt;/html&gt;"/>
 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
 </Properties>
 </Component>
 <Component class="javax.swing.JLabel" name="paso3">
 <Properties>
-<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;03 · Entrega y cobra&lt;/b&gt;&lt;br&gt;Registra el pago y entrega el comprobante.&lt;/html&gt;"/>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;03 · Entrega y cobra&lt;/b&gt;&lt;br&gt;Abre caja, registra el pago y entrega el pedido.&lt;/html&gt;"/>
 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
 </Properties>
 </Component>
 <Component class="javax.swing.JLabel" name="paso4">
 <Properties>
-<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;04 · Revisa tu operación&lt;/b&gt;&lt;br&gt;Consulta existencias, caja y reportes.&lt;/html&gt;"/>
+<Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;04 · Comprueba el resultado&lt;/b&gt;&lt;br&gt;Consulta el pedido; en demo los datos son temporales.&lt;/html&gt;"/>
 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="15" style="0"/></Property>
 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="32" green="3b" red="24" type="rgb"/></Property>
 </Properties>

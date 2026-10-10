@@ -33,8 +33,8 @@ No colocar la contraseña en application.properties.
 | GET /api/mesas | Administración, mesero y cajero |
 | GET /api/catalogo | Administración, mesero, cajero y cocina |
 
-El catálogo muestra solo productos disponibles de categorías activas e incluye
-precio base y precio vigente. Reutiliza la regla de ofertas del proyecto Swing.
+El catálogo muestra solo productos disponibles de categorías activas. Incluye
+precio base y vigente con el mismo valor, porque se retiraron las ofertas.
 Una consulta sin acceso devuelve 401, un rol no autorizado 403 y un fallo de consulta
 503, sin exponer SQL. No se envían contraseñas ni objetos de empleado completos.
 
@@ -56,9 +56,8 @@ de un empleado activo. Sin credenciales deben responder 401. Si no hay mesas
 o productos registrados, las rutas respectivas devuelven listas vacías.
 
 En Swing también puede recorrerse manualmente el flujo de pedido, preparación y
-cobro. Las pruebas automáticas de la raíz comprueban esos recorridos y permiten
-activar una verificación de MySQL que revierte sus datos de auditoría al terminar;
-consulta la sección **Comprobación automática** del README principal.
+cobro. Las pruebas automáticas de la raíz comprueban ese recorrido con datos
+temporales y no modifican la base MySQL.
 
 ## Continuación
 

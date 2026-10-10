@@ -8,7 +8,6 @@ public class DashboardFrame extends javax.swing.JFrame {
     private final java.util.Map<String, PanelModulo> modulos = new java.util.LinkedHashMap<>();
     private final java.util.Map<String, javax.swing.JButton> botones = new java.util.LinkedHashMap<>();
     private PanelModulo actual;
-    private boolean masOpciones;
     public DashboardFrame() {
         initComponents();
         setTitle("Garage Coffee · Restaurante");
@@ -32,46 +31,24 @@ public class DashboardFrame extends javax.swing.JFrame {
         if (control.esDemo()) lblAviso.setText("DEMOSTRACIÓN · Datos temporales; se pierden al cerrar.");
         lblUsuario.setText(control.sesion().actual().getNombre() + " · " + Ui.nombre(control.sesion().actual().getRol()));
         enlace(btnNav0, "Inicio", () -> new InicioPanel(control), true);
-        enlace(btnNav1, "Pedidos", () -> new PedidosPanel(control, false), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
+        enlace(btnNav1, "Pedidos", () -> new PedidosPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
         enlace(btnNav2, "Mesas", () -> new AtencionPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
         enlace(btnNav3, "Cocina", () -> new CocinaPanel(control), control.sesion().permite(RolEmpleado.COCINA));
-        enlace(btnNav4, "Entregas", () -> new PedidosPanel(control, true), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO, RolEmpleado.REPARTIDOR));
-        enlace(btnNav5, "Catálogo y recetas", () -> new CatalogoPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.COCINA, RolEmpleado.CAJERO));
-        enlace(btnNav6, "Inventario", () -> new InventarioPanel(control), control.sesion().permite(RolEmpleado.COCINA));
-        enlace(btnNav7, "Compras", () -> new ComprasPanel(control), control.sesion().permite());
+        enlace(btnNav5, "Productos", () -> new CatalogoPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.COCINA, RolEmpleado.CAJERO));
         enlace(btnNav8, "Caja y cobros", () -> new CajaPanel(control), control.sesion().permite(RolEmpleado.CAJERO));
         enlace(btnNav9, "Empleados", () -> new EmpleadosPanel(control), control.sesion().permite());
-        enlace(btnNav10, "Reportes", () -> new ReportesPanel(control), control.sesion().permite());
         lblSeccion.setText(Ui.nombre(control.sesion().actual().getRol()));
-        Ui.navegacion(btnMas, false);
-        btnMas.addActionListener(e -> { masOpciones = !masOpciones; organizarMenu(); });
         organizarMenu();
         switch (control.sesion().actual().getRol()) {
             case MESERO -> mostrar("Mesas", () -> new AtencionPanel(control));
             case COCINA -> mostrar("Cocina", () -> new CocinaPanel(control));
             case CAJERO -> mostrar("Caja y cobros", () -> new CajaPanel(control));
-            case REPARTIDOR -> mostrar("Entregas", () -> new PedidosPanel(control, true));
             default -> mostrar("Inicio", () -> new InicioPanel(control));
         }
     }
-    private boolean principal(String nombre) {
-        if (nombre.equals("Inicio")) return true;
-        return switch (control.sesion().actual().getRol()) {
-            case ADMINISTRADOR -> java.util.Set.of("Pedidos", "Mesas", "Cocina", "Caja y cobros").contains(nombre);
-            case MESERO -> nombre.equals("Pedidos") || nombre.equals("Mesas");
-            case CAJERO -> nombre.equals("Caja y cobros");
-            case COCINA -> nombre.equals("Cocina");
-            case REPARTIDOR -> nombre.equals("Entregas");
-        };
-    }
     private void organizarMenu() {
         navegacion.removeAll();
-        botones.forEach((nombre, boton) -> { if (principal(nombre)) navegacion.add(boton); });
-        if (botones.keySet().stream().anyMatch(nombre -> !principal(nombre))) {
-            btnMas.setText(masOpciones ? "Menos opciones −" : "Más opciones +");
-            navegacion.add(btnMas);
-            if (masOpciones) botones.forEach((nombre, boton) -> { if (!principal(nombre)) navegacion.add(boton); });
-        }
+        botones.values().forEach(navegacion::add);
         navegacion.setPreferredSize(new java.awt.Dimension(184, navegacion.getComponentCount() * 36));
         navegacion.revalidate(); navegacion.repaint();
     }
@@ -104,14 +81,9 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav1 = new javax.swing.JButton();
         btnNav2 = new javax.swing.JButton();
         btnNav3 = new javax.swing.JButton();
-        btnNav4 = new javax.swing.JButton();
         btnNav5 = new javax.swing.JButton();
-        btnNav6 = new javax.swing.JButton();
-        btnNav7 = new javax.swing.JButton();
         btnNav8 = new javax.swing.JButton();
         btnNav9 = new javax.swing.JButton();
-        btnNav10 = new javax.swing.JButton();
-        btnMas = new javax.swing.JButton();
         sesionPanel = new javax.swing.JPanel();
         lblLocal = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
@@ -167,7 +139,7 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav1.setForeground(new java.awt.Color(38, 58, 50));
         btnNav1.setFocusPainted(false);
         navegacion.add(btnNav1);
-        btnNav2.setText("Clientes y mesas");
+        btnNav2.setText("Mesas");
         btnNav2.setFont(new java.awt.Font("SansSerif", 0, 14));
         btnNav2.setBackground(new java.awt.Color(255, 255, 255));
         btnNav2.setForeground(new java.awt.Color(38, 58, 50));
@@ -179,30 +151,12 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav3.setForeground(new java.awt.Color(38, 58, 50));
         btnNav3.setFocusPainted(false);
         navegacion.add(btnNav3);
-        btnNav4.setText("Entregas");
-        btnNav4.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav4.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav4.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav4.setFocusPainted(false);
-        navegacion.add(btnNav4);
-        btnNav5.setText("Catálogo y recetas");
+        btnNav5.setText("Productos");
         btnNav5.setFont(new java.awt.Font("SansSerif", 0, 14));
         btnNav5.setBackground(new java.awt.Color(255, 255, 255));
         btnNav5.setForeground(new java.awt.Color(38, 58, 50));
         btnNav5.setFocusPainted(false);
         navegacion.add(btnNav5);
-        btnNav6.setText("Inventario");
-        btnNav6.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav6.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav6.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav6.setFocusPainted(false);
-        navegacion.add(btnNav6);
-        btnNav7.setText("Compras");
-        btnNav7.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav7.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav7.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav7.setFocusPainted(false);
-        navegacion.add(btnNav7);
         btnNav8.setText("Caja y cobros");
         btnNav8.setFont(new java.awt.Font("SansSerif", 0, 14));
         btnNav8.setBackground(new java.awt.Color(255, 255, 255));
@@ -215,14 +169,6 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav9.setForeground(new java.awt.Color(38, 58, 50));
         btnNav9.setFocusPainted(false);
         navegacion.add(btnNav9);
-        btnNav10.setText("Reportes");
-        btnNav10.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav10.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav10.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav10.setFocusPainted(false);
-        navegacion.add(btnNav10);
-        btnMas.setText("Más opciones +");
-        navegacion.add(btnMas);
         marcoNavegacion.add(navegacion, java.awt.BorderLayout.NORTH);
         lateral.add(marcoNavegacion, java.awt.BorderLayout.CENTER);
         sesionPanel.setOpaque(false);
@@ -301,14 +247,9 @@ public class DashboardFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnNav1;
     private javax.swing.JButton btnNav2;
     private javax.swing.JButton btnNav3;
-    private javax.swing.JButton btnNav4;
     private javax.swing.JButton btnNav5;
-    private javax.swing.JButton btnNav6;
-    private javax.swing.JButton btnNav7;
     private javax.swing.JButton btnNav8;
     private javax.swing.JButton btnNav9;
-    private javax.swing.JButton btnNav10;
-    private javax.swing.JButton btnMas;
     private javax.swing.JPanel sesionPanel;
     private javax.swing.JLabel lblLocal;
     private javax.swing.JButton btnSalir;
