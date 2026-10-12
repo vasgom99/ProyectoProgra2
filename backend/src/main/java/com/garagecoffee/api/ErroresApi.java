@@ -8,6 +8,14 @@ import org.springframework.web.bind.annotation.*;
 // No envía consultas SQL ni detalles internos de la conexión al cliente.
 @RestControllerAdvice
 public class ErroresApi {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> datosInvalidos(IllegalArgumentException error) {
+        return ResponseEntity.badRequest().body(Map.of("error", error.getMessage()));
+    }
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, String>> conflicto(IllegalStateException error) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", error.getMessage()));
+    }
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<Map<String, String>> baseNoDisponible(SQLException error) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)

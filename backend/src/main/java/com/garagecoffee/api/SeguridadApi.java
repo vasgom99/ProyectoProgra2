@@ -45,12 +45,19 @@ public class SeguridadApi {
         return http
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .requestCache(c -> c.disable())
-                // Conservamos CSRF; esta etapa no publica operaciones de escritura.
+                // La app usa autenticación Basic sin cookies ni sesión web.
+                .csrf(c -> c.disable())
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.GET, "/api/estado").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/sesion").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/mesas").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.GET, "/api/mesas/*/pedido-activo").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
                         .requestMatchers(HttpMethod.GET, "/api/catalogo").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO", "COCINA")
+                        .requestMatchers(HttpMethod.POST, "/api/pedidos").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.POST, "/api/pedidos/*/cobrar").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.PUT, "/api/mesas/*/estado").hasAnyRole("ADMINISTRADOR", "MESERO")
+                        .requestMatchers(HttpMethod.PUT, "/api/pedidos/*/entregar").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.PUT, "/api/pedidos/*/productos").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
                         .anyRequest().denyAll())
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(e -> e

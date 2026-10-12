@@ -13,4 +13,8 @@ public class ConfiguracionDatos {
     @Bean EmpleadoDAO empleadoDAO() { return new EmpleadoDAO(); }
     @Bean MesaDAO mesaDAO() { return new MesaDAO(); }
     @Bean ProductoDAO productoDAO() { return new ProductoDAO(); }
+    @Bean PedidoDAO pedidoDAO() { return new PedidoDAO(); }
+    @Bean PagoDAO pagoDAO() { return new PagoDAO(); }
+    @Bean CajaDAO cajaDAO() { return new CajaDAO(); }
+    @Bean ControlCambiosDAO controlCambiosDAO() { return new ControlCambiosDAO(); }
 }

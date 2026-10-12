@@ -55,9 +55,7 @@ Inicia Spring, abre `http://127.0.0.1:8080/api/estado` y confirma que responda
 de un empleado activo. Sin credenciales deben responder 401. Si no hay mesas
 o productos registrados, las rutas respectivas devuelven listas vacías.
 
-En Swing también puede recorrerse manualmente el flujo de pedido, preparación y
-cobro. Las pruebas automáticas de la raíz comprueban ese recorrido con datos
-temporales y no modifican la base MySQL.
+En Swing también puede recorrerse manualmente el flujo de pedido, preparación y cobro.
 
 ## Continuación
 
