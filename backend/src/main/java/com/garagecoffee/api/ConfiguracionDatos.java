@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// Conecta las DAO existentes al DataSource administrado por Spring.
+// conecta las dao con spring.
 @Configuration
 public class ConfiguracionDatos {
     public ConfiguracionDatos(DataSource fuente) { ConexionDB.usarDataSource(fuente); }

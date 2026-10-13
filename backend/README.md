@@ -1,7 +1,6 @@
 # Servidor Garage Coffee
 
-Primera etapa: acceso de empleados y consultas de mesas y catálogo. Spring no abre
-pantallas Swing, no crea tablas y no publica todavía creación de pedidos ni cobros.
+Spring comunica la app Android con MySQL. No abre pantallas Swing ni crea tablas.
 
 ## Ejecutar
 
@@ -32,20 +31,25 @@ No colocar la contraseña en application.properties.
 | GET /api/sesion | Cualquier empleado activo; devuelve usuario y rol |
 | GET /api/mesas | Administración, mesero y cajero |
 | GET /api/catalogo | Administración, mesero, cajero y cocina |
+| GET /api/mesas/{id}/pedido-activo | Consulta el servicio abierto de una mesa |
+| POST /api/pedidos | Crea un pedido y ocupa la mesa |
+| PUT /api/mesas/{id}/estado | Habilita o deshabilita una mesa libre |
+| PUT /api/pedidos/{id}/productos | Agrega productos al pedido activo |
+| PUT /api/pedidos/{id}/entregar | Marca el pedido listo como entregado |
+| POST /api/pedidos/{id}/cobrar | Cobra en efectivo y libera la mesa |
 
 El catálogo muestra solo productos disponibles de categorías activas. Incluye
 precio base y vigente con el mismo valor, porque se retiraron las ofertas.
 Una consulta sin acceso devuelve 401, un rol no autorizado 403 y un fallo de consulta
 503, sin exponer SQL. No se envían contraseñas ni objetos de empleado completos.
 
-En esta etapa se usa HTTP Basic, con el usuario y contraseña del empleado de MySQL,
+Se usa HTTP Basic, con el usuario y contraseña del empleado guardados en MySQL,
 no las credenciales de conexión a MySQL. Las solicitudes se autentican por separado;
 no hay un usuario global compartido ni se emiten tokens de sesión.
 
 Por seguridad escucha solamente en 127.0.0.1:8080. HTTP Basic no cifra las claves:
 no cambiar a una dirección de red ni usar desde el celular sin configurar HTTPS.
-La sesión móvil definitiva queda para la siguiente etapa.
-Se conserva la protección CSRF y todas las rutas de escritura están bloqueadas.
+Las rutas se autorizan según el rol del empleado.
 
 ## Comprobación manual
 
@@ -56,14 +60,6 @@ de un empleado activo. Sin credenciales deben responder 401. Si no hay mesas
 o productos registrados, las rutas respectivas devuelven listas vacías.
 
 En Swing también puede recorrerse manualmente el flujo de pedido, preparación y cobro.
-
-## Continuación
-
-1. Implementar pedidos con identidad del mesero, validación y transacciones.
-2. Registrar cobros con caja abierta y protección contra duplicados; el efectivo
-   se entrega directamente a caja. No habilitar al mesero gastos ni cierre de caja.
-3. Preparar HTTPS y acceso móvil; conectar Android.
-4. Mantener Swing con JDBC directo a MySQL; Spring sirve a la app móvil y no es necesario para abrir Swing.
 
 Mientras Swing y Spring coexistan, no implementar escrituras nuevas ignorando
 control_cambios y las reglas del servicio. El servidor no debe compartir un

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
-// Operaciones que el mesero puede realizar desde la app móvil.
+// ejecuta las operaciones de la app.
 @Service
 public class OperacionRestauranteService {
     private final MesaDAO mesas;

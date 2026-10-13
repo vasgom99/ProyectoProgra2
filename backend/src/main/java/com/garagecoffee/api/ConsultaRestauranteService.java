@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-// Consulta MySQL en cada solicitud y devuelve solo los datos que necesita la app.
+// consulta los datos que necesita la app.
 @Service
 public class ConsultaRestauranteService {
     private final MesaDAO mesas;

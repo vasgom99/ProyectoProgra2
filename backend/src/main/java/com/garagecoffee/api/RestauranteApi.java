@@ -5,7 +5,7 @@ import java.util.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-// Rutas iniciales del servidor; no exponen modelos con contraseñas.
+// publica las rutas de la app.
 @RestController
 @RequestMapping("/api")
 public class RestauranteApi {

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.http.HttpMethod;
 
-// Primera etapa: consultas protegidas por usuario y rol; sin sesión global compartida.
+// protege las rutas según el rol.
 @Configuration
 public class SeguridadApi {
     @Bean UserDetailsService empleados(EmpleadoDAO dao) {
@@ -45,7 +45,7 @@ public class SeguridadApi {
         return http
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .requestCache(c -> c.disable())
-                // La app usa autenticación Basic sin cookies ni sesión web.
+                // valida las credenciales de cada solicitud.
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.GET, "/api/estado").permitAll()

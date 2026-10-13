@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-// No envía consultas SQL ni detalles internos de la conexión al cliente.
+// devuelve errores seguros al cliente.
 @RestControllerAdvice
 public class ErroresApi {
     @ExceptionHandler(IllegalArgumentException.class)

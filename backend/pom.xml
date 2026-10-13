@@ -30,7 +30,7 @@
         <java.version>25</java.version>
     </properties>
     <dependencies>
-        <!-- Reutiliza modelos, DAO y reglas del proyecto existente sin copiarlos. -->
+        <!-- reutiliza las clases del proyecto principal. -->
         <dependency>
             <groupId>com.mycompany</groupId>
             <artifactId>Proyecto2Progra2</artifactId>
