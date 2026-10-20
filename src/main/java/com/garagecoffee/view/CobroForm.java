@@ -1,6 +1,5 @@
 package com.garagecoffee.view;
 
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class CobroForm extends Formulario {
     public CobroForm() {
         initComponents();

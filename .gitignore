@@ -1,23 +1,41 @@
-/target/
+**/target/
 /Garage_Coffee_Contexto_Completo.md
-/garage-db.properties
-/backend/garage-db.properties
+**/garage-db.properties
 # Archivos locales de entorno que pueden contener credenciales.
 **/.env
 **/.env.*
 !**/.env.example
 !**/.env.*.example
 /garage-backups/
-/.gradle/
-/.idea/
-/local.properties
-/build/
-/app/build/
-/android/.gradle/
-/android/.idea/
-/android/local.properties
-/android/build/
-/android/app/build/
-/captures/
+# Resultados locales de pruebas y archivos temporales.
+/outputs/
+**/src/test/
+**/test-results/
+**/reports/tests/
+**/coverage/
+*.exec
+*.log
+*.hprof
+*.class
+*.tmp
+*.swp
+*~
+# Credenciales de firma: no incluir claves privadas en el repositorio.
+**/keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.key
+# Configuración y cachés de cada equipo, también en subproyectos.
+**/.gradle/
+**/.idea/
+**/local.properties
+**/build/
+**/.kotlin/
+**/.cxx/
+**/.externalNativeBuild/
+**/nbproject/private/
+**/captures/
 *.iml
 .DS_Store

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// Base del pedido: agrupa sus detalles y calcula el total.
+// contiene los datos de un pedido.
 public abstract class Pedido {
     private int id;
     private LocalDateTime fechaCreacion;
@@ -46,5 +46,6 @@ public abstract class Pedido {
     public BigDecimal getTotal() { return total; }
     public void setTotal(BigDecimal total) { this.total = total; }
     public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
     public List<DetallePedido> getDetalles() { return Collections.unmodifiableList(detalles); }
 }

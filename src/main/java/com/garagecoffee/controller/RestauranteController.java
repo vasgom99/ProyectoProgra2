@@ -2,7 +2,7 @@ package com.garagecoffee.controller;
 
 import com.garagecoffee.service.*;
 
-// Reúne los servicios que usan las pantallas y mantiene una sola sesión.
+// reúne los servicios del sistema.
 public class RestauranteController {
     private final DatosRestaurante datos;
     private final SesionService sesion;
@@ -19,7 +19,6 @@ public class RestauranteController {
         pedidos = new PedidoService(datos, sesion, catalogo);
         finanzas = new FinanzasService(datos, sesion, pedidos);
     }
-    public boolean esDemo() { return datos.esDemo(); }
     public void recargar() { datos.recargar(); }
     public SesionService sesion() { return sesion; }
     public CatalogoService catalogo() { return catalogo; }

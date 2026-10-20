@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-// Abre y cierra caja, registra cobros completos en efectivo.
+// controla la caja y los cobros.
 public class FinanzasService {
     private final DatosRestaurante datos;
     private final SesionService sesion;
@@ -98,7 +98,7 @@ public class FinanzasService {
     public String ticket(Pedido pedido) {
         permiso();
         Validacion.exigir(datos.pedidos.contains(pedido), "Pedido inválido.");
-        StringBuilder texto = new StringBuilder("GARAGE COFFEE\nCOMPROBANTE ACADÉMICO — SIN VALIDEZ FISCAL\n");
+        StringBuilder texto = new StringBuilder("GARAGE COFFEE\nCOMPROBANTE — SIN VALIDEZ FISCAL\n");
         texto.append("Pedido #").append(pedido.getId()).append(" · Mesa ")
                 .append(((PedidoLocal) pedido).getMesa().getNumero()).append("\n\n");
         for (DetallePedido detalle : pedido.getDetalles())
@@ -106,7 +106,7 @@ public class FinanzasService {
                     .append(" = ").append(detalle.getSubtotal()).append("\n");
         texto.append("\nTOTAL: Q").append(pedido.getTotal()).append("\n");
         for (Pago pago : datos.pagos) if (pago.getPedido() == pedido)
-            texto.append("Efectivo: Q").append(pago.getMonto())
+            texto.append("Efectivo: Q").append(pago.getMonto().add(pago.getCambio()))
                     .append(" · Cambio: Q").append(pago.getCambio()).append("\n");
         return texto.append("Pendiente: Q").append(pendiente(pedido)).append("\n").toString();
     }

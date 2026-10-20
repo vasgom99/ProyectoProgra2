@@ -1,7 +1,6 @@
 package com.garagecoffee.view;
 
 
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class PanelListado<T> extends javax.swing.JPanel {
 
     private java.util.function.Supplier<java.util.List<T>> consulta = java.util.List::of;
@@ -81,7 +80,7 @@ public class PanelListado<T> extends javax.swing.JPanel {
         ajustarAcciones();
         return boton;
     }
-    // Usa un botón del formulario para mostrar opciones solo cuando se necesitan.
+    // muestra las acciones disponibles.
     public void alternar(String mostrar, String ocultar, java.util.function.Consumer<Boolean> cambio) {
         javax.swing.JButton boton = boton(mostrar, () -> { });
         for (var listener : boton.getActionListeners()) boton.removeActionListener(listener);
@@ -104,7 +103,7 @@ public class PanelListado<T> extends javax.swing.JPanel {
             ajustarAcciones();
         });
     }
-    // Da espacio a otra fila de botones cuando la ventana es estrecha.
+    // ajusta los botones al espacio disponible.
     private void ajustarAcciones() {
         int ancho = getWidth() > 0 ? getWidth() - getInsets().left - getInsets().right : 550;
         int usado = 8, alturaFila = 0, altura = 12;

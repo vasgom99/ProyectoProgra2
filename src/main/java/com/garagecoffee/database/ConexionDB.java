@@ -5,11 +5,11 @@ import java.nio.file.*;
 import java.io.*;
 import java.util.Properties;
 
-// Configuración local y conexión compartida durante una operación del servicio.
+// administra la conexión con mysql.
 public class ConexionDB {
     private static final ThreadLocal<Connection> actual = new ThreadLocal<>();
     private static volatile javax.sql.DataSource origen;
-    // Spring aporta su grupo de conexiones; Swing conserva su configuración local.
+    // permite usar la conexión de spring.
     public static void usarDataSource(javax.sql.DataSource dataSource) { origen = dataSource; }
     private static String configuracion(String clave, String defecto) throws SQLException {
         Properties p = new Properties();
@@ -26,7 +26,7 @@ public class ConexionDB {
         return DriverManager.getConnection(configuracion("garage.db.url", "jdbc:mysql://localhost:3306/garage_coffee"),
                 configuracion("garage.db.user", "root"), configuracion("garage.db.password", ""));
     }
-    // Una DAO cierra solo las conexiones que abrió por su cuenta.
+    // cierra las conexiones propias.
     public static Recurso abrir() throws SQLException {
         Connection compartida = actual.get();
         return new Recurso(compartida == null ? getConnection() : compartida, compartida == null);

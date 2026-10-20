@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import garage_coffee.app.ui.GarageCoffeeTheme
 import garage_coffee.app.ui.PantallaAcceso
 
-// Entrada del empleado a la app interna.
+// permite el acceso del empleado.
 class AccesoActivity : ComponentActivity() {
     private var usuario by mutableStateOf("")
     private var clave by mutableStateOf("")

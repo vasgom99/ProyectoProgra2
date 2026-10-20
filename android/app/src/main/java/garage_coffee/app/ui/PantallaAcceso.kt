@@ -30,7 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import garage_coffee.app.R
@@ -138,22 +137,8 @@ fun PantallaAcceso(
             if (mensaje.isNotBlank()) {
                 Text(text = mensaje, color = MaterialTheme.colorScheme.error)
             }
-            Spacer(Modifier.height(12.dp))
-            Text(
-                text = stringResource(R.string.uso_interno),
-                color = GarageMuted,
-                fontSize = 12.sp
-            )
         }
     }
 }
 
 private val ColorArena = androidx.compose.ui.graphics.Color(0xFFD5B894)
-
-@Preview(showBackground = true, widthDp = 390, heightDp = 844)
-@Composable
-private fun VistaPreviaAcceso() {
-    GarageCoffeeTheme {
-        PantallaAcceso("", "", "", false, {}, {}, {})
-    }
-}

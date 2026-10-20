@@ -6,7 +6,7 @@ import java.util.*;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-// Guarda una huella con sal aleatoria, nunca la contraseña nueva en texto.
+// protege las contraseñas.
 public final class Claves {
     private Claves() { }
     public static boolean protegida(String clave) { return clave != null && clave.startsWith("pbkdf2$"); }

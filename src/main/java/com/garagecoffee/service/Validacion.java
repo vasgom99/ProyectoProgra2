@@ -3,7 +3,7 @@ package com.garagecoffee.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-// Validaciones pequeñas que utilizan los servicios antes de modificar datos.
+// valida los datos antes de guardarlos.
 final class Validacion {
     private Validacion() { }
 

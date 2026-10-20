@@ -1,7 +1,6 @@
 package com.garagecoffee.view;
 
 import com.garagecoffee.model.RolEmpleado;
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class DashboardFrame extends javax.swing.JFrame {
 
     private com.garagecoffee.controller.RestauranteController control;
@@ -11,24 +10,19 @@ public class DashboardFrame extends javax.swing.JFrame {
     public DashboardFrame() {
         initComponents();
         setTitle("Garage Coffee · Restaurante");
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Ui.secundario(btnActualizar); Ui.navegacion(btnSalir, false);
         btnActualizar.addActionListener(e -> Ui.ejecutar(this, () -> { if (control != null) control.recargar(); if (actual != null) actual.recargar(); }));
         btnSalir.addActionListener(e -> {
-            if (control != null && Ui.confirmar(this, "¿Cambiar de usuario?")) {
-                control.sesion().cerrarSesion(); new LoginFrame(control).setVisible(true); dispose();
-            }
-        });
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override public void windowClosing(java.awt.event.WindowEvent e) {
-                if (Ui.confirmar(DashboardFrame.this, control != null && control.esDemo() ? "¿Salir? Se perderán los datos de prueba." : "¿Salir? Los cambios guardados en MySQL se conservarán.")) dispose();
-            }
+            if (control == null) return;
+            control.sesion().cerrarSesion();
+            new LoginFrame(control).setVisible(true);
+            dispose();
         });
         setSize(1340, 850); setLocationRelativeTo(null);
     }
     public DashboardFrame(com.garagecoffee.controller.RestauranteController control) {
         this(); this.control = control;
-        if (control.esDemo()) lblAviso.setText("DEMOSTRACIÓN · Datos temporales; se pierden al cerrar.");
         lblUsuario.setText(control.sesion().actual().getNombre() + " · " + Ui.nombre(control.sesion().actual().getRol()));
         enlace(btnNav0, "Inicio", () -> new InicioPanel(control), true);
         enlace(btnNav1, "Pedidos", () -> new PedidosPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
@@ -96,9 +90,6 @@ public class DashboardFrame extends javax.swing.JFrame {
         lblUsuario = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
         contenido = new javax.swing.JPanel();
-        pie = new javax.swing.JPanel();
-        lblAviso = new javax.swing.JLabel();
-        lblTecnologia = new javax.swing.JLabel();
         this.setBackground(new java.awt.Color(246, 244, 238));
         this.setMinimumSize(new java.awt.Dimension(1100, 740));
         getContentPane().setLayout(new java.awt.BorderLayout(0, 0));
@@ -220,18 +211,6 @@ public class DashboardFrame extends javax.swing.JFrame {
         contenido.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 24, 12, 24));
         contenido.setLayout(new java.awt.CardLayout());
         areaTrabajo.add(contenido, java.awt.BorderLayout.CENTER);
-        pie.setBackground(new java.awt.Color(239, 231, 216));
-        pie.setBorder(javax.swing.BorderFactory.createEmptyBorder(11, 26, 11, 26));
-        pie.setLayout(new java.awt.BorderLayout(0, 0));
-        lblAviso.setText("MYSQL  ·  Cambios guardados. Usa Actualizar para consultar otra sesión.");
-        lblAviso.setFont(new java.awt.Font("SansSerif", 0, 12));
-        lblAviso.setForeground(new java.awt.Color(114, 87, 57));
-        pie.add(lblAviso, java.awt.BorderLayout.CENTER);
-        lblTecnologia.setText("JAVA SWING");
-        lblTecnologia.setFont(new java.awt.Font("SansSerif", 1, 10));
-        lblTecnologia.setForeground(new java.awt.Color(114, 87, 57));
-        pie.add(lblTecnologia, java.awt.BorderLayout.EAST);
-        areaTrabajo.add(pie, java.awt.BorderLayout.SOUTH);
         getContentPane().add(areaTrabajo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -262,8 +241,5 @@ public class DashboardFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JPanel contenido;
-    private javax.swing.JPanel pie;
-    private javax.swing.JLabel lblAviso;
-    private javax.swing.JLabel lblTecnologia;
     // End of variables declaration//GEN-END:variables
 }
