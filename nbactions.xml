@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <!-- Ejecutar proyecto siempre abre la aplicación Swing integrada. -->
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:3.5.1:exec</goal>
+        </goals>
+        <properties>
+            <exec.mainClass>com.garagecoffee.Proyecto2Progra2</exec.mainClass>
+        </properties>
+    </action>
+</actions>

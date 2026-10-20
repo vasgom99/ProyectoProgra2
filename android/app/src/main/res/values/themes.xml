@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.Garage_coffee" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:colorAccent">@color/garage_accent</item>
+        <item name="android:statusBarColor">@color/garage_green</item>
+        <item name="android:navigationBarColor">@color/garage_cream</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/garage_cream</item>
+        <item name="android:fontFamily">sans</item>
+    </style>
+</resources>

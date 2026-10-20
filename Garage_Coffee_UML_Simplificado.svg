@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1320" viewBox="0 0 1800 1320" role="img" aria-labelledby="title desc">
+  <title id="title">Garage Coffee — UML académico simplificado</title>
+  <desc id="desc">Diagrama de clases del flujo de atención en mesa, pedido y pago en efectivo, junto con las capas de Swing y la ruta móvil vía Spring.</desc>
+  <defs>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#20372f}
+      .title{font-size:36px;font-weight:700}.subtitle{font-size:17px;fill:#66766e}
+      .section{font-size:22px;font-weight:700}.class-title{font-size:19px;font-weight:700}
+      .class-body{font-size:15px}.small{font-size:14px;fill:#52635b}.tiny{font-size:13px;fill:#52635b}
+      .box{stroke:#29463b;stroke-width:2;rx:14;ry:14}.model{fill:#e8f0e9}.order{fill:#e9ebf8}.money{fill:#fbefd9}.enum{fill:#f4f5f2}
+      .line{stroke:#53675d;stroke-width:2.2;fill:none}.inherit{stroke:#53675d;stroke-width:2.2;fill:none;marker-end:url(#triangle)}
+      .composition{stroke:#53675d;stroke-width:2.2;fill:none;marker-start:url(#diamond)}
+      .card{font-size:13px;font-weight:700;fill:#52635b}.tag{font-size:12px;font-weight:700;letter-spacing:1px;fill:#75857c}
+      .layer{fill:#fff;stroke:#c9d3cd;stroke-width:1.5;rx:12;ry:12}.layer-title{font-size:16px;font-weight:700}
+      .lane{fill:#f8f8f5;stroke:#dce2dd;stroke-width:1.5;rx:18;ry:18}
+    </style>
+    <marker id="triangle" markerWidth="16" markerHeight="14" refX="14" refY="7" orient="auto" markerUnits="userSpaceOnUse"><path d="M15 7 L1 1 L1 13 Z" fill="#fff" stroke="#53675d" stroke-width="1.6"/></marker>
+    <marker id="diamond" markerWidth="15" markerHeight="15" refX="2" refY="7.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 7.5 L7 2 L14 7.5 L7 13 Z" fill="#53675d" stroke="#53675d" stroke-width="1"/></marker>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto"><path d="M1 1 L10 5 L1 9" fill="none" stroke="#53675d" stroke-width="1.5"/></marker>
+  </defs>
+  <rect width="1800" height="1320" fill="#f4f3ee"/>
+  <text x="58" y="66" class="title">Garage Coffee · UML simplificado</text>
+  <text x="60" y="99" class="subtitle">Núcleo académico: gestionar mesas, tomar pedidos, prepararlos y cobrar en efectivo.</text>
+  <rect x="56" y="132" width="1688" height="700" class="lane"/>
+  <text x="84" y="174" class="section">Modelo de clases</text>
+  <text x="1434" y="173" class="tag">DOMINIO POO</text>
+
+  <!-- Model classes -->
+  <g>
+    <rect x="105" y="220" width="260" height="150" class="box model"/>
+    <text x="130" y="252" class="class-title">Empleado</text><line x1="105" y1="266" x2="365" y2="266" class="line"/>
+    <text x="130" y="293" class="class-body">id, nombre, usuario</text><text x="130" y="317" class="class-body">rol, activo</text><line x1="105" y1="333" x2="365" y2="333" class="line"/>
+    <text x="130" y="357" class="small">iniciar sesión · controlar acceso</text>
+  </g>
+  <g>
+    <rect x="465" y="220" width="235" height="150" class="box model"/>
+    <text x="490" y="252" class="class-title">Categoria</text><line x1="465" y1="266" x2="700" y2="266" class="line"/>
+    <text x="490" y="296" class="class-body">id, nombre, tipo</text><text x="490" y="320" class="class-body">activo</text>
+  </g>
+  <g>
+    <rect x="795" y="220" width="280" height="150" class="box model"/>
+    <text x="820" y="252" class="class-title">Producto</text><line x1="795" y1="266" x2="1075" y2="266" class="line"/>
+    <text x="820" y="293" class="class-body">id, nombre, precio</text><text x="820" y="317" class="class-body">disponible, categoria</text><line x1="795" y1="333" x2="1075" y2="333" class="line"/>
+    <text x="820" y="357" class="small">cambiar disponibilidad</text>
+  </g>
+  <g>
+    <rect x="1360" y="220" width="265" height="150" class="box model"/>
+    <text x="1385" y="252" class="class-title">Mesa</text><line x1="1360" y1="266" x2="1625" y2="266" class="line"/>
+    <text x="1385" y="293" class="class-body">id, numero, capacidad</text><text x="1385" y="317" class="class-body">estado</text><line x1="1360" y1="333" x2="1625" y2="333" class="line"/>
+    <text x="1385" y="357" class="small">ocupar() · liberar()</text>
+  </g>
+  <g>
+    <rect x="555" y="470" width="300" height="190" class="box order"/>
+    <text x="580" y="502" class="class-title">&lt;&lt;abstract&gt;&gt; Pedido</text><line x1="555" y1="516" x2="855" y2="516" class="line"/>
+    <text x="580" y="544" class="class-body">id, fecha, estado, total</text><text x="580" y="568" class="class-body">observaciones, detalles</text><line x1="555" y1="584" x2="855" y2="584" class="line"/>
+    <text x="580" y="612" class="small">agregarDetalle()</text><text x="580" y="636" class="small">calcularTotal() · cancelar()</text>
+  </g>
+  <g>
+    <rect x="115" y="505" width="270" height="135" class="box order"/>
+    <text x="140" y="539" class="class-title">PedidoLocal</text><line x1="115" y1="553" x2="385" y2="553" class="line"/>
+    <text x="140" y="583" class="class-body">mesa</text><text x="140" y="615" class="small">pedido atendido en mesa</text>
+  </g>
+  <g>
+    <rect x="965" y="470" width="300" height="190" class="box order"/>
+    <text x="990" y="502" class="class-title">DetallePedido</text><line x1="965" y1="516" x2="1265" y2="516" class="line"/>
+    <text x="990" y="544" class="class-body">cantidad, precioUnitario</text><text x="990" y="568" class="class-body">subtotal, producto</text><line x1="965" y1="584" x2="1265" y2="584" class="line"/>
+    <text x="990" y="612" class="small">calcularSubtotal()</text>
+  </g>
+  <g>
+    <rect x="1390" y="500" width="245" height="150" class="box money"/>
+    <text x="1415" y="532" class="class-title">Pago</text><line x1="1390" y1="546" x2="1635" y2="546" class="line"/>
+    <text x="1415" y="574" class="class-body">monto, cambio, fecha</text><text x="1415" y="598" class="class-body">pedido, caja</text><line x1="1390" y1="614" x2="1635" y2="614" class="line"/>
+    <text x="1415" y="638" class="small">efectivo</text>
+  </g>
+  <g>
+    <rect x="1390" y="700" width="245" height="105" class="box money"/>
+    <text x="1415" y="733" class="class-title">Caja</text><line x1="1390" y1="747" x2="1635" y2="747" class="line"/>
+    <text x="1415" y="777" class="class-body">apertura, cierre, estado</text>
+  </g>
+  <g>
+    <rect x="105" y="400" width="280" height="80" class="box enum"/>
+    <text x="125" y="432" class="class-title">RolEmpleado</text><text x="125" y="458" class="tiny">enum: ADMIN · MESERO · COCINA · CAJERO</text>
+  </g>
+  <g>
+    <rect x="465" y="400" width="235" height="80" class="box enum"/>
+    <text x="485" y="432" class="class-title">TipoCategoria</text><text x="485" y="458" class="tiny">enum: COMIDA · BEBIDA · EXTRA</text>
+  </g>
+
+  <!-- Relationships -->
+  <path d="M700 295 H795" class="line" marker-end="url(#arrow)"/><text x="714" y="282" class="tiny">1 categoría</text><text x="748" y="320" class="card">0..* productos</text>
+  <path d="M1492 370 V430 H250 V505" class="line" marker-end="url(#arrow)"/><text x="860" y="419" class="card">1 mesa · 0..* pedidos</text>
+  <path d="M385 572 H455 V610 H555" class="inherit"/><text x="402" y="555" class="tiny">herencia</text>
+  <path d="M855 555 H965" class="composition"/><text x="875" y="541" class="card">1 pedido · 1..* detalles</text>
+  <path d="M1075 370 V425 H1115 V470" class="line" marker-end="url(#arrow)"/><text x="1124" y="420" class="tiny">producto</text>
+  <path d="M855 640 V680 H1370 V575 H1390" class="line" marker-end="url(#arrow)"/><text x="1080" y="671" class="card">0..* pagos por pedido</text>
+  <path d="M1512 650 V700" class="line" marker-end="url(#arrow)"/><text x="1525" y="682" class="card">1 caja</text>
+  <path d="M235 370 V400" class="line" marker-end="url(#arrow)"/>
+  <path d="M582 370 V400" class="line" marker-end="url(#arrow)"/>
+
+  <!-- Architecture / app flow -->
+  <text x="60" y="892" class="section">Cómo colaboran las clases</text>
+  <text x="60" y="920" class="subtitle">Swing trabaja directamente con la lógica del restaurante; la aplicación Android consulta por medio de Spring.</text>
+  <rect x="56" y="948" width="1688" height="300" class="lane"/>
+  <text x="82" y="984" class="tag">ESCRITORIO · SWING</text>
+  <g>
+    <rect x="85" y="1005" width="220" height="86" class="layer"/><text x="195" y="1040" text-anchor="middle" class="layer-title">Pantallas Swing</text><text x="195" y="1066" text-anchor="middle" class="tiny">JFrame · JPanel</text>
+    <rect x="365" y="1005" width="220" height="86" class="layer"/><text x="475" y="1040" text-anchor="middle" class="layer-title">RestauranteController</text><text x="475" y="1066" text-anchor="middle" class="tiny">coordina los servicios</text>
+    <rect x="645" y="1005" width="220" height="86" class="layer"/><text x="755" y="1040" text-anchor="middle" class="layer-title">Servicios</text><text x="755" y="1066" text-anchor="middle" class="tiny">pedido · catálogo · caja</text>
+    <rect x="925" y="1005" width="220" height="86" class="layer"/><text x="1035" y="1040" text-anchor="middle" class="layer-title">DatosMySQL</text><text x="1035" y="1066" text-anchor="middle" class="tiny">implementa DatosRestaurante</text>
+    <rect x="1205" y="1005" width="220" height="86" class="layer"/><text x="1315" y="1040" text-anchor="middle" class="layer-title">DAO + JDBC</text><text x="1315" y="1066" text-anchor="middle" class="tiny">consultas y guardado</text>
+    <rect x="1485" y="1005" width="220" height="86" class="layer"/><text x="1595" y="1040" text-anchor="middle" class="layer-title">MySQL</text><text x="1595" y="1066" text-anchor="middle" class="tiny">base garage_coffee</text>
+    <path d="M305 1048 H365 M585 1048 H645 M865 1048 H925 M1145 1048 H1205 M1425 1048 H1485" class="line" marker-end="url(#arrow)"/>
+  </g>
+  <text x="82" y="1150" class="tag">MÓVIL · CONSULTA INTERNA</text>
+  <g>
+    <rect x="85" y="1168" width="360" height="58" class="layer"/><text x="265" y="1204" text-anchor="middle" class="layer-title">Android · Jetpack Compose</text>
+    <rect x="545" y="1168" width="360" height="58" class="layer"/><text x="725" y="1204" text-anchor="middle" class="layer-title">Spring Boot · API REST</text>
+    <rect x="1005" y="1168" width="360" height="58" class="layer"/><text x="1185" y="1204" text-anchor="middle" class="layer-title">DAO compartidas · MySQL</text>
+    <path d="M445 1197 H545 M905 1197 H1005" class="line" marker-end="url(#arrow)"/>
+    <text x="1420" y="1193" class="tiny">La app móvil usa el servidor.</text><text x="1420" y="1216" class="tiny">Swing no depende de Spring.</text>
+  </g>
+  <text x="60" y="1288" class="tiny">Versión simplificada para exposición académica · relaciones reflejadas desde las clases actuales del proyecto.</text>
+</svg>
