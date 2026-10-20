@@ -11,15 +11,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y recupera objetos Categoria en MySQL. */
+/** Guarda y consulta las categorías que agrupan los productos. */
 public class CategoriaDAO {
 
     public List<Categoria> listar() throws SQLException {
         List<Categoria> categorias = new ArrayList<>();
         String sql = "SELECT id, nombre, tipo, activo FROM categoria ORDER BY id";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql);
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql);
              ResultSet resultado = consulta.executeQuery()) {
             while (resultado.next()) {
                 categorias.add(leerCategoria(resultado));
@@ -32,8 +32,8 @@ public class CategoriaDAO {
     public Categoria buscarPorId(int id) throws SQLException {
         String sql = "SELECT id, nombre, tipo, activo FROM categoria WHERE id = ?";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             consulta.setInt(1, id);
             try (ResultSet resultado = consulta.executeQuery()) {
                 return resultado.next() ? leerCategoria(resultado) : null;
@@ -45,8 +45,8 @@ public class CategoriaDAO {
     public boolean guardar(Categoria categoria) throws SQLException {
         String sql = "INSERT INTO categoria (nombre, tipo, activo) VALUES (?, ?, ?)";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             consulta.setString(1, categoria.getNombre());
             consulta.setString(2, categoria.getTipo().name());
             consulta.setBoolean(3, categoria.isActivo());
@@ -67,8 +67,8 @@ public class CategoriaDAO {
     public boolean actualizar(Categoria categoria) throws SQLException {
         String sql = "UPDATE categoria SET nombre = ?, tipo = ?, activo = ? WHERE id = ?";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             consulta.setString(1, categoria.getNombre());
             consulta.setString(2, categoria.getTipo().name());
             consulta.setBoolean(3, categoria.isActivo());
@@ -81,8 +81,8 @@ public class CategoriaDAO {
     public boolean eliminar(int id) throws SQLException {
         String sql = "DELETE FROM categoria WHERE id = ?";
 
-        try (Connection conexion = ConexionDB.getConnection();
-             PreparedStatement consulta = conexion.prepareStatement(sql)) {
+        try (ConexionDB.Recurso recurso = ConexionDB.abrir();
+             PreparedStatement consulta = recurso.conexion.prepareStatement(sql)) {
             consulta.setInt(1, id);
             return consulta.executeUpdate() > 0;
         }

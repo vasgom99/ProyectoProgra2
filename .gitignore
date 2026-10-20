@@ -1,2 +1,23 @@
 /target/
 /Garage_Coffee_Contexto_Completo.md
+/garage-db.properties
+/backend/garage-db.properties
+# Archivos locales de entorno que pueden contener credenciales.
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+/garage-backups/
+/.gradle/
+/.idea/
+/local.properties
+/build/
+/app/build/
+/android/.gradle/
+/android/.idea/
+/android/local.properties
+/android/build/
+/android/app/build/
+/captures/
+*.iml
+.DS_Store
