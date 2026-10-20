@@ -93,6 +93,9 @@ public final class Ui {
     public static void mostrarTexto(Component padre, String titulo, String texto) {
         new TextoDialog(SwingUtilities.getWindowAncestor(padre), titulo, texto).setVisible(true);
     }
+    public static void mostrarTexto(Component padre, String titulo, String texto, boolean permitirGuardarTxt) {
+        new TextoDialog(SwingUtilities.getWindowAncestor(padre), titulo, texto, permitirGuardarTxt).setVisible(true);
+    }
     public static JTextArea areaTexto(String texto) {
         JTextArea area = new JTextArea(texto);
         area.setEditable(false); area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));

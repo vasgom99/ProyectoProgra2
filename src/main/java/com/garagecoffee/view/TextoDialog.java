@@ -5,10 +5,14 @@ public class TextoDialog extends javax.swing.JDialog {
 
     public TextoDialog() { this(null, "Documento", ""); }
     public TextoDialog(java.awt.Window padre, String titulo, String texto) {
+        this(padre, titulo, texto, true);
+    }
+    public TextoDialog(java.awt.Window padre, String titulo, String texto, boolean permitirGuardarTxt) {
         super(padre, titulo, ModalityType.APPLICATION_MODAL);
         initComponents();
         lblTitulo.setText(titulo); area.setText(texto); area.setCaretPosition(0);
         area.setMargin(new java.awt.Insets(20, 24, 20, 24));
+        btnGuardar.setVisible(permitirGuardarTxt);
         Ui.secundario(btnGuardar); Ui.secundario(btnImprimir); Ui.primario(btnCerrar);
         btnGuardar.addActionListener(e -> Ui.ejecutar(this, () -> Ui.guardarTexto(this, area.getText())));
         btnImprimir.addActionListener(e -> Ui.ejecutar(this, () -> Ui.imprimir(this, area, titulo)));

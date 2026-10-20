@@ -22,6 +22,8 @@ DBeaver es solo el cliente de administración: debe apuntar al mismo MySQL que S
 
 Para ingresar usa una cuenta activa de la tabla `empleado`. Si ya existe una base `garage_coffee` de la versión anterior, haz una copia de seguridad antes de migrarla: `CREATE TABLE IF NOT EXISTS` no convierte automáticamente sus tablas antiguas al nuevo esquema.
 
+Las contraseñas de empleados se guardan como texto normal para mantener sencillo este proyecto académico. Las cuentas con claves protegidas por una versión anterior siguen funcionando; Swing las convierte a texto normal después de validar el acceso.
+
 ## Compilar y ejecutar
 
 Desde la raíz del repositorio:

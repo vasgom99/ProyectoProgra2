@@ -15,7 +15,7 @@ public class CocinaPanel extends PanelModulo {
                         p.getDetalles().stream().map(d -> d.getCantidad() + " x " + d.getProducto().getNombre()).collect(java.util.stream.Collectors.joining(", ")), p.getObservaciones()});
         cola.accion("Iniciar preparación", control.pedidos()::preparar);
         cola.accion("Marcar listo", control.pedidos()::listo);
-        cola.accion("Detalle", p -> Ui.mostrarTexto(this, "Comanda", PedidosPanel.detalle(p)));
+        cola.accion("Detalle", p -> Ui.mostrarTexto(this, "Comanda", PedidosPanel.detalle(p), false));
         registrar(cola);
         
     }

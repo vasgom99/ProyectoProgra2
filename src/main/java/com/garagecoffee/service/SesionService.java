@@ -22,8 +22,8 @@ public class SesionService {
                     .findFirst().orElse(null);
             Validacion.exigir(empleado != null && Claves.verificar(clave, empleado.getPassword()),
                     "Usuario o contraseña incorrectos.");
-            if (!Claves.protegida(empleado.getPassword())) {
-                datos.transaccion(() -> { empleado.setPassword(Claves.proteger(clave)); datos.guardar(empleado); return null; });
+            if (Claves.protegida(empleado.getPassword())) {
+                datos.transaccion(() -> { empleado.setPassword(Claves.guardar(clave)); datos.guardar(empleado); return null; });
             }
             empleadoId = empleado.getId();
             return empleado;
@@ -79,7 +79,7 @@ public class SesionService {
         if ((clave == null || clave.isBlank()) && existente != null) password = existente.getPassword();
         else {
             Validacion.exigir(clave != null && clave.length() >= 4 && clave.length() <= 255, "La clave debe tener entre 4 y 255 caracteres.");
-            password = Claves.proteger(clave.toCharArray());
+            password = clave;
         }
         Empleado empleado = existente == null ? new Empleado() : existente;
         if (existente == null) empleado.setId(datos.siguienteId(Empleado.class));
