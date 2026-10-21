@@ -6,7 +6,7 @@ import com.garagecoffee.model.TipoCategoria;
 import java.math.BigDecimal;
 import java.util.List;
 
-// Administra las categorías y los productos disponibles para los pedidos.
+// controla las categorías y productos.
 public class CatalogoService {
     private final DatosRestaurante datos;
     private final SesionService sesion;
@@ -57,8 +57,10 @@ public class CatalogoService {
             String descripcionValida = Validacion.opcional(descripcion, "Descripción", 255);
             String imagenValida = Validacion.opcional(imagen, "Imagen", 255);
             BigDecimal precioValido = Validacion.dinero(precio, "Precio", true);
-            Validacion.exigir(datos.categorias.contains(categoria), "Selecciona una categoría.");
-            Validacion.exigir(!disponible || categoria.isActivo(),
+            Categoria categoriaValida = categoria == null ? null : datos.categorias.stream()
+                    .filter(c -> c.getId() == categoria.getId()).findFirst().orElse(null);
+            Validacion.exigir(categoriaValida != null, "Selecciona una categoría.");
+            Validacion.exigir(!disponible || categoriaValida.isActivo(),
                     "Activa la categoría antes de ofrecer el producto.");
             Producto producto = id == 0 ? new Producto() : datos.productos.stream()
                     .filter(p -> p.getId() == id).findFirst().orElseThrow();
@@ -67,7 +69,7 @@ public class CatalogoService {
             producto.setDescripcion(descripcionValida);
             producto.setImagenUrl(imagenValida);
             producto.setPrecio(precioValido);
-            producto.setCategoria(categoria);
+            producto.setCategoria(categoriaValida);
             producto.setDisponible(disponible);
             datos.guardar(producto);
             if (id == 0) datos.productos.add(producto);

@@ -230,32 +230,6 @@
 <Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
 <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
 </Container>
-<Container class="javax.swing.JPanel" name="pie">
-<Properties>
-<Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="d8" green="e7" red="ef" type="rgb"/></Property>
-<Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor"><Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo"><EmptyBorder bottom="11" left="26" right="26" top="11"/></Border></Property>
-</Properties>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="South"/></Constraint></Constraints>
-<Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"><Property name="horizontalGap" type="int" value="0"/><Property name="verticalGap" type="int" value="0"/></Layout>
-<SubComponents>
-<Component class="javax.swing.JLabel" name="lblAviso">
-<Properties>
-<Property name="text" type="java.lang.String" value="MYSQL  ·  Cambios guardados. Usa Actualizar para consultar otra sesión."/>
-<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="12" style="0"/></Property>
-<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="39" green="57" red="72" type="rgb"/></Property>
-</Properties>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="Center"/></Constraint></Constraints>
-</Component>
-<Component class="javax.swing.JLabel" name="lblTecnologia">
-<Properties>
-<Property name="text" type="java.lang.String" value="JAVA SWING"/>
-<Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor"><Font name="SansSerif" size="10" style="1"/></Property>
-<Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor"><Color blue="39" green="57" red="72" type="rgb"/></Property>
-</Properties>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription"><BorderConstraints direction="East"/></Constraint></Constraints>
-</Component>
-</SubComponents>
-</Container>
 </SubComponents>
 </Container>
 </SubComponents>

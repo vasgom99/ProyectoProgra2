@@ -3,7 +3,7 @@ package com.garagecoffee.dao;
 import com.garagecoffee.database.ConexionDB;
 import java.sql.*;
 
-// Evita sobrescribir cambios realizados por otra sesión.
+// evita sobrescribir cambios recientes.
 public class ControlCambiosDAO {
     public long revision(boolean bloquear) throws SQLException {
         try (var recurso = ConexionDB.abrir();

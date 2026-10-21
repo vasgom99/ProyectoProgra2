@@ -1,6 +1,6 @@
 # Garage Coffee
 
-Proyecto académico de restaurante con POO. El programa principal es **Java Swing + JDBC + MySQL**. `backend/` (Spring) y `android/` se conservan como ampliaciones de consulta; **Swing no necesita Spring ni Android para iniciar**.
+Proyecto académico de restaurante con POO. El programa principal es **Java Swing + JDBC + MySQL**. `backend/` comunica la app de Android con MySQL; **Swing no necesita Spring ni Android para iniciar**.
 
 ## Lo que hace el sistema
 
@@ -20,22 +20,20 @@ No hay clientes, reservas, reparto, recetas, inventario, compras, promociones, a
 
 DBeaver es solo el cliente de administración: debe apuntar al mismo MySQL que Swing. En esta Mac también existe un MySQL instalado fuera de Docker; por eso el archivo local `garage-db.properties` apunta a `jdbc:mysql://[::1]:3306/garage_coffee`, que llega al contenedor. `localhost:3306` llega al MySQL de macOS. En otras computadoras usa la dirección y contraseña que correspondan a su servidor; no copies el archivo local con credenciales.
 
-Usuarios de ejemplo: `admin.demo`, `mesero.demo`, `cocina.demo`, `cajero.demo`. Contraseña de todos: `demo`. Cámbialas antes de usar datos reales. Si ya existe una base `garage_coffee` de la versión anterior, haz una copia de seguridad antes de migrarla: `CREATE TABLE IF NOT EXISTS` no convierte automáticamente sus tablas antiguas al nuevo esquema.
+Para ingresar usa una cuenta activa de la tabla `empleado`. Si ya existe una base `garage_coffee` de la versión anterior, haz una copia de seguridad antes de migrarla: `CREATE TABLE IF NOT EXISTS` no convierte automáticamente sus tablas antiguas al nuevo esquema.
 
-Si MySQL no está disponible, Swing puede abrirse en **demostración temporal**: acepta la opción al inicio o usa `--demo`. En ese modo se entra con `admin` / `demo` y se pierden los cambios al cerrar.
+Las contraseñas de empleados se guardan como texto normal para mantener sencillo este proyecto académico. Las cuentas con claves protegidas por una versión anterior siguen funcionando; Swing las convierte a texto normal después de validar el acceso.
 
-## Compilar y probar
+## Compilar y ejecutar
 
 Desde la raíz del repositorio:
 
 ```sh
-./backend/mvnw -f pom.xml test
+./backend/mvnw -f pom.xml package
 ./backend/mvnw -f pom.xml process-classes exec:exec
 ```
 
 En Windows cambia `./backend/mvnw` por `backend\mvnw.cmd`. El proyecto de Android se abre **desde `android/`** en Android Studio, no desde la raíz. Spring se abre desde `backend/`; consulta [backend/README.md](backend/README.md). Los archivos `.form` de Swing siguen siendo editables con el diseñador de NetBeans.
-
-Con MySQL iniciado y el esquema importado, `./backend/mvnw -f pom.xml test -Dgarage.test.mysql=true` añade una prueba JDBC de lectura y otra de pedido/cobro que se revierte al finalizar. El comando normal de pruebas no necesita MySQL.
 
 Los campos monetarios aceptan coma o punto decimal y formatos habituales de miles. Una cantidad como `10.000` se interpreta como diez con tres decimales; para diez mil escribe `10000` o `10,000.00`.
 

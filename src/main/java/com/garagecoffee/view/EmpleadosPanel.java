@@ -5,7 +5,6 @@ import com.garagecoffee.model.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JPasswordField;
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class EmpleadosPanel extends PanelModulo {
 
     public EmpleadosPanel() { initComponents(); }
@@ -44,22 +43,16 @@ public class EmpleadosPanel extends PanelModulo {
     private void initComponents() {
         pestanas = new javax.swing.JTabbedPane();
         empleados = new com.garagecoffee.view.PanelListado<>();
-        lblAyuda = new javax.swing.JLabel();
         this.setBackground(new java.awt.Color(246, 244, 238));
         this.setLayout(new java.awt.BorderLayout(12, 12));
         pestanas.setFont(new java.awt.Font("SansSerif", 0, 14));
         pestanas.setBackground(new java.awt.Color(246, 244, 238));
         pestanas.addTab("Empleados", empleados);
         this.add(pestanas, java.awt.BorderLayout.CENTER);
-        lblAyuda.setText("Contraseñas protegidas. Desactiva las cuentas que ya no se utilicen.");
-        lblAyuda.setFont(new java.awt.Font("SansSerif", 0, 12));
-        lblAyuda.setForeground(new java.awt.Color(109, 121, 114));
-        this.add(lblAyuda, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane pestanas;
     private com.garagecoffee.view.PanelListado<Empleado> empleados;
-    private javax.swing.JLabel lblAyuda;
     // End of variables declaration//GEN-END:variables
 }

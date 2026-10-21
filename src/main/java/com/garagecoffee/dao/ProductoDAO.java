@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y consulta los productos, sus precios, categorías y disponibilidad. */
+/** guarda y consulta productos. */
 public class ProductoDAO {
 
     private static final String CONSULTA_BASE =
@@ -34,7 +34,7 @@ public class ProductoDAO {
         return productos;
     }
 
-    // Devuelve null si no existe un producto con ese ID.
+    // devuelve null si no existe.
     public Producto buscarPorId(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
             return buscarPorId(recurso.conexion, id);
@@ -50,7 +50,7 @@ public class ProductoDAO {
         }
     }
 
-    // Al guardar, asigna al objeto el ID generado por MySQL.
+    // asigna el id generado.
     public boolean guardar(Producto producto) throws SQLException {
         String sql = "INSERT INTO producto "
                 + "(categoria_id, nombre, descripcion, imagen_url, precio, disponible) "
@@ -95,7 +95,7 @@ public class ProductoDAO {
         }
     }
 
-    // Las claves foráneas protegen los productos utilizados por otros registros.
+    // respeta las relaciones existentes.
     public boolean eliminar(int id) throws SQLException {
         String sql = "DELETE FROM producto WHERE id = ?";
 

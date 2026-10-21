@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y consulta los cobros en efectivo. */
+/** guarda y consulta pagos. */
 public class PagoDAO {
     public List<Pago> listar() throws SQLException {
         try (var recurso = ConexionDB.abrir();

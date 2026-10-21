@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.*;
 
-// Utilidades pequeñas para mensajes, nombres legibles e impresión.
+// contiene funciones comunes de la interfaz.
 public final class Ui {
     public static final Color FONDO = new Color(246, 244, 238);
     public static final Color CAFE = new Color(36, 59, 50);
     public static final Color ACENTO = new Color(174, 96, 64);
     public static final DateTimeFormatter FECHA_HORA = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
     private Ui() { }
-    // Nimbus está incluido en Java; no requiere instalar otra librería gráfica.
+    // configura la apariencia de swing.
     public static void prepararApariencia() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -79,9 +79,6 @@ public final class Ui {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    public static boolean confirmar(Component padre, String texto) {
-        return JOptionPane.showConfirmDialog(padre, texto, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-    }
     public static JLabel aviso(String texto) {
         JLabel etiqueta = new JLabel(texto);
         etiqueta.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
@@ -96,6 +93,9 @@ public final class Ui {
     public static void mostrarTexto(Component padre, String titulo, String texto) {
         new TextoDialog(SwingUtilities.getWindowAncestor(padre), titulo, texto).setVisible(true);
     }
+    public static void mostrarTexto(Component padre, String titulo, String texto, boolean permitirGuardarTxt) {
+        new TextoDialog(SwingUtilities.getWindowAncestor(padre), titulo, texto, permitirGuardarTxt).setVisible(true);
+    }
     public static JTextArea areaTexto(String texto) {
         JTextArea area = new JTextArea(texto);
         area.setEditable(false); area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
@@ -107,13 +107,12 @@ public final class Ui {
         selector.setSelectedFile(new java.io.File("garage-coffee.txt"));
         if (selector.showSaveDialog(padre) != JFileChooser.APPROVE_OPTION) return;
         java.io.File archivo = selector.getSelectedFile();
-        if (archivo.exists() && !confirmar(padre, "¿Reemplazar el archivo seleccionado?")) return;
         try { Files.writeString(archivo.toPath(), texto, StandardCharsets.UTF_8); }
         catch (IOException ex) { throw new IllegalStateException("No se pudo escribir el archivo: " + ex.getMessage()); }
     }
     public static void imprimir(Component padre, JTextArea area, String titulo) {
         try {
-            // El diálogo del sistema permite PDF si hay una impresora/opción PDF disponible.
+            // abre las opciones de impresión.
             area.print(new MessageFormat(titulo.replace("'", "''")), new MessageFormat("Página {0}"));
         } catch (java.awt.print.PrinterException | SecurityException ex) {
             throw new IllegalStateException("No se pudo imprimir: " + ex.getMessage());

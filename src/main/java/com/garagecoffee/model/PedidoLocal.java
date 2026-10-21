@@ -1,6 +1,6 @@
 package com.garagecoffee.model;
 
-// Pedido atendido en una mesa del restaurante.
+// representa un pedido de mesa.
 public class PedidoLocal extends Pedido {
     private Mesa mesa;
 

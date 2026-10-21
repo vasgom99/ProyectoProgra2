@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y consulta los productos de cada pedido. */
+/** guarda los productos de un pedido. */
 public class DetallePedidoDAO {
     List<DetallePedido> listarPorPedido(Connection conexion, int pedidoId) throws SQLException {
         List<DetallePedido> detalles = new ArrayList<>();
@@ -31,7 +31,7 @@ public class DetallePedidoDAO {
         return detalles;
     }
 
-    // PedidoDAO proporciona la transacción y asigna los IDs al terminar.
+    // usa la transacción del pedido.
     int[] guardarDetalles(Connection conexion, int pedidoId, List<DetallePedido> detalles) throws SQLException {
         int[] ids = new int[detalles.size()];
         String sql = "INSERT INTO detalle_pedido "
