@@ -3,7 +3,7 @@ package com.garagecoffee.service;
 import com.garagecoffee.model.*;
 import java.util.List;
 
-// Lleva el pedido local desde la mesa hasta su entrega.
+// controla el proceso de los pedidos.
 public class PedidoService {
     private final DatosRestaurante datos;
     private final SesionService sesion;

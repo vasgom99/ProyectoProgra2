@@ -3,7 +3,7 @@ package com.garagecoffee.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-// Registra el efectivo aplicado a un pedido en una caja.
+// representa el pago de un pedido.
 public class Pago {
     private int id;
     private Pedido pedido;

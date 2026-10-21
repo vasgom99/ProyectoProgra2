@@ -5,7 +5,7 @@ import com.garagecoffee.model.RolEmpleado;
 import java.util.Arrays;
 import java.util.List;
 
-// Comprueba las credenciales del empleado y los permisos de cada rol.
+// controla el acceso y los permisos.
 public class SesionService {
     private final DatosRestaurante datos;
     private Integer empleadoId;
@@ -15,15 +15,15 @@ public class SesionService {
     public Empleado iniciarSesion(String usuario, char[] clave) {
         empleadoId = null;
         try {
-            if (!datos.esDemo()) datos.recargar();
+            datos.recargar();
             Validacion.exigir(usuario != null && clave != null, "Indica usuario y contraseña.");
             Empleado empleado = datos.empleados.stream()
                     .filter(e -> e.isActivo() && e.getNombreUsuario().equalsIgnoreCase(usuario.trim()))
                     .findFirst().orElse(null);
             Validacion.exigir(empleado != null && Claves.verificar(clave, empleado.getPassword()),
                     "Usuario o contraseña incorrectos.");
-            if (!datos.esDemo() && !Claves.protegida(empleado.getPassword())) {
-                datos.transaccion(() -> { empleado.setPassword(Claves.proteger(clave)); datos.guardar(empleado); return null; });
+            if (Claves.protegida(empleado.getPassword())) {
+                datos.transaccion(() -> { empleado.setPassword(Claves.guardar(clave)); datos.guardar(empleado); return null; });
             }
             empleadoId = empleado.getId();
             return empleado;
@@ -79,7 +79,7 @@ public class SesionService {
         if ((clave == null || clave.isBlank()) && existente != null) password = existente.getPassword();
         else {
             Validacion.exigir(clave != null && clave.length() >= 4 && clave.length() <= 255, "La clave debe tener entre 4 y 255 caracteres.");
-            password = datos.esDemo() ? clave : Claves.proteger(clave.toCharArray());
+            password = clave;
         }
         Empleado empleado = existente == null ? new Empleado() : existente;
         if (existente == null) empleado.setId(datos.siguienteId(Empleado.class));

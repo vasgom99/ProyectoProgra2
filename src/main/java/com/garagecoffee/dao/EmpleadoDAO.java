@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda los datos de los empleados y permite buscarlos por su usuario. */
+/** guarda y consulta empleados. */
 public class EmpleadoDAO {
 
     private static final String CONSULTA_BASE =
@@ -34,14 +34,14 @@ public class EmpleadoDAO {
         return registros;
     }
 
-    // Devuelve null si no existe el registro.
+    // devuelve null si no existe.
     public Empleado buscarPorId(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
             return buscarPorId(recurso.conexion, id);
         }
     }
 
-    // Reutiliza la conexión cuando otra DAO necesita recuperar una relación.
+    // reutiliza la conexión activa.
     Empleado buscarPorId(Connection conexion, int id) throws SQLException {
         try (PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " WHERE id = ?")) {
             consulta.setInt(1, id);
@@ -51,7 +51,7 @@ public class EmpleadoDAO {
         }
     }
 
-    // Asigna al objeto el ID generado por MySQL.
+    // asigna el id generado.
     public boolean guardar(Empleado empleado) throws SQLException {
         String sql = "INSERT INTO empleado (nombre, apellido, telefono, email, nombre_usuario, password, rol, activo) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -91,7 +91,7 @@ public class EmpleadoDAO {
         }
     }
 
-    // Las claves foráneas impiden borrar registros que todavía se utilizan.
+    // respeta las relaciones existentes.
     public boolean eliminar(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir();
              PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM empleado WHERE id = ?")) {

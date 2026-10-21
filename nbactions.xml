@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-    <!-- Ejecutar proyecto siempre abre la aplicación Swing integrada. -->
+    <!-- abre la aplicación swing. -->
     <action>
         <actionName>run</actionName>
         <packagings>

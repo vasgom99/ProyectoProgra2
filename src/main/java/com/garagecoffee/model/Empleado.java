@@ -1,6 +1,5 @@
 package com.garagecoffee.model;
 
-/** @author Miguel */
 public class Empleado {
 
     private int id;

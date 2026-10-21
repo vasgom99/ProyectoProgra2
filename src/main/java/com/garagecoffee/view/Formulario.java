@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.*;
 
-// Base de los JPanel Form de captura. Solo enlaza campos y valida; no crea su diseño.
+// comparte los campos de los formularios.
 public class Formulario extends JPanel implements Scrollable {
     private final Map<String, JComponent> campos = new LinkedHashMap<>();
     protected void registrar(String etiqueta, JComponent componente) {
@@ -68,7 +68,7 @@ public class Formulario extends JPanel implements Scrollable {
         if (numero.length() > 64) throw new IllegalArgumentException("El número es demasiado largo.");
         numero = numero.replaceFirst("(?i)^(GTQ|Q)\\s*", "");
         try {
-            // Conserva punto o coma decimal y acepta miles cuando su agrupación es clara.
+            // acepta punto o coma decimal.
             if (numero.matches("[+-]?[0-9]{1,3}( [0-9]{3})+([.,][0-9]+)?")) numero = numero.replace(" ", "");
             if (numero.contains(",") && numero.contains(".")) {
                 char decimal = numero.lastIndexOf(',') > numero.lastIndexOf('.') ? ',' : '.';

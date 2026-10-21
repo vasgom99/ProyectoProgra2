@@ -10,7 +10,6 @@ import com.garagecoffee.service.FinanzasService;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class CajaPanel extends PanelModulo {
     private FinanzasService servicio;
 
@@ -25,7 +24,7 @@ public class CajaPanel extends PanelModulo {
                 p -> new Object[]{p.getId(), ((PedidoLocal) p).getMesa().getNumero(),
                         Ui.nombre(p.getEstado()), p.getTotal(), servicio.pendiente(p)});
         cuentas.accion("Cobrar", this::cobrar);
-        cuentas.accion("Comprobante", p -> Ui.mostrarTexto(this, "Comprobante académico", servicio.ticket(p)));
+        cuentas.accion("Comprobante", p -> Ui.mostrarTexto(this, "Comprobante", servicio.ticket(p)));
         registrar(cuentas);
 
         cajas.configurar(new String[]{"Caja", "Apertura", "Cierre", "Estado", "Inicial Q", "Esperado Q", "Contado Q"},

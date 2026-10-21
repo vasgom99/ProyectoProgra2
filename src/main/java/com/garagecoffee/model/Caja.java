@@ -3,7 +3,6 @@ package com.garagecoffee.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/** @author Miguel */
 public class Caja {
 
     private int id;

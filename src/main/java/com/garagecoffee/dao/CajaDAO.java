@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y consulta las aperturas, cierres y montos de caja. */
+/** guarda y consulta cajas. */
 public class CajaDAO {
 
     private static final String CONSULTA_BASE =
@@ -35,14 +35,14 @@ public class CajaDAO {
         return registros;
     }
 
-    // Devuelve null si no existe el registro.
+    // devuelve null si no existe.
     public Caja buscarPorId(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
             return buscarPorId(recurso.conexion, id);
         }
     }
 
-    // Reutiliza la conexión cuando otra DAO necesita recuperar una relación.
+    // reutiliza la conexión activa.
     Caja buscarPorId(Connection conexion, int id) throws SQLException {
         try (PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " WHERE id = ?")) {
             consulta.setInt(1, id);
@@ -52,7 +52,7 @@ public class CajaDAO {
         }
     }
 
-    // Asigna al objeto el ID generado por MySQL.
+    // asigna el id generado.
     public boolean guardar(Caja caja) throws SQLException {
         String sql = "INSERT INTO caja (fecha_apertura, fecha_cierre, monto_inicial, monto_final, estado) "
                 + "VALUES (?, ?, ?, ?, ?)";
@@ -82,7 +82,7 @@ public class CajaDAO {
         }
     }
 
-    // Las claves foráneas impiden borrar registros que todavía se utilizan.
+    // respeta las relaciones existentes.
     public boolean eliminar(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir();
              PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM caja WHERE id = ?")) {

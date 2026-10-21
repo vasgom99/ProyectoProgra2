@@ -23,12 +23,12 @@ android {
 
     buildTypes {
         debug {
-            // ADB conecta este localhost del emulador con Spring en el equipo.
+            // conecta el emulador con spring.
             buildConfigField("String", "API_BASE_URL", "\"http://127.0.0.1:8080\"")
         }
         release {
             isMinifyEnabled = false
-            // Una instalación distribuida requerirá HTTPS y una dirección configurada.
+            // configura la dirección del servidor.
             buildConfigField("String", "API_BASE_URL", "\"\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -46,6 +46,4 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui.tooling)
 }
