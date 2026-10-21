@@ -28,15 +28,21 @@ public class ComprasPanel extends PanelModulo {
         registrar(compras);
         
     }
-    private void nueva() {
+   private void nueva() {
         Formulario f = new CompraForm();
         var proveedor = f.combo("Proveedor activo", control.inventario().proveedores().stream().filter(Proveedor::isActivo).toList(), null);
         List<DetalleCompra> detalles = new ArrayList<>();
-        lista.configurar(new String[]{"Ingrediente", "Cantidad", "Costo unitario Q", "Subtotal Q"},
+        
+        // CORRECCIÓN: Extraer la tabla correcta del formulario emergente
+        PanelListado<DetalleCompra> tablaCarrito = f.listado("Ingredientes");
+        
+        tablaCarrito.configurar(new String[]{"Ingrediente", "Cantidad", "Costo unitario Q", "Subtotal Q"},
                 () -> List.copyOf(detalles), d -> new Object[]{Ui.nombre(d.getIngrediente()), d.getCantidad(), d.getCostoUnitario(), d.getSubtotal()});
+        
         javax.swing.JLabel total = f.etiqueta("Resumen", "Total: Q 0.00");
         Runnable actualizar = () -> total.setText("Total: " + Ui.dinero(detalles.stream().map(DetalleCompra::getSubtotal).reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add)));
-        lista.boton("Agregar", () -> {
+        
+        tablaCarrito.boton("Agregar", () -> {
             Formulario linea = new LineaCompraForm();
             var ingrediente = linea.combo("Ingrediente", control.inventario().ingredientes(), null);
             var cantidad = linea.texto("Cantidad", "1");
@@ -54,7 +60,8 @@ public class ComprasPanel extends PanelModulo {
                 actualizar.run();
             });
         });
-        lista.accion("Quitar", d -> { detalles.remove(d); actualizar.run(); });
+        
+        tablaCarrito.accion("Quitar", d -> { detalles.remove(d); actualizar.run(); });
         f.guardar(this, "Nueva compra", () -> control.inventario().guardarCompra(f.elegido(proveedor), detalles));
     }
 

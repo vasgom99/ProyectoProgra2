@@ -37,7 +37,12 @@ public class Formulario extends JPanel implements Scrollable {
     public <T> PanelListado<T> listado(String etiqueta) { return (PanelListado<T>) campoRegistrado(etiqueta); }
     public JTextField texto(String etiqueta, Object valor) {
         JTextField campo = (JTextField) campoRegistrado(etiqueta);
-        campo.setText(valor == null ? "" : valor.toString()); return campo;
+        if (valor instanceof BigDecimal bd) {
+            campo.setText(bd.stripTrailingZeros().toPlainString());
+        } else {
+            campo.setText(valor == null ? "" : valor.toString());
+        }
+        return campo;
     }
     public JCheckBox check(String etiqueta, boolean marcado) {
         JCheckBox campo = (JCheckBox) campoRegistrado(etiqueta); campo.setSelected(marcado); return campo;

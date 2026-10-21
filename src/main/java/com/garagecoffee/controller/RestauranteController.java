@@ -3,7 +3,7 @@ package com.garagecoffee.controller;
 import com.garagecoffee.service.*;
 
 // Reúne los servicios que usan las pantallas y mantiene una sola sesión.
-public class RestauranteController {
+public class RestauranteController {    
     private final DatosRestaurante datos;
     private final SesionService sesion;
     private final CatalogoService catalogo;

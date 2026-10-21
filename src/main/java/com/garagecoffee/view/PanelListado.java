@@ -29,7 +29,14 @@ public class PanelListado<T> extends javax.swing.JPanel {
                 return etiqueta;
             }
         });
-        buscar.getAccessibleContext().setAccessibleName("Buscar en la tabla");
+      javax.swing.table.DefaultTableCellRenderer renderLimpio = new javax.swing.table.DefaultTableCellRenderer() {
+            @Override public java.awt.Component getTableCellRendererComponent(javax.swing.JTable t, Object valor, boolean seleccionado, boolean foco, int fila, int columna) {
+                if (valor instanceof java.math.BigDecimal bd) valor = bd.stripTrailingZeros().toPlainString();
+                return super.getTableCellRendererComponent(t, valor, seleccionado, foco, fila, columna);
+            }
+        };
+        tabla.setDefaultRenderer(Object.class, renderLimpio);
+        tabla.setDefaultRenderer(java.math.BigDecimal.class, renderLimpio);
         buscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             private void filtrar() {
                 if (orden == null) return;

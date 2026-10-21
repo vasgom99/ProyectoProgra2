@@ -24,7 +24,7 @@ public class ConexionDB {
         javax.sql.DataSource fuente = origen;
         if (fuente != null) return fuente.getConnection();
         return DriverManager.getConnection(configuracion("garage.db.url", "jdbc:mysql://localhost:3306/garage_coffee"),
-                configuracion("garage.db.user", "root"), configuracion("garage.db.password", ""));
+                configuracion("garage.db.user", "root"), configuracion("garage.db.password", "David_2006"));
     }
     // Una DAO cierra solo las conexiones que abrió por su cuenta.
     public static Recurso abrir() throws SQLException {
