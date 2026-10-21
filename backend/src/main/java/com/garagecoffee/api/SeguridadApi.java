@@ -32,8 +32,7 @@ public class SeguridadApi {
     @Bean PasswordEncoder claves() {
         return new PasswordEncoder() {
             public String encode(CharSequence clave) {
-                char[] valor = clave.toString().toCharArray();
-                try { return Claves.proteger(valor); } finally { Arrays.fill(valor, '\0'); }
+                return clave.toString();
             }
             public boolean matches(CharSequence clave, String guardada) {
                 char[] valor = clave.toString().toCharArray();

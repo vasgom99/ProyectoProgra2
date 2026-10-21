@@ -8,17 +8,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class PedidoDialog extends javax.swing.JDialog {
     private final List<DetallePedido> detalles = new ArrayList<>();
-    private boolean guardado;
 
     public PedidoDialog() { super((Window) null); initComponents(); }
 
     public PedidoDialog(Window padre, RestauranteController control, Mesa elegida) {
         super(padre, "Nuevo pedido", ModalityType.APPLICATION_MODAL);
         initComponents();
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         var mesa = f.combo("Mesa libre", control.atencion().mesas().stream()
                 .filter(m -> m.getEstado() == EstadoMesa.LIBRE).toList(), elegida);
         var observaciones = f.texto("Observaciones", "");
@@ -71,23 +69,14 @@ public class PedidoDialog extends javax.swing.JDialog {
         Ui.primario(btnConfirmar);
         Ui.secundario(btnCancelar);
         btnConfirmar.setText("Enviar a cocina");
-        aviso.setText(control.esDemo() ? "Demostración · Datos temporales" : "El pedido se guarda en MySQL.");
-        btnCancelar.addActionListener(e -> cancelar());
+        btnCancelar.addActionListener(e -> dispose());
         btnConfirmar.addActionListener(e -> Ui.ejecutar(this, () -> {
             control.pedidos().guardar(f.elegido(mesa), f.valor(observaciones), detalles);
-            guardado = true;
             dispose();
         }));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override public void windowClosing(java.awt.event.WindowEvent e) { cancelar(); }
-        });
         setSize(1100, 660);
         setMinimumSize(new Dimension(900, 570));
         setLocationRelativeTo(padre);
-    }
-
-    private void cancelar() {
-        if (guardado || Ui.confirmar(this, "¿Cerrar sin guardar el pedido?")) dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -105,7 +94,6 @@ public class PedidoDialog extends javax.swing.JDialog {
         pie = new javax.swing.JPanel();
         totales = new javax.swing.JPanel();
         total = new javax.swing.JLabel();
-        aviso = new javax.swing.JLabel();
         acciones = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
@@ -139,15 +127,11 @@ public class PedidoDialog extends javax.swing.JDialog {
         pie.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 24, 16, 24));
         pie.setLayout(new java.awt.BorderLayout(16, 16));
         totales.setOpaque(false);
-        totales.setLayout(new java.awt.GridLayout(2, 1, 5, 5));
+        totales.setLayout(new java.awt.GridLayout(1, 1, 5, 5));
         total.setText("Total estimado: Q 0.00");
         total.setFont(new java.awt.Font("SansSerif", 1, 19));
         total.setForeground(new java.awt.Color(36, 59, 50));
         totales.add(total);
-        aviso.setText("El pedido se guarda en MySQL");
-        aviso.setFont(new java.awt.Font("SansSerif", 0, 11));
-        aviso.setForeground(new java.awt.Color(109, 121, 114));
-        totales.add(aviso);
         pie.add(totales, java.awt.BorderLayout.CENTER);
         acciones.setOpaque(false);
         acciones.setLayout(new java.awt.FlowLayout(2, 12, 6));
@@ -180,7 +164,6 @@ public class PedidoDialog extends javax.swing.JDialog {
     private javax.swing.JPanel pie;
     private javax.swing.JPanel totales;
     private javax.swing.JLabel total;
-    private javax.swing.JLabel aviso;
     private javax.swing.JPanel acciones;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;

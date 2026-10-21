@@ -1,12 +1,11 @@
 package com.garagecoffee.view;
 
 import com.garagecoffee.model.*;
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class InicioPanel extends PanelModulo {
 
     private com.garagecoffee.controller.RestauranteController control;
     public InicioPanel() { initComponents(); }
-    public InicioPanel(com.garagecoffee.controller.RestauranteController control) { this(); this.control = control; if (control.esDemo()) lblNota.setText("<html>Demostración sin conexión.<br>Los datos de prueba se pierden al cerrar.</html>"); }
+    public InicioPanel(com.garagecoffee.controller.RestauranteController control) { this(); this.control = control; }
     @Override public void recargar() {
         if (control == null) return;
         pendientes.setText(String.valueOf(control.pedidos().pedidos().stream().filter(p -> p.getEstado() == EstadoPedido.PENDIENTE).count()));
@@ -40,18 +39,6 @@ public class InicioPanel extends PanelModulo {
         cardAlertasTitle = new javax.swing.JLabel();
         alertas = new javax.swing.JLabel();
         cardAlertasHelp = new javax.swing.JLabel();
-        guia = new javax.swing.JPanel();
-        recorrido = new javax.swing.JPanel();
-        lblFlujo = new javax.swing.JLabel();
-        pasos = new javax.swing.JPanel();
-        paso1 = new javax.swing.JLabel();
-        paso2 = new javax.swing.JLabel();
-        paso3 = new javax.swing.JLabel();
-        paso4 = new javax.swing.JLabel();
-        notas = new javax.swing.JPanel();
-        lblNotaTitulo = new javax.swing.JLabel();
-        lblNota = new javax.swing.JLabel();
-        lblNotaPie = new javax.swing.JLabel();
         this.setBackground(new java.awt.Color(246, 244, 238));
         this.setLayout(new java.awt.BorderLayout(22, 22));
         arriba.setOpaque(false);
@@ -140,53 +127,7 @@ public class InicioPanel extends PanelModulo {
         cardAlertas.add(cardAlertasHelp, java.awt.BorderLayout.SOUTH);
         tarjetas.add(cardAlertas);
         arriba.add(tarjetas, java.awt.BorderLayout.CENTER);
-        this.add(arriba, java.awt.BorderLayout.NORTH);
-        guia.setOpaque(false);
-        guia.setLayout(new java.awt.GridLayout(1, 2, 20, 20));
-        recorrido.setBackground(new java.awt.Color(255, 255, 255));
-        recorrido.setBorder(javax.swing.BorderFactory.createEmptyBorder(24, 26, 24, 26));
-        recorrido.setLayout(new java.awt.BorderLayout(20, 20));
-        lblFlujo.setText("Tu servicio, en orden.");
-        lblFlujo.setFont(new java.awt.Font("SansSerif", 1, 21));
-        lblFlujo.setForeground(new java.awt.Color(36, 59, 50));
-        recorrido.add(lblFlujo, java.awt.BorderLayout.NORTH);
-        pasos.setOpaque(false);
-        pasos.setLayout(new java.awt.GridLayout(4, 1, 14, 14));
-        paso1.setText("<html><b>01 · Elige una mesa</b><br>Agrega productos y envía el pedido a cocina.</html>");
-        paso1.setFont(new java.awt.Font("SansSerif", 0, 15));
-        paso1.setForeground(new java.awt.Color(36, 59, 50));
-        pasos.add(paso1);
-        paso2.setText("<html><b>02 · Prepara en cocina</b><br>Inicia la preparación y marca «Listo».</html>");
-        paso2.setFont(new java.awt.Font("SansSerif", 0, 15));
-        paso2.setForeground(new java.awt.Color(36, 59, 50));
-        pasos.add(paso2);
-        paso3.setText("<html><b>03 · Entrega y cobra</b><br>Abre caja, registra el pago y entrega el pedido.</html>");
-        paso3.setFont(new java.awt.Font("SansSerif", 0, 15));
-        paso3.setForeground(new java.awt.Color(36, 59, 50));
-        pasos.add(paso3);
-        paso4.setText("<html><b>04 · Comprueba el resultado</b><br>Consulta el pedido; en demo los datos son temporales.</html>");
-        paso4.setFont(new java.awt.Font("SansSerif", 0, 15));
-        paso4.setForeground(new java.awt.Color(36, 59, 50));
-        pasos.add(paso4);
-        recorrido.add(pasos, java.awt.BorderLayout.CENTER);
-        guia.add(recorrido);
-        notas.setBackground(new java.awt.Color(238, 231, 220));
-        notas.setBorder(javax.swing.BorderFactory.createEmptyBorder(24, 26, 24, 26));
-        notas.setLayout(new java.awt.BorderLayout(18, 18));
-        lblNotaTitulo.setText("Antes de comenzar");
-        lblNotaTitulo.setFont(new java.awt.Font("SansSerif", 1, 21));
-        lblNotaTitulo.setForeground(new java.awt.Color(36, 59, 50));
-        notas.add(lblNotaTitulo, java.awt.BorderLayout.NORTH);
-        lblNota.setText("<html>Tu información se guarda en <b>MySQL</b>.<br><br>El acceso depende del rol de cada empleado.<br><br>Los datos se conservan al cerrar.<br>Usa Actualizar para ver cambios de otra sesión.<br><br><b>Los comprobantes no tienen validez fiscal.</b></html>");
-        lblNota.setFont(new java.awt.Font("SansSerif", 0, 15));
-        lblNota.setForeground(new java.awt.Color(102, 91, 75));
-        notas.add(lblNota, java.awt.BorderLayout.CENTER);
-        lblNotaPie.setText("POO · COMPONENTES SWING");
-        lblNotaPie.setFont(new java.awt.Font("SansSerif", 1, 10));
-        lblNotaPie.setForeground(new java.awt.Color(102, 91, 75));
-        notas.add(lblNotaPie, java.awt.BorderLayout.SOUTH);
-        guia.add(notas);
-        this.add(guia, java.awt.BorderLayout.CENTER);
+        this.add(arriba, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -212,17 +153,5 @@ public class InicioPanel extends PanelModulo {
     private javax.swing.JLabel cardAlertasTitle;
     private javax.swing.JLabel alertas;
     private javax.swing.JLabel cardAlertasHelp;
-    private javax.swing.JPanel guia;
-    private javax.swing.JPanel recorrido;
-    private javax.swing.JLabel lblFlujo;
-    private javax.swing.JPanel pasos;
-    private javax.swing.JLabel paso1;
-    private javax.swing.JLabel paso2;
-    private javax.swing.JLabel paso3;
-    private javax.swing.JLabel paso4;
-    private javax.swing.JPanel notas;
-    private javax.swing.JLabel lblNotaTitulo;
-    private javax.swing.JLabel lblNota;
-    private javax.swing.JLabel lblNotaPie;
     // End of variables declaration//GEN-END:variables
 }

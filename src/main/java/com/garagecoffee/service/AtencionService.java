@@ -5,7 +5,7 @@ import com.garagecoffee.model.Mesa;
 import com.garagecoffee.model.PedidoLocal;
 import java.util.List;
 
-// Mantiene las mesas disponibles para tomar pedidos locales.
+// controla las mesas del restaurante.
 public class AtencionService {
     private final DatosRestaurante datos;
     private final SesionService sesion;

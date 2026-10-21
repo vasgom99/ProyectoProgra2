@@ -7,15 +7,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.function.*;
 
-// Usa las DAO existentes; agrupa cada operación del servicio en una sola transacción.
+// conecta los servicios con las dao.
 public class DatosMySQL extends DatosRestaurante {
     private final ControlCambiosDAO cambios = new ControlCambiosDAO();
     private long revision;
     private boolean escribiendo;
     private boolean disponible;
     public DatosMySQL() { recargar(); }
-    @Override public boolean esDemo() { return false; }
-    // MySQL asigna los IDs; cero indica un registro nuevo.
+    // mysql asigna los identificadores.
     @Override int siguienteId(Class<?> tipo) { return 0; }
     @Override public void recargar() {
         disponible = false;
@@ -87,7 +86,7 @@ public class DatosMySQL extends DatosRestaurante {
         return lista.stream().filter(x -> id.applyAsInt(x) == buscado).findFirst()
                 .orElseThrow(() -> new IllegalStateException("Relación de datos inválida: " + buscado));
     }
-    // Reutiliza una sola instancia por entidad para conservar sus relaciones POO.
+    // conserva las relaciones entre objetos.
     private void cargar() throws SQLException {
         revision = cambios.revision(false);
         llenar(empleados, new EmpleadoDAO().listar());

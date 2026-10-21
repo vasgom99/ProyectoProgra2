@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda las mesas, su capacidad y su estado. */
+/** guarda y consulta mesas. */
 public class MesaDAO {
 
     private static final String CONSULTA_BASE =
@@ -34,14 +34,14 @@ public class MesaDAO {
         return registros;
     }
 
-    // Devuelve null si no existe el registro.
+    // devuelve null si no existe.
     public Mesa buscarPorId(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir()) {
             return buscarPorId(recurso.conexion, id);
         }
     }
 
-    // Reutiliza la conexión cuando otra DAO necesita recuperar una relación.
+    // reutiliza la conexión activa.
     Mesa buscarPorId(Connection conexion, int id) throws SQLException {
         try (PreparedStatement consulta = conexion.prepareStatement(CONSULTA_BASE + " WHERE id = ?")) {
             consulta.setInt(1, id);
@@ -51,7 +51,7 @@ public class MesaDAO {
         }
     }
 
-    // Asigna al objeto el ID generado por MySQL.
+    // asigna el id generado.
     public boolean guardar(Mesa mesa) throws SQLException {
         String sql = "INSERT INTO mesa (numero, capacidad, estado) "
                 + "VALUES (?, ?, ?)";
@@ -81,7 +81,7 @@ public class MesaDAO {
         }
     }
 
-    // Las claves foráneas impiden borrar registros que todavía se utilizan.
+    // respeta las relaciones existentes.
     public boolean eliminar(int id) throws SQLException {
         try (ConexionDB.Recurso recurso = ConexionDB.abrir();
              PreparedStatement consulta = recurso.conexion.prepareStatement("DELETE FROM mesa WHERE id = ?")) {

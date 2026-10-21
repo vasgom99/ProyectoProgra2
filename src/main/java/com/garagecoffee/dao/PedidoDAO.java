@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda los pedidos locales y sus productos. */
+/** guarda y consulta pedidos. */
 public class PedidoDAO {
     private static final String COLUMNAS =
             "SELECT id, mesa_id, fecha_creacion, estado, total, observaciones FROM pedido";
@@ -90,6 +90,26 @@ public class PedidoDAO {
             consulta.setString(3, pedido.getObservaciones());
             consulta.setInt(4, pedido.getId());
             return consulta.executeUpdate() == 1;
+        }
+    }
+
+    public boolean agregarDetalles(Pedido pedido, List<DetallePedido> nuevos) throws SQLException {
+        if (!(pedido instanceof PedidoLocal) || nuevos == null || nuevos.isEmpty())
+            throw new IllegalArgumentException("Se esperaban productos para un pedido local.");
+        try (var recurso = ConexionDB.abrir()) {
+            int[] ids = detalles.guardarDetalles(recurso.conexion, pedido.getId(), nuevos);
+            for (int i = 0; i < ids.length; i++) {
+                nuevos.get(i).setId(ids[i]);
+                nuevos.get(i).setPedidoId(pedido.getId());
+            }
+            try (var consulta = recurso.conexion.prepareStatement(
+                    "UPDATE pedido SET estado = ?, total = ?, observaciones = ? WHERE id = ?")) {
+                consulta.setString(1, pedido.getEstado().name());
+                consulta.setBigDecimal(2, pedido.getTotal());
+                consulta.setString(3, pedido.getObservaciones());
+                consulta.setInt(4, pedido.getId());
+                return consulta.executeUpdate() == 1;
+            }
         }
     }
 
