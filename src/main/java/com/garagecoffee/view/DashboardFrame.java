@@ -1,7 +1,6 @@
 package com.garagecoffee.view;
 
 import com.garagecoffee.model.RolEmpleado;
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class DashboardFrame extends javax.swing.JFrame {
 
     private com.garagecoffee.controller.RestauranteController control;
@@ -11,41 +10,46 @@ public class DashboardFrame extends javax.swing.JFrame {
     public DashboardFrame() {
         initComponents();
         setTitle("Garage Coffee · Restaurante");
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Ui.secundario(btnActualizar); Ui.navegacion(btnSalir, false);
         btnActualizar.addActionListener(e -> Ui.ejecutar(this, () -> { if (control != null) control.recargar(); if (actual != null) actual.recargar(); }));
         btnSalir.addActionListener(e -> {
-            if (control != null && Ui.confirmar(this, "¿Cambiar de usuario?")) {
-                control.sesion().cerrarSesion(); new LoginFrame(control).setVisible(true); dispose();
-            }
-        });
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override public void windowClosing(java.awt.event.WindowEvent e) {
-                if (Ui.confirmar(DashboardFrame.this, control != null && control.esDemo() ? "¿Salir? Se perderán los datos de prueba." : "¿Salir? Los cambios guardados en MySQL se conservarán.")) dispose();
-            }
+            if (control == null) return;
+            control.sesion().cerrarSesion();
+            new LoginFrame(control).setVisible(true);
+            dispose();
         });
         setSize(1340, 850); setLocationRelativeTo(null);
     }
     public DashboardFrame(com.garagecoffee.controller.RestauranteController control) {
         this(); this.control = control;
-        if (control.esDemo()) lblAviso.setText("DEMOSTRACIÓN · Datos temporales; se pierden al cerrar.");
         lblUsuario.setText(control.sesion().actual().getNombre() + " · " + Ui.nombre(control.sesion().actual().getRol()));
         enlace(btnNav0, "Inicio", () -> new InicioPanel(control), true);
-        enlace(btnNav1, "Pedidos", () -> new PedidosPanel(control, false), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
-        enlace(btnNav2, "Clientes y mesas", () -> new AtencionPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
+        enlace(btnNav1, "Pedidos", () -> new PedidosPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
+        enlace(btnNav2, "Mesas", () -> new AtencionPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO));
         enlace(btnNav3, "Cocina", () -> new CocinaPanel(control), control.sesion().permite(RolEmpleado.COCINA));
-        enlace(btnNav4, "Entregas", () -> new PedidosPanel(control, true), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.CAJERO, RolEmpleado.REPARTIDOR));
-        enlace(btnNav5, "Catálogo y recetas", () -> new CatalogoPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.COCINA, RolEmpleado.CAJERO));
-        enlace(btnNav6, "Inventario", () -> new InventarioPanel(control), control.sesion().permite(RolEmpleado.COCINA));
-        enlace(btnNav7, "Compras", () -> new ComprasPanel(control), control.sesion().permite());
+        enlace(btnNav5, "Productos", () -> new CatalogoPanel(control), control.sesion().permite(RolEmpleado.MESERO, RolEmpleado.COCINA, RolEmpleado.CAJERO));
         enlace(btnNav8, "Caja y cobros", () -> new CajaPanel(control), control.sesion().permite(RolEmpleado.CAJERO));
         enlace(btnNav9, "Empleados", () -> new EmpleadosPanel(control), control.sesion().permite());
-        enlace(btnNav10, "Reportes", () -> new ReportesPanel(control), control.sesion().permite());
-        mostrar("Inicio", () -> new InicioPanel(control));
+        lblSeccion.setText(Ui.nombre(control.sesion().actual().getRol()));
+        organizarMenu();
+        switch (control.sesion().actual().getRol()) {
+            case MESERO -> mostrar("Mesas", () -> new AtencionPanel(control));
+            case COCINA -> mostrar("Cocina", () -> new CocinaPanel(control));
+            case CAJERO -> mostrar("Caja y cobros", () -> new CajaPanel(control));
+            default -> mostrar("Inicio", () -> new InicioPanel(control));
+        }
+    }
+    private void organizarMenu() {
+        navegacion.removeAll();
+        botones.values().forEach(navegacion::add);
+        navegacion.setPreferredSize(new java.awt.Dimension(184, navegacion.getComponentCount() * 36));
+        navegacion.revalidate(); navegacion.repaint();
     }
     private void enlace(javax.swing.JButton boton, String nombre, java.util.function.Supplier<PanelModulo> crear, boolean permitido) {
         if (!permitido) { navegacion.remove(boton); return; }
         botones.put(nombre, boton); Ui.navegacion(boton, false);
+        boton.setText(nombre);
         boton.addActionListener(e -> Ui.ejecutar(this, () -> mostrar(nombre, crear)));
     }
     private void mostrar(String nombre, java.util.function.Supplier<PanelModulo> crear) {
@@ -71,13 +75,9 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav1 = new javax.swing.JButton();
         btnNav2 = new javax.swing.JButton();
         btnNav3 = new javax.swing.JButton();
-        btnNav4 = new javax.swing.JButton();
         btnNav5 = new javax.swing.JButton();
-        btnNav6 = new javax.swing.JButton();
-        btnNav7 = new javax.swing.JButton();
         btnNav8 = new javax.swing.JButton();
         btnNav9 = new javax.swing.JButton();
-        btnNav10 = new javax.swing.JButton();
         sesionPanel = new javax.swing.JPanel();
         lblLocal = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
@@ -90,9 +90,6 @@ public class DashboardFrame extends javax.swing.JFrame {
         lblUsuario = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
         contenido = new javax.swing.JPanel();
-        pie = new javax.swing.JPanel();
-        lblAviso = new javax.swing.JLabel();
-        lblTecnologia = new javax.swing.JLabel();
         this.setBackground(new java.awt.Color(246, 244, 238));
         this.setMinimumSize(new java.awt.Dimension(1100, 740));
         getContentPane().setLayout(new java.awt.BorderLayout(0, 0));
@@ -133,7 +130,7 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav1.setForeground(new java.awt.Color(38, 58, 50));
         btnNav1.setFocusPainted(false);
         navegacion.add(btnNav1);
-        btnNav2.setText("Clientes y mesas");
+        btnNav2.setText("Mesas");
         btnNav2.setFont(new java.awt.Font("SansSerif", 0, 14));
         btnNav2.setBackground(new java.awt.Color(255, 255, 255));
         btnNav2.setForeground(new java.awt.Color(38, 58, 50));
@@ -145,30 +142,12 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav3.setForeground(new java.awt.Color(38, 58, 50));
         btnNav3.setFocusPainted(false);
         navegacion.add(btnNav3);
-        btnNav4.setText("Entregas");
-        btnNav4.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav4.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav4.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav4.setFocusPainted(false);
-        navegacion.add(btnNav4);
-        btnNav5.setText("Catálogo y recetas");
+        btnNav5.setText("Productos");
         btnNav5.setFont(new java.awt.Font("SansSerif", 0, 14));
         btnNav5.setBackground(new java.awt.Color(255, 255, 255));
         btnNav5.setForeground(new java.awt.Color(38, 58, 50));
         btnNav5.setFocusPainted(false);
         navegacion.add(btnNav5);
-        btnNav6.setText("Inventario");
-        btnNav6.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav6.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav6.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav6.setFocusPainted(false);
-        navegacion.add(btnNav6);
-        btnNav7.setText("Compras");
-        btnNav7.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav7.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav7.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav7.setFocusPainted(false);
-        navegacion.add(btnNav7);
         btnNav8.setText("Caja y cobros");
         btnNav8.setFont(new java.awt.Font("SansSerif", 0, 14));
         btnNav8.setBackground(new java.awt.Color(255, 255, 255));
@@ -181,12 +160,6 @@ public class DashboardFrame extends javax.swing.JFrame {
         btnNav9.setForeground(new java.awt.Color(38, 58, 50));
         btnNav9.setFocusPainted(false);
         navegacion.add(btnNav9);
-        btnNav10.setText("Reportes");
-        btnNav10.setFont(new java.awt.Font("SansSerif", 0, 14));
-        btnNav10.setBackground(new java.awt.Color(255, 255, 255));
-        btnNav10.setForeground(new java.awt.Color(38, 58, 50));
-        btnNav10.setFocusPainted(false);
-        navegacion.add(btnNav10);
         marcoNavegacion.add(navegacion, java.awt.BorderLayout.NORTH);
         lateral.add(marcoNavegacion, java.awt.BorderLayout.CENTER);
         sesionPanel.setOpaque(false);
@@ -238,18 +211,6 @@ public class DashboardFrame extends javax.swing.JFrame {
         contenido.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 24, 12, 24));
         contenido.setLayout(new java.awt.CardLayout());
         areaTrabajo.add(contenido, java.awt.BorderLayout.CENTER);
-        pie.setBackground(new java.awt.Color(239, 231, 216));
-        pie.setBorder(javax.swing.BorderFactory.createEmptyBorder(11, 26, 11, 26));
-        pie.setLayout(new java.awt.BorderLayout(0, 0));
-        lblAviso.setText("MYSQL  ·  Cambios guardados. Usa Actualizar para consultar otra sesión.");
-        lblAviso.setFont(new java.awt.Font("SansSerif", 0, 12));
-        lblAviso.setForeground(new java.awt.Color(114, 87, 57));
-        pie.add(lblAviso, java.awt.BorderLayout.CENTER);
-        lblTecnologia.setText("JAVA SWING");
-        lblTecnologia.setFont(new java.awt.Font("SansSerif", 1, 10));
-        lblTecnologia.setForeground(new java.awt.Color(114, 87, 57));
-        pie.add(lblTecnologia, java.awt.BorderLayout.EAST);
-        areaTrabajo.add(pie, java.awt.BorderLayout.SOUTH);
         getContentPane().add(areaTrabajo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -265,13 +226,9 @@ public class DashboardFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnNav1;
     private javax.swing.JButton btnNav2;
     private javax.swing.JButton btnNav3;
-    private javax.swing.JButton btnNav4;
     private javax.swing.JButton btnNav5;
-    private javax.swing.JButton btnNav6;
-    private javax.swing.JButton btnNav7;
     private javax.swing.JButton btnNav8;
     private javax.swing.JButton btnNav9;
-    private javax.swing.JButton btnNav10;
     private javax.swing.JPanel sesionPanel;
     private javax.swing.JLabel lblLocal;
     private javax.swing.JButton btnSalir;
@@ -284,8 +241,5 @@ public class DashboardFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JPanel contenido;
-    private javax.swing.JPanel pie;
-    private javax.swing.JLabel lblAviso;
-    private javax.swing.JLabel lblTecnologia;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,47 +1,40 @@
 # Garage Coffee
 
-Este repositorio contiene tres partes: Swing (`pom.xml` de la raíz), el servidor
-Spring (`backend/`) y Android (`android/`). Para abrir **Swing no hay que iniciar
-Spring**. La app Android sí consulta Spring.
+Proyecto académico de restaurante con POO. El programa principal es **Java Swing + JDBC + MySQL**. `backend/` comunica la app de Android con MySQL; **Swing no necesita Spring ni Android para iniciar**.
 
-## Revisar Swing sin MySQL
+## Lo que hace el sistema
 
-Abre la carpeta raíz como proyecto Maven en NetBeans y ejecuta
-`com.garagecoffee.Proyecto2Progra2` con JDK 25 o superior. Si MySQL no está
-disponible, elige **Sí** cuando se ofrezca la demostración. Ingresa con usuario
-`admin` y contraseña `demo`. Puedes recorrer las pantallas, pero los datos se
-pierden al cerrar. Para entrar directamente en este modo, usa el argumento
-`--demo`.
+1. Un empleado entra con su usuario y rol.
+2. El administrador registra categorías, productos y mesas.
+3. El mesero toma un pedido para una mesa libre.
+4. Cocina lo prepara y lo marca listo; el mesero lo entrega.
+5. El cajero abre caja y cobra el pedido completo en efectivo. La mesa queda libre cuando el pedido está entregado y pagado.
 
-La configuración Gradle de Android está únicamente en `android/`. Si NetBeans
-todavía muestra las importaciones antiguas `garage_coffee` o
-`Proyecto2Progra2:app`, reinicia NetBeans para que vuelva a reconocer la raíz.
-Abre `Proyecto2Progra2` desde esa carpeta si no se abre automáticamente.
-El proyecto debe mostrar el icono de Maven y su nombre `Proyecto2Progra2`.
-La acción **Run Project / Ejecutar proyecto** está fijada en `nbactions.xml`
-para abrir la clase principal Swing desde la raíz, donde está la configuración
-local de MySQL.
+No hay clientes, reservas, reparto, recetas, inventario, compras, promociones, abonos, gastos ni reportes. Un pedido conserva sus productos y precios para poder revisar después lo cobrado. El comprobante es académico y **no es una factura fiscal**. El modelo POO vigente está en `Garage_Coffee_UML_Academico.drawio`.
 
-También se puede abrir desde una terminal situada en la raíz:
+## Preparar MySQL en cada computadora
+
+1. Instala e inicia MySQL. En DBeaver ejecuta [garage_coffee.sql](garage_coffee.sql) para crear las nueve tablas del flujo y los datos de ejemplo. El script no elimina tablas ni datos existentes.
+2. Copia `garage-db.properties.example` a `garage-db.properties` en la raíz y escribe el usuario y la contraseña MySQL **de esa computadora**. El archivo local está excluido de Git.
+3. Abre **esta carpeta raíz** como proyecto Maven en NetBeans con JDK 25 o superior. Ejecuta `com.garagecoffee.Proyecto2Progra2` o **Run Project**.
+
+DBeaver es solo el cliente de administración: debe apuntar al mismo MySQL que Swing. En esta Mac también existe un MySQL instalado fuera de Docker; por eso el archivo local `garage-db.properties` apunta a `jdbc:mysql://[::1]:3306/garage_coffee`, que llega al contenedor. `localhost:3306` llega al MySQL de macOS. En otras computadoras usa la dirección y contraseña que correspondan a su servidor; no copies el archivo local con credenciales.
+
+Para ingresar usa una cuenta activa de la tabla `empleado`. Si ya existe una base `garage_coffee` de la versión anterior, haz una copia de seguridad antes de migrarla: `CREATE TABLE IF NOT EXISTS` no convierte automáticamente sus tablas antiguas al nuevo esquema.
+
+Las contraseñas de empleados se guardan como texto normal para mantener sencillo este proyecto académico. Las cuentas con claves protegidas por una versión anterior siguen funcionando; Swing las convierte a texto normal después de validar el acceso.
+
+## Compilar y ejecutar
+
+Desde la raíz del repositorio:
 
 ```sh
+./backend/mvnw -f pom.xml package
 ./backend/mvnw -f pom.xml process-classes exec:exec
 ```
 
-En Windows, el mismo comando comienza con `backend\mvnw.cmd`.
+En Windows cambia `./backend/mvnw` por `backend\mvnw.cmd`. El proyecto de Android se abre **desde `android/`** en Android Studio, no desde la raíz. Spring se abre desde `backend/`; consulta [backend/README.md](backend/README.md). Los archivos `.form` de Swing siguen siendo editables con el diseñador de NetBeans.
 
-## Usar Swing con datos permanentes
+Los campos monetarios aceptan coma o punto decimal y formatos habituales de miles. Una cantidad como `10.000` se interpreta como diez con tres decimales; para diez mil escribe `10000` o `10,000.00`.
 
-En cada equipo hay que instalar e iniciar MySQL e importar el esquema de
-Garage Coffee. El script original para crear las tablas no está incluido
-actualmente en Git; el equipo debe compartirlo por separado para usar este
-modo. Copia `garage-db.properties.example` como `garage-db.properties` en la
-raíz y pon la dirección, usuario y contraseña de **ese equipo**. El archivo
-con la contraseña no se sube a Git. Ejecuta una vez
-`com.garagecoffee.database.PrepararBaseDatos` y después inicia Swing
-normalmente, sin `--demo`.
-
-Spring no sustituye esta conexión: por ahora Swing accede a MySQL directamente.
-Para la parte móvil, consulta las instrucciones de `backend/README.md` y
-`android/app/README.md`. En Android Studio se abre `android/` como proyecto
-Gradle, sin moverlo a otro repositorio.
+El archivo `Garage_Coffee_Contexto_Completo.md` conserva la historia y el diseño original, pero está excluido de Git y describe funciones retiradas. **Este README y el UML académico representan el alcance actual.**

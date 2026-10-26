@@ -1,18 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Garage_coffee" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/garage_green</item>
-        <item name="colorPrimaryVariant">@color/garage_green</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/garage_accent</item>
-        <item name="colorSecondaryVariant">@color/garage_accent</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+<resources>
+    <style name="Theme.Garage_coffee" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:colorAccent">@color/garage_accent</item>
+        <item name="android:statusBarColor">@color/garage_green</item>
+        <item name="android:navigationBarColor">@color/garage_cream</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/garage_cream</item>
         <item name="android:fontFamily">sans</item>
-        <!-- Customize your theme here. -->
     </style>
 </resources>

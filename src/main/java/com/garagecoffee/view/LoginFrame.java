@@ -1,29 +1,21 @@
 package com.garagecoffee.view;
 
 
-// Diseño editable en NetBeans: abrir este archivo y elegir Diseño.
 public class LoginFrame extends javax.swing.JFrame {
 
     private com.garagecoffee.controller.RestauranteController control;
     public LoginFrame() {
         initComponents();
         setTitle("Garage Coffee · Acceso");
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Ui.primario(btnEntrar);
         txtUsuario.getAccessibleContext().setAccessibleName("Usuario");
         txtClave.getAccessibleContext().setAccessibleName("Contraseña");
         btnEntrar.addActionListener(e -> ingresar());
         getRootPane().setDefaultButton(btnEntrar);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override public void windowClosing(java.awt.event.WindowEvent e) {
-                if (Ui.confirmar(LoginFrame.this, control != null && control.esDemo() ? "¿Salir de la demostración? Se perderán los datos temporales." : "¿Salir de Garage Coffee? Los cambios guardados se conservarán.")) dispose();
-            }
-        });
         setSize(1020, 650); setLocationRelativeTo(null);
     }
-    public LoginFrame(com.garagecoffee.controller.RestauranteController control) { this(); this.control = control;
-        if (control.esDemo()) { lblModo.setText("MODO DEMOSTRACIÓN"); lblSinConexion.setText("Sin conexión: datos temporales"); lblConsejo.setText("Usuarios de prueba · clave demo"); lblAyuda.setText("Al cerrar se pierden los datos de prueba."); }
-    }
+    public LoginFrame(com.garagecoffee.controller.RestauranteController control) { this(); this.control = control; }
     private void ingresar() {
         if (control == null) control = new com.garagecoffee.controller.RestauranteController();
         try {
@@ -46,7 +38,6 @@ public class LoginFrame extends javax.swing.JFrame {
         marcaMensaje = new javax.swing.JPanel();
         lblMensaje = new javax.swing.JLabel();
         lblDescripcion = new javax.swing.JLabel();
-        lblVersion = new javax.swing.JLabel();
         panelAcceso = new javax.swing.JPanel();
         cabeceraAcceso = new javax.swing.JPanel();
         lblBienvenido = new javax.swing.JLabel();
@@ -59,9 +50,6 @@ public class LoginFrame extends javax.swing.JFrame {
         txtClave = new javax.swing.JPasswordField();
         lblError = new javax.swing.JLabel();
         btnEntrar = new javax.swing.JButton();
-        lblConsejo = new javax.swing.JLabel();
-        lblSinConexion = new javax.swing.JLabel();
-        lblAyuda = new javax.swing.JLabel();
         this.setBackground(new java.awt.Color(246, 244, 238));
         this.setMinimumSize(new java.awt.Dimension(920, 590));
         getContentPane().setLayout(new java.awt.GridLayout(1, 2, 0, 0));
@@ -94,10 +82,6 @@ public class LoginFrame extends javax.swing.JFrame {
         lblDescripcion.setForeground(new java.awt.Color(199, 210, 201));
         marcaMensaje.add(lblDescripcion);
         panelMarca.add(marcaMensaje, java.awt.BorderLayout.CENTER);
-        lblVersion.setText("APLICACIÓN ACADÉMICA · SWING");
-        lblVersion.setFont(new java.awt.Font("SansSerif", 0, 11));
-        lblVersion.setForeground(new java.awt.Color(199, 210, 201));
-        panelMarca.add(lblVersion, java.awt.BorderLayout.SOUTH);
         getContentPane().add(panelMarca);
         panelAcceso.setBackground(new java.awt.Color(255, 255, 255));
         panelAcceso.setBorder(javax.swing.BorderFactory.createEmptyBorder(38, 32, 30, 32));
@@ -118,12 +102,11 @@ public class LoginFrame extends javax.swing.JFrame {
         cabeceraAcceso.add(lblModo);
         panelAcceso.add(cabeceraAcceso, java.awt.BorderLayout.NORTH);
         camposAcceso.setOpaque(false);
-        camposAcceso.setLayout(new java.awt.GridLayout(8, 1, 8, 8));
+        camposAcceso.setLayout(new java.awt.GridLayout(6, 1, 8, 8));
         lblUsuario.setText("Usuario");
         lblUsuario.setFont(new java.awt.Font("SansSerif", 1, 13));
         lblUsuario.setForeground(new java.awt.Color(36, 59, 50));
         camposAcceso.add(lblUsuario);
-        txtUsuario.setText("admin");
         txtUsuario.setFont(new java.awt.Font("SansSerif", 0, 15));
         txtUsuario.setToolTipText("Usuario del restaurante");
         camposAcceso.add(txtUsuario);
@@ -143,19 +126,7 @@ public class LoginFrame extends javax.swing.JFrame {
         btnEntrar.setForeground(new java.awt.Color(38, 58, 50));
         btnEntrar.setFocusPainted(false);
         camposAcceso.add(btnEntrar);
-        lblConsejo.setText("Ingresa con tu cuenta de empleado.");
-        lblConsejo.setFont(new java.awt.Font("SansSerif", 0, 12));
-        lblConsejo.setForeground(new java.awt.Color(109, 121, 114));
-        camposAcceso.add(lblConsejo);
-        lblSinConexion.setText("Datos guardados en MySQL");
-        lblSinConexion.setFont(new java.awt.Font("SansSerif", 0, 12));
-        lblSinConexion.setForeground(new java.awt.Color(109, 121, 114));
-        camposAcceso.add(lblSinConexion);
         panelAcceso.add(camposAcceso, java.awt.BorderLayout.CENTER);
-        lblAyuda.setText("<html>Utiliza la cuenta registrada por el administrador.<br><br>La clave del empleado es distinta de la clave de MySQL.<br>Los cambios se conservan al cerrar.</html>");
-        lblAyuda.setFont(new java.awt.Font("SansSerif", 0, 12));
-        lblAyuda.setForeground(new java.awt.Color(109, 121, 114));
-        panelAcceso.add(lblAyuda, java.awt.BorderLayout.SOUTH);
         getContentPane().add(panelAcceso);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -168,7 +139,6 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JPanel marcaMensaje;
     private javax.swing.JLabel lblMensaje;
     private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JLabel lblVersion;
     private javax.swing.JPanel panelAcceso;
     private javax.swing.JPanel cabeceraAcceso;
     private javax.swing.JLabel lblBienvenido;
@@ -181,8 +151,5 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtClave;
     private javax.swing.JLabel lblError;
     private javax.swing.JButton btnEntrar;
-    private javax.swing.JLabel lblConsejo;
-    private javax.swing.JLabel lblSinConexion;
-    private javax.swing.JLabel lblAyuda;
     // End of variables declaration//GEN-END:variables
 }

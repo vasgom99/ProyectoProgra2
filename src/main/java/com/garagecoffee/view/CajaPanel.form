@@ -20,23 +20,7 @@
 </Component>
 <Component class="com.garagecoffee.view.PanelListado" name="cajas">
 <AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Caja&gt;"/></AuxValues>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription"><JTabbedPaneConstraints tabName="Apertura y cierre"><Property name="tabTitle" type="java.lang.String" value="Apertura y cierre"/></JTabbedPaneConstraints></Constraint></Constraints>
-</Component>
-<Component class="com.garagecoffee.view.PanelListado" name="movimientos">
-<AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;MovimientoCaja&gt;"/></AuxValues>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription"><JTabbedPaneConstraints tabName="Movimientos"><Property name="tabTitle" type="java.lang.String" value="Movimientos"/></JTabbedPaneConstraints></Constraint></Constraints>
-</Component>
-<Component class="com.garagecoffee.view.PanelListado" name="gastos">
-<AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Gasto&gt;"/></AuxValues>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription"><JTabbedPaneConstraints tabName="Gastos"><Property name="tabTitle" type="java.lang.String" value="Gastos"/></JTabbedPaneConstraints></Constraint></Constraints>
-</Component>
-<Component class="com.garagecoffee.view.PanelListado" name="pagos">
-<AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Pago&gt;"/></AuxValues>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription"><JTabbedPaneConstraints tabName="Pagos"><Property name="tabTitle" type="java.lang.String" value="Pagos"/></JTabbedPaneConstraints></Constraint></Constraints>
-</Component>
-<Component class="com.garagecoffee.view.PanelListado" name="facturas">
-<AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Factura&gt;"/></AuxValues>
-<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription"><JTabbedPaneConstraints tabName="Comprobantes"><Property name="tabTitle" type="java.lang.String" value="Comprobantes"/></JTabbedPaneConstraints></Constraint></Constraints>
+<Constraints><Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription"><JTabbedPaneConstraints tabName="Caja"><Property name="tabTitle" type="java.lang.String" value="Caja"/></JTabbedPaneConstraints></Constraint></Constraints>
 </Component>
 </SubComponents>
 </Container>

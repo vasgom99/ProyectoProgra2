@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Guarda y consulta las categorías que agrupan los productos. */
+/** guarda y consulta categorías. */
 public class CategoriaDAO {
 
     public List<Categoria> listar() throws SQLException {
@@ -28,7 +28,7 @@ public class CategoriaDAO {
         return categorias;
     }
 
-    // Devuelve null si no existe una categoría con ese ID.
+    // devuelve null si no existe.
     public Categoria buscarPorId(int id) throws SQLException {
         String sql = "SELECT id, nombre, tipo, activo FROM categoria WHERE id = ?";
 
@@ -41,7 +41,7 @@ public class CategoriaDAO {
         }
     }
 
-    // Al guardar, asigna al objeto el ID generado por MySQL.
+    // asigna el id generado.
     public boolean guardar(Categoria categoria) throws SQLException {
         String sql = "INSERT INTO categoria (nombre, tipo, activo) VALUES (?, ?, ?)";
 
@@ -77,7 +77,7 @@ public class CategoriaDAO {
         }
     }
 
-    // MySQL impide eliminar categorías que todavía tengan productos asociados.
+    // respeta las relaciones existentes.
     public boolean eliminar(int id) throws SQLException {
         String sql = "DELETE FROM categoria WHERE id = ?";
 

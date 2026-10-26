@@ -1,34 +1,34 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "garage_coffee.app"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
+        version = release(37)
     }
 
     defaultConfig {
         applicationId = "garage_coffee.app"
         minSdk = 34
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
     }
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 
     buildTypes {
         debug {
-            // 10.0.2.2 apunta a localhost del equipo desde el emulador Android.
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8080\"")
+            // conecta el emulador con spring.
+            buildConfigField("String", "API_BASE_URL", "\"http://127.0.0.1:8080\"")
         }
         release {
             isMinifyEnabled = false
-            // Una instalación distribuida requerirá HTTPS y una dirección configurada.
+            // configura la dirección del servidor.
             buildConfigField("String", "API_BASE_URL", "\"\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material3)
 }

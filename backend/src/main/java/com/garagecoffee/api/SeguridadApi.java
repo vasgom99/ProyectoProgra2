@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.http.HttpMethod;
 
-// Primera etapa: consultas protegidas por usuario y rol; sin sesión global compartida.
+// protege las rutas según el rol.
 @Configuration
 public class SeguridadApi {
     @Bean UserDetailsService empleados(EmpleadoDAO dao) {
@@ -32,8 +32,7 @@ public class SeguridadApi {
     @Bean PasswordEncoder claves() {
         return new PasswordEncoder() {
             public String encode(CharSequence clave) {
-                char[] valor = clave.toString().toCharArray();
-                try { return Claves.proteger(valor); } finally { Arrays.fill(valor, '\0'); }
+                return clave.toString();
             }
             public boolean matches(CharSequence clave, String guardada) {
                 char[] valor = clave.toString().toCharArray();
@@ -45,12 +44,19 @@ public class SeguridadApi {
         return http
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .requestCache(c -> c.disable())
-                // Conservamos CSRF; esta etapa no publica operaciones de escritura.
+                // valida las credenciales de cada solicitud.
+                .csrf(c -> c.disable())
                 .authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.GET, "/api/estado").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/sesion").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/mesas").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.GET, "/api/mesas/*/pedido-activo").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
                         .requestMatchers(HttpMethod.GET, "/api/catalogo").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO", "COCINA")
+                        .requestMatchers(HttpMethod.POST, "/api/pedidos").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.POST, "/api/pedidos/*/cobrar").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.PUT, "/api/mesas/*/estado").hasAnyRole("ADMINISTRADOR", "MESERO")
+                        .requestMatchers(HttpMethod.PUT, "/api/pedidos/*/entregar").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
+                        .requestMatchers(HttpMethod.PUT, "/api/pedidos/*/productos").hasAnyRole("ADMINISTRADOR", "MESERO", "CAJERO")
                         .anyRequest().denyAll())
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(e -> e

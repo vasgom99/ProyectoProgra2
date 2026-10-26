@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.*;
 
-// Base de los JPanel Form de captura. Solo enlaza campos y valida; no crea su diseño.
+// comparte los campos de los formularios.
 public class Formulario extends JPanel implements Scrollable {
     private final Map<String, JComponent> campos = new LinkedHashMap<>();
     protected void registrar(String etiqueta, JComponent componente) {
@@ -37,12 +37,9 @@ public class Formulario extends JPanel implements Scrollable {
     public <T> PanelListado<T> listado(String etiqueta) { return (PanelListado<T>) campoRegistrado(etiqueta); }
     public JTextField texto(String etiqueta, Object valor) {
         JTextField campo = (JTextField) campoRegistrado(etiqueta);
-        if (valor instanceof BigDecimal bd) {
-            campo.setText(bd.stripTrailingZeros().toPlainString());
-        } else {
-            campo.setText(valor == null ? "" : valor.toString());
-        }
-        return campo;
+        if (etiqueta.matches("(?iu).(cantidad|costo|precio|monto|efectivo|stock|envío|mínimo)."))
+            campo.setToolTipText("Ejemplos: 10.50, 10,50, Q 10.50, 1,250.50 o 1.250,50. Un solo punto o coma se interpreta como decimal.");
+        campo.setText(valor == null ? "" : valor.toString()); return campo;
     }
     public JCheckBox check(String etiqueta, boolean marcado) {
         JCheckBox campo = (JCheckBox) campoRegistrado(etiqueta); campo.setSelected(marcado); return campo;
@@ -67,11 +64,30 @@ public class Formulario extends JPanel implements Scrollable {
         catch (NumberFormatException ex) { throw new IllegalArgumentException(campo.getAccessibleContext().getAccessibleName() + ": usa un número entero."); }
     }
     public BigDecimal decimal(JTextField campo) {
-        if (valor(campo).length() > 30) throw new IllegalArgumentException("El número es demasiado largo.");
-        if (!valor(campo).matches("[+-]?[0-9]+([.,][0-9]+)?"))
-            throw new IllegalArgumentException(campo.getAccessibleContext().getAccessibleName() + ": escribe un número sin separadores de miles.");
-        try { return new BigDecimal(valor(campo).replace(',', '.')); }
-        catch (NumberFormatException ex) { throw new IllegalArgumentException(campo.getAccessibleContext().getAccessibleName() + ": usa un número válido."); }
+        String numero = valor(campo).replace('\u00a0', ' ').replace('\u202f', ' ').strip();
+        if (numero.length() > 64) throw new IllegalArgumentException("El número es demasiado largo.");
+        numero = numero.replaceFirst("(?i)^(GTQ|Q)\\s*", "");
+        try {
+            // acepta punto o coma decimal.
+            if (numero.matches("[+-]?[0-9]{1,3}( [0-9]{3})+([.,][0-9]+)?")) numero = numero.replace(" ", "");
+            if (numero.contains(",") && numero.contains(".")) {
+                char decimal = numero.lastIndexOf(',') > numero.lastIndexOf('.') ? ',' : '.';
+                String miles = decimal == ',' ? "." : ",";
+                String patron = "[+-]?[0-9]{1,3}(" + java.util.regex.Pattern.quote(miles)
+                        + "[0-9]{3})+" + java.util.regex.Pattern.quote(String.valueOf(decimal)) + "[0-9]*";
+                if (!numero.matches(patron)) throw new NumberFormatException();
+                numero = numero.replace(miles, "");
+            } else if (numero.matches("[+-]?[0-9]{1,3}(,[0-9]{3}){2,}")
+                    || numero.matches("[+-]?[0-9]{1,3}(\\.[0-9]{3}){2,}")) {
+                numero = numero.replace(",", "").replace(".", "");
+            }
+            if (!numero.matches("[+-]?([0-9]+([.,][0-9]*)?|[.,][0-9]+)")) throw new NumberFormatException();
+            if (numero.length() > 30) throw new NumberFormatException();
+            return new BigDecimal(numero.replace(',', '.'));
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException(campo.getAccessibleContext().getAccessibleName()
+                    + ": escribe un número como 10.50, 10,50 o 1,250.50. También puedes anteponer Q.");
+        }
     }
     public LocalDate fecha(JTextField campo) {
         if (valor(campo).isEmpty()) return null;
